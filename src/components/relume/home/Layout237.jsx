@@ -67,8 +67,8 @@ export function Layout237() {
                   className="pointer-events-none absolute top-4 font-heading font-bold leading-none text-white/6 select-none"
                   style={{
                     fontSize: "clamp(5rem, 14vw, 12rem)",
-                    right: isEven ? "auto" : "2rem",
-                    left: isEven ? "2rem" : "auto",
+                    right: isEven ? "2rem" : "auto",
+                    left: isEven ? "auto" : "2rem",
                   }}
                   aria-hidden="true"
                 >
