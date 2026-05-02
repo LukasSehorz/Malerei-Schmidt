@@ -47,6 +47,7 @@ export default {
         "marquee-bottom": "marquee-bottom 50s linear infinite",
         "marquee-left": "marquee-left 25s linear infinite",
         "marquee-right": "marquee-right 25s linear infinite",
+        "scroll-down": "scroll-down 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite",
       },
       keyframes: {
         "marquee-top": {
@@ -64,6 +65,10 @@ export default {
         "marquee-right": {
           "0%": { transform: "translateX(-50%)" },
           "100%": { transform: "translateX(0)" },
+        },
+        "scroll-down": {
+          "0%": { transform: "translateY(-100%)" },
+          "100%": { transform: "translateY(100%)" },
         },
       },
       boxShadow: {

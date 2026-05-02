@@ -2,6 +2,7 @@ import { useState } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import IntroScreen from "./components/IntroScreen";
+import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
 import Awards from "./pages/Awards";
@@ -31,18 +32,20 @@ export default function App() {
         )}
       </AnimatePresence>
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/ueber-uns" element={<AboutUs />} />
-        <Route path="/auszeichnungen" element={<Awards />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/kontakt" element={<Contact />} />
-        <Route path="/preise" element={<Pricing />} />
-        <Route path="/prozess" element={<Process />} />
-        <Route path="/projekte" element={<Projects />} />
-        <Route path="/projekte/:id" element={<Project />} />
-        <Route path="/leistungen" element={<Services />} />
-        <Route path="/referenzen" element={<Testimonials />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/ueber-uns" element={<AboutUs />} />
+          <Route path="/auszeichnungen" element={<Awards />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/kontakt" element={<Contact />} />
+          <Route path="/preise" element={<Pricing />} />
+          <Route path="/prozess" element={<Process />} />
+          <Route path="/projekte" element={<Projects />} />
+          <Route path="/projekte/:id" element={<Project />} />
+          <Route path="/leistungen" element={<Services />} />
+          <Route path="/referenzen" element={<Testimonials />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
