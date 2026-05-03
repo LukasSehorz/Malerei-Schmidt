@@ -94,6 +94,14 @@ export function VideoScrollSection() {
   // ── Sticky container (for zoom-out transition) ────────────────────────
   const stickyRef = useRef(null);
 
+  // ── Intro overlay refs ────────────────────────────────────────────────
+  const overlayRef        = useRef(null);
+  const overlayEyebrowRef = useRef(null);
+  const overlayHeadingRef = useRef(null);
+  const overlaySubRef     = useRef(null);
+  const overlayLineRef    = useRef(null);
+  const overlayCueRef     = useRef(null);
+
   // ── Scroll-state tracking ─────────────────────────────────────────────
   const activeSectionRef    = useRef(-1);
   const activeBulletsRef    = useRef(0);   // how many bullets currently shown
@@ -422,6 +430,82 @@ export function VideoScrollSection() {
     };
   }, []);
 
+  // ── Intro overlay: enter reveal + scroll-driven fade out ──────────────
+  useEffect(() => {
+    if (!overlayRef.current) return;
+    const ctx = gsap.context(() => {
+      // Initial state
+      gsap.set(overlayRef.current, { autoAlpha: 1 });
+      gsap.set(overlayLineRef.current, { scaleX: 0, transformOrigin: "left center" });
+      gsap.set(overlayEyebrowRef.current, { y: 24, opacity: 0 });
+      gsap.set(overlayHeadingRef.current, { y: 60, opacity: 0 });
+      gsap.set(overlaySubRef.current, { y: 22, opacity: 0 });
+      gsap.set(overlayCueRef.current, { y: 18, opacity: 0 });
+
+      // Trigger entrance when section is approaching the viewport
+      const enterTl = gsap.timeline({
+        defaults: { force3D: true },
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 70%",
+          once: true,
+        },
+      });
+
+      enterTl
+        .to(overlayLineRef.current, {
+          scaleX: 1, duration: 0.9, ease: "expo.inOut",
+        })
+        .to(overlayEyebrowRef.current, {
+          y: 0, opacity: 1, duration: 0.6, ease: "power3.out",
+        }, "-=0.5")
+        .to(overlayHeadingRef.current, {
+          y: 0, opacity: 1, duration: 1.1, ease: "expo.out",
+        }, "-=0.4")
+        .to(overlaySubRef.current, {
+          y: 0, opacity: 1, duration: 0.7, ease: "power3.out",
+        }, "-=0.6")
+        .to(overlayCueRef.current, {
+          y: 0, opacity: 1, duration: 0.6, ease: "power2.out",
+        }, "-=0.4");
+
+      // Scroll-driven dismiss: overlay fades + scales out as user scrolls
+      // through the first viewport-height of the section. Once gone, the
+      // existing scroll animation (frames, bullets, title) takes over.
+      gsap.to(overlayRef.current, {
+        autoAlpha: 0,
+        scale: 1.05,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "top top-=70%",
+          scrub: true,
+        },
+      });
+
+      // Heading lifts upward + subtle parallax during dismiss
+      gsap.to(overlayHeadingRef.current, {
+        y: -100,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "top top-=70%",
+          scrub: true,
+        },
+      });
+
+      // Animated scroll cue indicator (continuous loop)
+      const cueDot = overlayCueRef.current?.querySelector("[data-cue-dot]");
+      if (cueDot) {
+        gsap.to(cueDot, {
+          y: 16, duration: 1.4, ease: "sine.inOut", yoyo: true, repeat: -1,
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   // ── Init + resize ─────────────────────────────────────────────────────
   useEffect(() => {
     // Line containers stay visible; char spans handle their own opacity/position
@@ -527,6 +611,91 @@ export function VideoScrollSection() {
           </filter>
           <rect width="100%" height="100%" filter="url(#vss-grain)" />
         </svg>
+
+        {/* ── Intro overlay ── */}
+        <div
+          ref={overlayRef}
+          className="absolute inset-0 z-[45] flex flex-col justify-end px-[5%] pb-24 md:pb-28"
+          style={{ background: "#0a1020" }}
+        >
+          {/* Layered gradient (matches Hero aesthetic) */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(10,16,32,1) 0%, rgba(13,20,40,1) 45%, rgba(8,13,26,1) 100%)",
+            }}
+          />
+          {/* Soft gold radial glow (matches Hero) */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse at 70% 30%, rgba(201,168,76,0.12) 0%, transparent 55%)",
+            }}
+          />
+
+          {/* Vertical side mark (matches Hero) */}
+          <div
+            className="absolute left-[5%] top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-6"
+            style={{ writingMode: "vertical-rl", transform: "rotate(180deg) translateY(50%)" }}
+          >
+            <span className="font-body text-[11px] font-semibold uppercase tracking-[0.4em] text-hoser-gold/80">
+              Hoser · seit 1957
+            </span>
+            <span className="h-24 w-px bg-hoser-gold/40" />
+          </div>
+
+          {/* Top-right meta (matches Hero) */}
+          <div className="absolute top-24 right-[5%] hidden lg:flex items-center gap-3 font-body text-[11px] uppercase tracking-[0.3em] text-white/60">
+            <span className="h-px w-10 bg-hoser-gold/70" />
+            <span>Kapitel 02</span>
+          </div>
+
+          {/* Main content (left-aligned, mirrors Hero composition) */}
+          <div className="relative z-10 max-w-[1400px]">
+            <p
+              ref={overlayEyebrowRef}
+              className="mb-6 font-body text-sm font-semibold uppercase tracking-[0.4em] text-hoser-gold flex items-center gap-4"
+            >
+              <span ref={overlayLineRef} className="block h-px w-12 bg-hoser-gold" />
+              Eine Reise durch unsere Gewerke
+            </p>
+
+            <h2
+              ref={overlayHeadingRef}
+              className="font-heading font-bold leading-[1.0] tracking-tight text-white"
+              style={{ fontSize: "clamp(2.4rem, 6vw, 6rem)" }}
+            >
+              Unsere Leistungen <br className="hidden md:block" />nah erleben.
+            </h2>
+
+            <p
+              ref={overlaySubRef}
+              className="mt-10 md:mt-12 font-body text-base md:text-lg leading-relaxed text-white/70 max-w-xl"
+            >
+              Scrollen Sie durch fünf Gewerke und entdecken Sie, wie wir vom
+              ersten Erdaushub bis zur schlüsselfertigen Übergabe jeden Schritt
+              beherrschen.
+            </p>
+          </div>
+
+          {/* Scroll cue (matches Hero) */}
+          <div
+            ref={overlayCueRef}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+          >
+            <span className="font-body text-[10px] uppercase tracking-[0.4em] text-white/50">
+              Weiterscrollen
+            </span>
+            <div className="relative h-12 w-px bg-white/15 overflow-hidden">
+              <span
+                data-cue-dot
+                className="absolute top-0 left-1/2 -translate-x-1/2 h-3 w-px bg-hoser-gold"
+              />
+            </div>
+          </div>
+        </div>
 
         {/* Loading screen */}
         {!isReady && (

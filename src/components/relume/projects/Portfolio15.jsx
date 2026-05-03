@@ -1,6 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { gsap, ScrollTrigger } from "../../../utils/gsap";
+
+const splitWords = (el, text) => {
+  el.innerHTML = "";
+  return text.split(" ").map((word, i, arr) => {
+    const wrap = document.createElement("span");
+    wrap.style.display = "inline-block";
+    wrap.style.overflow = "hidden";
+    wrap.style.paddingBottom = "0.08em";
+    const inner = document.createElement("span");
+    inner.style.display = "inline-block";
+    inner.style.willChange = "transform";
+    inner.textContent = word + (i < arr.length - 1 ? " " : "");
+    wrap.appendChild(inner);
+    el.appendChild(wrap);
+    return inner;
+  });
+};
 
 const projects = [
   {
@@ -69,18 +87,84 @@ export function Portfolio15() {
   const [hovered, setHovered] = useState(null);
   const [expanded, setExpanded] = useState(null);
 
+  const sectionRef = useRef(null);
+  const eyebrowRef = useRef(null);
+  const headingRef = useRef(null);
+  const rowsRef    = useRef([]);
+
   const toggle = (i) => setExpanded(expanded === i ? null : i);
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Eyebrow + heading reveal
+      gsap.set(eyebrowRef.current, { y: 22, opacity: 0 });
+      const headingWords = headingRef.current
+        ? splitWords(headingRef.current, "Abgeschlossene Projekte in Bayern")
+        : [];
+      gsap.set(headingWords, { yPercent: 110 });
+
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 78%",
+          toggleActions: "play none none reverse",
+        },
+        defaults: { force3D: true },
+      })
+        .to(eyebrowRef.current, {
+          y: 0, opacity: 1, duration: 0.6, ease: "power3.out",
+        })
+        .to(headingWords, {
+          yPercent: 0, duration: 1.0, ease: "expo.out", stagger: 0.07,
+        }, "-=0.35");
+
+      // Per-row entrance: number scales, content slides in, image clip-path wipes
+      rowsRef.current.filter(Boolean).forEach((row) => {
+        const num   = row.querySelector("[data-row-num]");
+        const meta  = row.querySelector("[data-row-meta]");
+        const desc  = row.querySelector("[data-row-desc]");
+        const img   = row.querySelector("[data-row-img]");
+        const btn   = row.querySelector("[data-row-btn]");
+        const line  = row.querySelector("[data-row-line]");
+
+        gsap.set(num,  { scale: 0.6, opacity: 0, transformOrigin: "left center" });
+        gsap.set(meta, { x: -20, opacity: 0 });
+        gsap.set(desc, { x: 20, opacity: 0 });
+        gsap.set(btn,  { y: 14, opacity: 0 });
+        gsap.set(img,  { clipPath: "inset(0 100% 0 0)", scale: 1.15 });
+        gsap.set(line, { scaleX: 0, transformOrigin: "left center" });
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: row,
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+          defaults: { force3D: true },
+        })
+          .to(line, { scaleX: 1, duration: 0.7, ease: "expo.inOut" })
+          .to(num,  { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(1.6)" }, "-=0.4")
+          .to(meta, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, "-=0.5")
+          .to(desc, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, "-=0.6")
+          .to(img,  { clipPath: "inset(0 0% 0 0)", scale: 1, duration: 1.0, ease: "expo.out" }, "-=0.6")
+          .to(btn,  { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.5");
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="projekte" className="px-[5%] py-16 md:py-24 lg:py-28">
+    <section ref={sectionRef} id="projekte" className="px-[5%] py-16 md:py-24 lg:py-28">
       <div className="container">
 
         {/* Heading */}
         <div className="mb-16 md:mb-20">
-          <p className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-hoser-gold">
+          <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-hoser-gold">
             Referenzprojekte
           </p>
           <h2
+            ref={headingRef}
             className="font-heading font-bold leading-tight tracking-tight text-white"
             style={{ fontSize: "clamp(2rem, 4vw, 4rem)" }}
           >
@@ -91,7 +175,12 @@ export function Portfolio15() {
         {/* Project list */}
         <div>
           {projects.map((p, i) => (
-            <div key={p.id} className="border-t border-white/10">
+            <div
+              key={p.id}
+              ref={(el) => (rowsRef.current[i] = el)}
+              className="relative"
+            >
+              <div data-row-line className="absolute left-0 top-0 h-px w-full bg-white/10" />
 
               {/* Row */}
               <div
@@ -109,6 +198,7 @@ export function Portfolio15() {
                 <div className="grid grid-cols-1 gap-6 py-8 pl-6 md:grid-cols-[60px_1fr_1fr_220px] md:items-center md:py-10 lg:py-12">
                   {/* Number */}
                   <span
+                    data-row-num
                     className="font-heading text-4xl font-bold transition-colors duration-300 md:text-5xl"
                     style={{ color: hovered === i ? "#C9A84C" : "rgba(255,255,255,0.15)" }}
                   >
@@ -116,7 +206,7 @@ export function Portfolio15() {
                   </span>
 
                   {/* Title + Category */}
-                  <div>
+                  <div data-row-meta>
                     <p className="mb-2 font-body text-[11px] font-semibold uppercase tracking-[0.25em] text-hoser-gold">
                       {p.category}
                     </p>
@@ -126,7 +216,7 @@ export function Portfolio15() {
                   </div>
 
                   {/* Description + Location */}
-                  <div>
+                  <div data-row-desc>
                     <p className="font-body text-sm leading-relaxed text-white/75">
                       {p.desc}
                     </p>
@@ -140,7 +230,7 @@ export function Portfolio15() {
 
                   {/* Image + Button */}
                   <div className="flex flex-col gap-3">
-                    <div className="overflow-hidden rounded-sm md:h-28">
+                    <div data-row-img className="overflow-hidden rounded-sm md:h-28">
                       <img
                         src={p.img}
                         alt={p.title}
@@ -148,6 +238,7 @@ export function Portfolio15() {
                       />
                     </div>
                     <button
+                      data-row-btn
                       onClick={() => toggle(i)}
                       className="flex items-center justify-between border border-white/20 px-4 py-2.5 font-body text-xs font-semibold uppercase tracking-[0.15em] text-white/80 transition-all duration-300 hover:border-hoser-gold hover:text-hoser-gold"
                     >

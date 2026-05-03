@@ -1,6 +1,24 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { gsap } from "../../../utils/gsap";
+
+const splitWords = (el, text) => {
+  el.innerHTML = "";
+  return text.split(" ").map((word, i, arr) => {
+    const wrap = document.createElement("span");
+    wrap.style.display = "inline-block";
+    wrap.style.overflow = "hidden";
+    wrap.style.paddingBottom = "0.08em";
+    const inner = document.createElement("span");
+    inner.style.display = "inline-block";
+    inner.style.willChange = "transform";
+    inner.textContent = word + (i < arr.length - 1 ? " " : "");
+    wrap.appendChild(inner);
+    el.appendChild(wrap);
+    return inner;
+  });
+};
 
 const jobs = [
   {
@@ -134,8 +152,69 @@ const jobs = [
 export function Karriere() {
   const [openIdx, setOpenIdx] = useState(null);
 
+  const sectionRef = useRef(null);
+  const eyebrowRef = useRef(null);
+  const headingRef = useRef(null);
+  const subRef     = useRef(null);
+  const cardsRef   = useRef([]);
+  const contactRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Heading reveal
+      gsap.set(eyebrowRef.current, { y: 22, opacity: 0 });
+      const headingWords = headingRef.current
+        ? splitWords(headingRef.current, "Offene Stellen")
+        : [];
+      gsap.set(headingWords, { yPercent: 110 });
+      gsap.set(subRef.current, { y: 18, opacity: 0 });
+
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 75%",
+          toggleActions: "play none none reverse",
+        },
+        defaults: { force3D: true },
+      })
+        .to(eyebrowRef.current, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" })
+        .to(headingWords, { yPercent: 0, duration: 1.0, ease: "expo.out", stagger: 0.07 }, "-=0.35")
+        .to(subRef.current, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, "-=0.5");
+
+      // Per-card cascade entrance
+      cardsRef.current.filter(Boolean).forEach((card, idx) => {
+        gsap.set(card, { y: 40, opacity: 0 });
+        gsap.to(card, {
+          y: 0, opacity: 1, duration: 0.8, ease: "expo.out",
+          scrollTrigger: {
+            trigger: card,
+            start: "top 92%",
+            toggleActions: "play none none reverse",
+          },
+          delay: (idx % 2) * 0.08,
+        });
+      });
+
+      // Contact box reveal
+      if (contactRef.current) {
+        gsap.set(contactRef.current, { y: 40, opacity: 0 });
+        gsap.to(contactRef.current, {
+          y: 0, opacity: 1, duration: 0.9, ease: "expo.out",
+          scrollTrigger: {
+            trigger: contactRef.current,
+            start: "top 88%",
+            toggleActions: "play none none reverse",
+          },
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="stellenangebote"
       className="overflow-hidden"
       style={{ background: "linear-gradient(180deg, #0a1020 0%, #111827 100%)" }}
@@ -158,10 +237,11 @@ export function Karriere() {
         <div className="container relative z-10">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-end">
             <div>
-              <p className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-white/60">
+              <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-white/60">
                 Stellenangebote
               </p>
               <h2
+                ref={headingRef}
                 className="font-heading font-bold leading-tight tracking-tight text-white"
                 style={{ fontSize: "clamp(2rem, 4vw, 4rem)" }}
               >
@@ -169,7 +249,7 @@ export function Karriere() {
               </h2>
             </div>
             <div>
-              <p className="font-body text-base leading-relaxed text-white/65">
+              <p ref={subRef} className="font-body text-base leading-relaxed text-white/65">
                 Wir suchen laufend qualifizierte Fachkräfte, Vorarbeiter und Poliere.
                 Alle Stellen sind unbefristet und mit sofortigem Einstieg möglich.
               </p>
@@ -189,16 +269,17 @@ export function Karriere() {
             return (
               <div
                 key={job.title}
+                ref={(el) => (cardsRef.current[i] = el)}
                 className="group relative cursor-pointer"
                 onClick={() => setOpenIdx(isOpen ? null : i)}
               >
                 <div
                   className="relative overflow-hidden transition-all duration-300"
                   style={{
-                    background: isOpen ? "rgba(196,30,58,0.06)" : "rgba(255,255,255,0.02)",
+                    background: isOpen ? "rgba(201,168,76,0.06)" : "rgba(255,255,255,0.02)",
                     border: "1px solid",
-                    borderColor: isOpen ? "rgba(196,30,58,0.4)" : "rgba(255,255,255,0.08)",
-                    borderLeft: `3px solid ${isOpen ? "#C41E3A" : "rgba(255,255,255,0.08)"}`,
+                    borderColor: isOpen ? "rgba(201,168,76,0.4)" : "rgba(255,255,255,0.08)",
+                    borderLeft: `3px solid ${isOpen ? "#C9A84C" : "rgba(255,255,255,0.08)"}`,
                   }}
                 >
                   {/* Ghost number */}
@@ -212,7 +293,7 @@ export function Karriere() {
                   {/* Card header — always visible */}
                   <div className="p-7 pb-5">
                     <div className="mb-3 flex flex-wrap items-center gap-2">
-                      <span className="font-body text-[10px] font-semibold uppercase tracking-[0.28em] text-[#C41E3A]/70">
+                      <span className="font-body text-[10px] font-semibold uppercase tracking-[0.28em] text-[#C9A84C]/70">
                         {job.type}
                       </span>
                       <span className="text-white/15">·</span>
@@ -222,7 +303,7 @@ export function Karriere() {
                     </div>
 
                     <h3
-                      className="mb-4 font-heading font-bold text-white transition-colors duration-200 group-hover:text-[#C41E3A]"
+                      className="mb-4 font-heading font-bold text-white transition-colors duration-200 group-hover:text-[#C9A84C]"
                       style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
                     >
                       {job.title}
@@ -233,7 +314,7 @@ export function Karriere() {
                         {job.desc.split(".")[0]}.
                       </p>
                       <div
-                        className="flex-shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center text-[#C41E3A] text-lg transition-all duration-300 group-hover:border-[#C41E3A]/50"
+                        className="flex-shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center text-[#C9A84C] text-lg transition-all duration-300 group-hover:border-[#C9A84C]/50"
                         style={{ transform: isOpen ? "rotate(45deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
                       >
                         +
@@ -252,26 +333,26 @@ export function Karriere() {
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                         <div>
-                          <p className="mb-3 font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-[#C41E3A]">
+                          <p className="mb-3 font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-[#C9A84C]">
                             Was du mitbringst
                           </p>
                           <ul className="space-y-2">
                             {job.anforderungen.map((a) => (
                               <li key={a} className="flex items-start gap-2.5 font-body text-xs text-white/50">
-                                <span className="mt-[5px] flex-shrink-0 w-[4px] h-[4px] rounded-full bg-[#C41E3A]/70" />
+                                <span className="mt-[5px] flex-shrink-0 w-[4px] h-[4px] rounded-full bg-[#C9A84C]/70" />
                                 {a}
                               </li>
                             ))}
                           </ul>
                         </div>
                         <div>
-                          <p className="mb-3 font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-[#C41E3A]">
+                          <p className="mb-3 font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-[#C9A84C]">
                             Was wir bieten
                           </p>
                           <ul className="space-y-2">
                             {job.bieten.map((b) => (
                               <li key={b} className="flex items-start gap-2.5 font-body text-xs text-white/50">
-                                <span className="mt-[5px] flex-shrink-0 w-[4px] h-[4px] rounded-full bg-[#C41E3A]/70" />
+                                <span className="mt-[5px] flex-shrink-0 w-[4px] h-[4px] rounded-full bg-[#C9A84C]/70" />
                                 {b}
                               </li>
                             ))}
@@ -281,7 +362,7 @@ export function Karriere() {
                       <a
                         href="mailto:jobs@hoser-bauunternehmung.de"
                         onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-2 bg-[#C41E3A] px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-[0.1em] text-white transition-opacity hover:opacity-85"
+                        className="inline-flex items-center gap-2 bg-[#C9A84C] px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-[0.1em] text-white transition-opacity hover:opacity-85"
                       >
                         Jetzt bewerben →
                       </a>
@@ -294,10 +375,10 @@ export function Karriere() {
         </div>
 
         {/* Contact box */}
-        <div className="border border-white/10 px-8 py-10 md:px-12">
+        <div ref={contactRef} className="border border-white/10 px-8 py-10 md:px-12">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-center">
             <div>
-              <p className="mb-2 font-body text-xs font-semibold uppercase tracking-[0.25em] text-[#C41E3A]">
+              <p className="mb-2 font-body text-xs font-semibold uppercase tracking-[0.25em] text-[#C9A84C]">
                 Initiativbewerbung & Kontakt
               </p>
               <h3 className="font-heading text-2xl font-bold text-white md:text-3xl">
@@ -312,16 +393,16 @@ export function Karriere() {
             <div className="flex flex-col gap-3">
               <a
                 href="mailto:jobs@hoser-bauunternehmung.de"
-                className="inline-flex items-center gap-3 border border-white/15 px-6 py-4 font-body text-sm text-white transition-all duration-200 hover:border-[#C41E3A] hover:text-[#C41E3A]"
+                className="inline-flex items-center gap-3 border border-white/15 px-6 py-4 font-body text-sm text-white transition-all duration-200 hover:border-[#C9A84C] hover:text-[#C9A84C]"
               >
-                <span className="text-[#C41E3A] text-base">✉</span>
+                <span className="text-[#C9A84C] text-base">✉</span>
                 jobs@hoser-bauunternehmung.de
               </a>
               <a
                 href="tel:+498121471100"
-                className="inline-flex items-center gap-3 border border-white/15 px-6 py-4 font-body text-sm text-white transition-all duration-200 hover:border-[#C41E3A] hover:text-[#C41E3A]"
+                className="inline-flex items-center gap-3 border border-white/15 px-6 py-4 font-body text-sm text-white transition-all duration-200 hover:border-[#C9A84C] hover:text-[#C9A84C]"
               >
-                <span className="text-[#C41E3A] text-base">☎</span>
+                <span className="text-[#C9A84C] text-base">☎</span>
                 08121 / 47 11 0
               </a>
             </div>

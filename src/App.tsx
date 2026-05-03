@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import IntroScreen from "./components/IntroScreen";
 import Layout from "./components/Layout";
@@ -16,19 +16,24 @@ import Projects from "./pages/Projects";
 import Services from "./pages/Services";
 import Testimonials from "./pages/Testimonials";
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }, [pathname]);
+  return null;
+}
+
 export default function App() {
-  const [introComplete, setIntroComplete] = useState(
-    () => sessionStorage.getItem("hoser-intro-shown") === "1"
-  );
+  // Always false on mount — intro plays on every page load / refresh
+  const [introComplete, setIntroComplete] = useState(false);
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <AnimatePresence>
         {!introComplete && (
-          <IntroScreen key="intro" onComplete={() => {
-            sessionStorage.setItem("hoser-intro-shown", "1");
-            setIntroComplete(true);
-          }} />
+          <IntroScreen key="intro" onComplete={() => setIntroComplete(true)} />
         )}
       </AnimatePresence>
       <Routes>
