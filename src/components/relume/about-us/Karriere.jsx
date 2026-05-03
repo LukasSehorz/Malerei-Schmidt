@@ -138,7 +138,7 @@ export function Karriere() {
     <section
       id="stellenangebote"
       className="overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #0a1020 0%, #111827 100%)" }}
+      style={{ background: "linear-gradient(180deg, rgba(100,8,20,0.95) 0%, rgba(80,5,15,0.98) 100%)" }}
     >
       {/* Heading with image background */}
       <div
@@ -152,13 +152,13 @@ export function Karriere() {
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(to bottom, rgba(10,16,32,0.75) 0%, rgba(10,16,32,0.9) 60%, rgba(10,16,32,1) 100%)",
+            background: "linear-gradient(to bottom, rgba(10,16,32,0.72) 0%, rgba(10,16,32,0.88) 60%, rgba(80,5,15,1) 100%)",
           }}
         />
         <div className="container relative z-10">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-end">
             <div>
-              <p className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-[#C41E3A]">
+              <p className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-white/60">
                 Stellenangebote
               </p>
               <h2
@@ -179,7 +179,7 @@ export function Karriere() {
       </div>
 
       {/* Job list + contact */}
-      <div className="px-[5%] pb-16 md:pb-24 lg:pb-28">
+      <div className="px-[5%] pb-16 md:pb-24 lg:pb-28" style={{ background: "rgba(80,5,15,0.98)" }}>
         <div className="container">
 
         {/* Job cards grid */}
