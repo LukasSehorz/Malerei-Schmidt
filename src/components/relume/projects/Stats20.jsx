@@ -2,53 +2,68 @@
 
 import React from "react";
 
+const stats = [
+  { value: "547", label: "Abgeschlossene\nProjekte" },
+  { value: "98%", label: "Pünktliche\nFertigstellung" },
+  { value: "96%", label: "Im\nBudgetrahmen" },
+  { value: "70+", label: "Jahre\nin Bayern" },
+];
+
 export function Stats20() {
   return (
-    <section id="relume" className="px-[5%] py-16 md:py-24 lg:py-28">
-      <div className="container">
-        <div className="mx-auto mb-12 max-w-lg text-center md:mb-18 lg:mb-20">
-          <p className="mb-3 font-semibold md:mb-4">Zahlen</p>
-          <h2 className="mb-5 text-5xl font-bold md:mb-6 md:text-7xl lg:text-8xl">
-            What we deliver in Bavaria
-          </h2>
-          <p className="md:text-md">Numbers don't lie. Neither do we.</p>
-        </div>
-        <div className="grid grid-cols-1 gap-y-6 md:gap-y-0 lg:grid-cols-[0.5fr_1fr]">
-          <div className="grid grid-cols-1 gap-y-8 md:grid-cols-3 md:gap-x-8 md:gap-y-12 md:p-8 lg:grid-cols-1 lg:gap-x-0 lg:p-12">
-            <div>
-              <p className="mb-2 text-6xl font-bold leading-[1.2] md:text-9xl lg:text-10xl">
-                127
+    <section className="py-16 md:py-24 lg:py-28">
+
+      {/* Heading */}
+      <div className="container px-[5%] mb-16">
+        <p className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-hoser-gold">
+          Zahlen & Fakten
+        </p>
+        <h2
+          className="font-heading font-bold leading-tight tracking-tight text-white"
+          style={{ fontSize: "clamp(2rem, 4vw, 4rem)" }}
+        >
+          Ergebnisse, die für sich sprechen
+        </h2>
+        <p className="mt-4 max-w-xl font-body text-base text-white/60">
+          Über 70 Jahre Bauen in Bayern. Hunderte von Gebäuden. Ein Ruf.
+        </p>
+      </div>
+
+      {/* Full-width stats strip */}
+      <div className="border-y border-white/10">
+        <div className="grid grid-cols-2 md:grid-cols-4">
+          {stats.map((s, i) => (
+            <div
+              key={s.label}
+              className={`group px-10 py-12 transition-colors duration-300 hover:bg-white/5 ${
+                i < stats.length - 1 ? "border-r border-white/10" : ""
+              }`}
+            >
+              <p
+                className="font-heading font-bold leading-none text-white transition-colors duration-300 group-hover:text-hoser-gold"
+                style={{ fontSize: "clamp(3.5rem, 7vw, 6rem)" }}
+              >
+                {s.value}
               </p>
-              <h3 className="text-md font-bold leading-[1.4] md:text-xl">
-                Projects completed
-              </h3>
-            </div>
-            <div>
-              <p className="mb-2 text-6xl font-bold leading-[1.2] md:text-9xl lg:text-10xl">
-                94%
+              <div className="mt-4 h-px w-8 bg-hoser-gold/50 transition-all duration-300 group-hover:w-16 group-hover:bg-hoser-gold" />
+              <p className="mt-3 whitespace-pre-line font-body text-sm leading-relaxed text-white/50">
+                {s.label}
               </p>
-              <h3 className="text-md font-bold leading-[1.4] md:text-xl">
-                On schedule delivery
-              </h3>
             </div>
-            <div>
-              <p className="mb-2 text-6xl font-bold leading-[1.2] md:text-9xl lg:text-10xl">
-                100%
-              </p>
-              <h3 className="text-md font-bold leading-[1.4] md:text-xl">
-                Within budget guarantee
-              </h3>
-            </div>
-          </div>
-          <div>
-            <img
-              className="aspect-[3/2] size-full object-cover"
-              src="/images/hero-aerial-construction.jpg"
-              alt="Relume placeholder image"
-            />
-          </div>
+          ))}
         </div>
       </div>
+
+      {/* CTA */}
+      <div className="container px-[5%] mt-10">
+        <a
+          href="#projekte"
+          className="inline-flex items-center gap-3 font-body text-sm font-semibold uppercase tracking-[0.15em] text-white/50 transition-colors duration-300 hover:text-hoser-gold"
+        >
+          Projekte entdecken <span className="text-hoser-gold">→</span>
+        </a>
+      </div>
+
     </section>
   );
 }
