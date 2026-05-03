@@ -40,6 +40,8 @@ export function VideoScrollSection() {
   const line2Ref        = useRef(null);
   const eyebrowLineRef  = useRef(null);
   const eyebrowTextRef  = useRef(null);
+  const eyebrowRowRef   = useRef(null);
+  const titleBlockRef   = useRef(null);
   const ghostNumberRef  = useRef(null);
   const subtitleRef     = useRef(null);
   const progressBarRef  = useRef(null);
@@ -48,6 +50,7 @@ export function VideoScrollSection() {
   const activeTitleRef    = useRef(-1);
   const activeSubtitleRef = useRef(-1);
   const prevScrollRef     = useRef(0);
+  const activeTitleDirRef = useRef(-1); // -1 = from left, 1 = from right
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -109,28 +112,53 @@ export function VideoScrollSection() {
     const targets = [line1Ref.current, line2Ref.current, eyebrowLineRef.current, eyebrowTextRef.current, ghostNumberRef.current];
     gsap.killTweensOf(targets);
 
-    gsap.set([line1Ref.current, line2Ref.current], { y: "115%" });
-    gsap.set(eyebrowLineRef.current, { scaleX: 0 });
-    gsap.set(eyebrowTextRef.current, { opacity: 0, y: 8 });
-    gsap.set(ghostNumberRef.current, { opacity: 0, y: 30 });
+    // Alternate direction per section index
+    const idx = TITLE_EVENTS.indexOf(event);
+    const dir = idx % 2 === 0 ? -1 : 1; // -1 = from left, 1 = from right
+    activeTitleDirRef.current = dir;
 
-    gsap.timeline()
-      .to(eyebrowLineRef.current,  { scaleX: 1, duration: 0.45, ease: "power3.inOut" },       0)
-      .to(eyebrowTextRef.current,  { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },   0.15)
-      .to(line1Ref.current,        { y: "0%", duration: 0.7, ease: "power3.out" },             0.2)
-      .to(line2Ref.current,        { y: "0%", duration: 0.7, ease: "power3.out" },             0.32)
-      .to(ghostNumberRef.current,  { opacity: event.number ? 0.07 : 0, y: 0, duration: 1.0, ease: "power2.out" }, 0.1);
+    // Reposition title block and align text to match entry side
+    const fromRight = dir === 1;
+    if (titleBlockRef.current) {
+      titleBlockRef.current.style.left      = fromRight ? "auto" : "5%";
+      titleBlockRef.current.style.right     = fromRight ? "5%"  : "auto";
+      titleBlockRef.current.style.textAlign = fromRight ? "right" : "left";
+    }
+    if (eyebrowRowRef.current) {
+      eyebrowRowRef.current.style.flexDirection = fromRight ? "row-reverse" : "row";
+    }
+    // Ghost number on the opposite side of the text
+    if (ghostNumberRef.current) {
+      ghostNumberRef.current.style.left  = fromRight ? "3%"  : "auto";
+      ghostNumberRef.current.style.right = fromRight ? "auto" : "3%";
+    }
+
+    // "Erdbau & Kanalbau" (02) flies in a beat later for dramatic emphasis
+    const extraDelay = event.number === "02" ? 0.4 : 0;
+
+    gsap.set([line1Ref.current, line2Ref.current], { x: dir * -90, opacity: 0 });
+    gsap.set(eyebrowLineRef.current, { scaleX: 0 });
+    gsap.set(eyebrowTextRef.current, { opacity: 0, x: dir * -28 });
+    gsap.set(ghostNumberRef.current, { opacity: 0, x: dir * 55 });
+
+    gsap.timeline({ delay: extraDelay })
+      .to(eyebrowLineRef.current,  { scaleX: 1, duration: 0.42, ease: "power3.inOut" },                          0)
+      .to(eyebrowTextRef.current,  { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" },                     0.12)
+      .to(line1Ref.current,        { x: 0, opacity: 1, duration: 0.65, ease: "power3.out" },                     0.18)
+      .to(line2Ref.current,        { x: 0, opacity: 1, duration: 0.65, ease: "power3.out" },                     0.32)
+      .to(ghostNumberRef.current,  { opacity: event.number ? 0.07 : 0, x: 0, duration: 0.95, ease: "power2.out" }, 0.08);
   };
 
-  const exitTitle = (scrollingDown) => {
-    const yDir = scrollingDown ? "-115%" : "115%";
+  const exitTitle = () => {
+    // Exit in the same direction the title entered from (flies back out)
+    const xOut = activeTitleDirRef.current * -80;
     gsap.killTweensOf([line1Ref.current, line2Ref.current, eyebrowLineRef.current, eyebrowTextRef.current, ghostNumberRef.current]);
 
     gsap.timeline()
-      .to([line2Ref.current, line1Ref.current], { y: yDir, duration: 0.38, ease: "power2.in", stagger: 0.06 }, 0)
-      .to(eyebrowTextRef.current,               { opacity: 0, y: -5, duration: 0.25 },                         0)
-      .to(eyebrowLineRef.current,               { scaleX: 0, duration: 0.28, ease: "power2.in" },              0.05)
-      .to(ghostNumberRef.current,               { opacity: 0, duration: 0.22 },                                0);
+      .to([line1Ref.current, line2Ref.current], { x: xOut, opacity: 0, duration: 0.36, ease: "power2.in", stagger: 0.05 }, 0)
+      .to(eyebrowTextRef.current,               { opacity: 0, x: xOut * 0.5, duration: 0.25 },                             0)
+      .to(eyebrowLineRef.current,               { scaleX: 0, duration: 0.28, ease: "power2.in" },                          0.04)
+      .to(ghostNumberRef.current,               { opacity: 0, duration: 0.22 },                                            0);
   };
 
   const enterSubtitle = (event) => {
@@ -138,15 +166,15 @@ export function VideoScrollSection() {
     subtitleRef.current.textContent = event.text;
     gsap.killTweensOf(subtitleRef.current);
     gsap.fromTo(subtitleRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" }
+      { opacity: 0, x: 45 },
+      { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }
     );
   };
 
   const exitSubtitle = () => {
     if (!subtitleRef.current) return;
     gsap.killTweensOf(subtitleRef.current);
-    gsap.to(subtitleRef.current, { opacity: 0, y: -14, duration: 0.32, ease: "power2.in" });
+    gsap.to(subtitleRef.current, { opacity: 0, x: -35, duration: 0.3, ease: "power2.in" });
   };
 
   // ── Scroll driver ────────────────────────────────────────────────────
@@ -167,7 +195,7 @@ export function VideoScrollSection() {
     // Title state machine
     const newTitleIdx = TITLE_EVENTS.findIndex(e => latest >= e.start && latest < e.end);
     if (newTitleIdx !== activeTitleRef.current) {
-      if (activeTitleRef.current >= 0) exitTitle(scrollingDown);
+      if (activeTitleRef.current >= 0) exitTitle();
       activeTitleRef.current = newTitleIdx;
       if (newTitleIdx >= 0) enterTitle(TITLE_EVENTS[newTitleIdx]);
     }
@@ -183,7 +211,7 @@ export function VideoScrollSection() {
 
   // ── Init + resize ────────────────────────────────────────────────────
   useEffect(() => {
-    gsap.set([line1Ref.current, line2Ref.current], { y: "115%" });
+    gsap.set([line1Ref.current, line2Ref.current], { x: -90, opacity: 0 });
     gsap.set(eyebrowLineRef.current, { scaleX: 0, transformOrigin: "left center" });
     gsap.set([eyebrowTextRef.current, ghostNumberRef.current, subtitleRef.current], { opacity: 0 });
 
@@ -233,11 +261,15 @@ export function VideoScrollSection() {
           aria-hidden="true"
         />
 
-        {/* ── Title block — bottom left ── */}
-        <div className="pointer-events-none absolute bottom-[11%] left-[5%] md:left-[7%] z-30">
+        {/* ── Title block — repositions dynamically left/right ── */}
+        <div
+          ref={titleBlockRef}
+          className="pointer-events-none absolute bottom-[11%] z-30"
+          style={{ left: "5%" }}
+        >
 
           {/* Eyebrow: gold line + category label */}
-          <div className="mb-5 flex items-center gap-4">
+          <div ref={eyebrowRowRef} className="mb-5 flex items-center gap-4">
             <span
               ref={eyebrowLineRef}
               className="block h-px bg-hoser-gold"
@@ -249,29 +281,27 @@ export function VideoScrollSection() {
             />
           </div>
 
-          {/* Line 1 — mask reveal */}
-          <div style={{ overflow: "hidden", paddingBottom: "0.04em" }}>
-            <div
-              ref={line1Ref}
-              className="font-heading font-bold leading-[0.9] tracking-tight text-white"
-              style={{
-                fontSize: "clamp(4rem, 9vw, 10.5rem)",
-                textShadow: "0 4px 60px rgba(0,0,0,0.98), 0 2px 16px rgba(0,0,0,0.9)",
-              }}
-            />
-          </div>
+          {/* Line 1 — flies in from left */}
+          <div
+            ref={line1Ref}
+            className="font-heading font-bold leading-[0.9] tracking-tight text-white"
+            style={{
+              fontSize: "clamp(4rem, 9vw, 10.5rem)",
+              textShadow: "0 4px 60px rgba(0,0,0,0.98), 0 2px 16px rgba(0,0,0,0.9)",
+              paddingBottom: "0.04em",
+            }}
+          />
 
-          {/* Line 2 — mask reveal */}
-          <div style={{ overflow: "hidden", paddingBottom: "0.04em" }}>
-            <div
-              ref={line2Ref}
-              className="font-heading font-bold leading-[0.9] tracking-tight text-white"
-              style={{
-                fontSize: "clamp(4rem, 9vw, 10.5rem)",
-                textShadow: "0 4px 60px rgba(0,0,0,0.98), 0 2px 16px rgba(0,0,0,0.9)",
-              }}
-            />
-          </div>
+          {/* Line 2 — flies in from left, staggered */}
+          <div
+            ref={line2Ref}
+            className="font-heading font-bold leading-[0.9] tracking-tight text-white"
+            style={{
+              fontSize: "clamp(4rem, 9vw, 10.5rem)",
+              textShadow: "0 4px 60px rgba(0,0,0,0.98), 0 2px 16px rgba(0,0,0,0.9)",
+              paddingBottom: "0.04em",
+            }}
+          />
         </div>
 
         {/* ── Subtitle — top right ── */}
