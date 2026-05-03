@@ -4,17 +4,79 @@ import { useMediaQuery } from "@relume_io/relume-ui";
 import { AnimatePresence, motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
-import { useState } from "react";
+import React, { useState } from "react";
 
 const HOUSE_PATH = "M6 20L24 6L42 20V42H30V30H18V42H6V20Z";
 
 const navLinks = [
   { label: "Leistungen", href: "/leistungen" },
   { label: "Projekte", href: "/projekte" },
-  { label: "Über uns", href: "/ueber-uns" },
+  {
+    label: "Über uns",
+    href: "/ueber-uns",
+    children: [
+      { label: "Über uns", href: "/ueber-uns" },
+      { label: "Jobs", href: "/ueber-uns#jobs" },
+    ],
+  },
   { label: "Prozess", href: "/prozess" },
   { label: "Blog", href: "/blog" },
 ];
+
+function DropdownLink({ link, active }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <Link
+        to={link.href}
+        className={clsx(
+          "relative flex items-center gap-1 text-sm font-medium tracking-wide transition-all duration-200",
+          active
+            ? "text-hoser-gold opacity-100"
+            : "text-text-primary opacity-70 hover:opacity-100 hover:text-hoser-gold"
+        )}
+      >
+        {link.label}
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" className="mt-[1px] opacity-60">
+          <path d="M1 3l4 4 4-4" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+        {active && (
+          <motion.span
+            layoutId="nav-underline"
+            className="absolute -bottom-[1.5px] left-0 right-0 h-px bg-hoser-gold"
+          />
+        )}
+      </Link>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 4 }}
+            transition={{ duration: 0.15 }}
+            className="absolute left-0 top-full pt-2 z-50"
+          >
+            <div className="min-w-[160px] border border-[#0a1020]/12 bg-[#f5f4f1] shadow-xl py-1">
+              {link.children.map((child) => (
+                <Link
+                  key={child.href}
+                  to={child.href}
+                  className="block px-5 py-3 text-sm font-medium text-[#0a1020] transition-colors duration-150 hover:text-hoser-gold hover:bg-hoser-gold/8"
+                >
+                  {child.label}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -53,6 +115,11 @@ export function Navbar() {
           <div className="hidden lg:flex items-center gap-x-8">
             {navLinks.map((link) => {
               const active = pathname === link.href || pathname.startsWith(link.href + "/");
+              if (link.children) {
+                return (
+                  <DropdownLink key={link.href} link={link} active={active} />
+                );
+              }
               return (
                 <Link
                   key={link.href}
@@ -146,19 +213,35 @@ export function Navbar() {
               </div>
               <nav className="flex flex-col">
                 {navLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    onClick={toggle}
-                    className={clsx(
-                      "py-4 text-base font-medium border-b border-border-primary transition-all duration-200",
-                      pathname === link.href
-                        ? "text-hoser-gold pl-2"
-                        : "text-text-primary hover:text-hoser-gold hover:pl-2"
-                    )}
-                  >
-                    {link.label}
-                  </Link>
+                  <React.Fragment key={link.href}>
+                    <Link
+                      to={link.href}
+                      onClick={toggle}
+                      className={clsx(
+                        "py-4 text-base font-medium border-b border-border-primary transition-all duration-200",
+                        pathname === link.href
+                          ? "text-hoser-gold pl-2"
+                          : "text-text-primary hover:text-hoser-gold hover:pl-2"
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                    {link.children?.map((child) => (
+                      <Link
+                        key={child.href}
+                        to={child.href}
+                        onClick={toggle}
+                        className={clsx(
+                          "py-3 pl-6 text-sm font-medium border-b border-border-primary/50 transition-all duration-200",
+                          pathname === child.href
+                            ? "text-hoser-gold"
+                            : "text-text-secondary hover:text-hoser-gold"
+                        )}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </React.Fragment>
                 ))}
               </nav>
               <div className="mt-auto pt-8">
