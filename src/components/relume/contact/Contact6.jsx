@@ -34,15 +34,15 @@ export function Contact6() {
           <div className="grid grid-cols-1 gap-4 py-2">
             <div className="flex items-center gap-4">
               <BiEnvelope className="size-6 flex-none" />
-              <p>hello@relume.io</p>
+              <p>info@hoser-bauunternehmung.de</p>
             </div>
             <div className="flex items-center gap-4">
               <BiPhone className="size-6 flex-none" />
-              <p>+49 (89) 123-4567</p>
+              <p>08121 – 47 11 0</p>
             </div>
             <div className="flex items-center gap-4">
               <BiMap className="size-6 flex-none" />
-              <p>Marienplatz 8, 80331 München, Bayern</p>
+              <p>Adalbert-Stifter-Weg 29, 85570 Markt Schwaben</p>
             </div>
           </div>
         </div>

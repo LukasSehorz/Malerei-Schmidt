@@ -186,8 +186,19 @@ export function Navbar() {
           </span>
         </Link>
 
-        {/* Right: phone CTA */}
-        <div className="flex items-center justify-end">
+        {/* Right: Kontakt link + phone CTA */}
+        <div className="flex items-center justify-end gap-3">
+          <Link
+            to="/kontakt"
+            className={clsx(
+              "hidden lg:inline-flex items-center px-5 py-2 font-body text-sm font-medium tracking-wide transition-colors duration-200 border",
+              pathname === "/kontakt"
+                ? "border-hoser-gold text-hoser-gold"
+                : "border-border-primary text-text-primary hover:border-hoser-gold hover:text-hoser-gold"
+            )}
+          >
+            Kontakt
+          </Link>
           <a
             href="tel:+498121471100"
             className="hidden sm:inline-flex items-center gap-2 border border-border-primary px-5 py-2 font-body text-sm font-medium tracking-wide text-text-primary transition-colors duration-200 hover:border-hoser-gold hover:text-hoser-gold"
