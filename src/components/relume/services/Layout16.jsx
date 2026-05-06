@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "../../../utils/gsap";
@@ -16,7 +16,7 @@ const splitChars = (el, text) => {
     const s = document.createElement("span");
     s.style.display = "inline-block";
     s.style.willChange = "transform, opacity";
-    s.textContent = char === " " ? " " : char;
+    s.textContent = char === " " ? " " : char;
     el.appendChild(s);
     return s;
   });
@@ -29,10 +29,11 @@ const splitWords = (el, text) => {
     const wrap = document.createElement("span");
     wrap.style.display = "inline-block";
     wrap.style.overflow = "hidden";
+    if (i < arr.length - 1) wrap.style.marginRight = "0.28em";
     const inner = document.createElement("span");
     inner.style.display = "inline-block";
     inner.style.willChange = "transform";
-    inner.textContent = word + (i < arr.length - 1 ? " " : "");
+    inner.textContent = word;
     wrap.appendChild(inner);
     el.appendChild(wrap);
     return inner;
@@ -97,12 +98,9 @@ export function Layout16() {
         gsap.set(headingWords, { yPercent: 110 });
       }
 
-      // Paragraph: char fade
-      let paraChars = [];
+      // Paragraph: fade in as block
       if (paraRef.current) {
-        const paraText = paraRef.current.dataset.text || paraRef.current.textContent;
-        paraChars = splitChars(paraRef.current, paraText);
-        gsap.set(paraChars, { opacity: 0, y: 8 });
+        gsap.set(paraRef.current, { opacity: 0, y: 8 });
       }
 
       // List items
@@ -130,9 +128,8 @@ export function Layout16() {
           yPercent: 0, duration: 1.0, ease: "expo.out",
           stagger: 0.08,
         }, "-=0.35")
-        .to(paraChars, {
-          opacity: 1, y: 0, duration: 0.6, ease: "power2.out",
-          stagger: { amount: 0.5, from: "start" },
+        .to(paraRef.current, {
+          opacity: 1, y: 0, duration: 0.7, ease: "power2.out",
         }, "-=0.5")
         .to(listItems, {
           x: 0, opacity: 1, duration: 0.7, ease: "power3.out",

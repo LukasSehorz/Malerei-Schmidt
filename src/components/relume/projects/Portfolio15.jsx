@@ -10,10 +10,11 @@ const splitWords = (el, text) => {
     wrap.style.display = "inline-block";
     wrap.style.overflow = "hidden";
     wrap.style.paddingBottom = "0.08em";
+    if (i < arr.length - 1) wrap.style.marginRight = "0.28em";
     const inner = document.createElement("span");
     inner.style.display = "inline-block";
     inner.style.willChange = "transform";
-    inner.textContent = word + (i < arr.length - 1 ? " " : "");
+    inner.textContent = word;
     wrap.appendChild(inner);
     el.appendChild(wrap);
     return inner;
@@ -84,7 +85,6 @@ const projects = [
 ];
 
 export function Portfolio15() {
-  const [hovered, setHovered] = useState(null);
   const [expanded, setExpanded] = useState(null);
 
   const sectionRef = useRef(null);
@@ -118,36 +118,64 @@ export function Portfolio15() {
           yPercent: 0, duration: 1.0, ease: "expo.out", stagger: 0.07,
         }, "-=0.35");
 
-      // Per-row entrance: number scales, content slides in, image clip-path wipes
+      // Per row: a one-shot reveal (line, num pop, content slide in, image wipe)
+      // plus a separate "active" highlight that toggles based on viewport-center
+      // intersection so only the row near the middle shows row-tint / gold left
+      // border / gold number color at any given time.
       rowsRef.current.filter(Boolean).forEach((row) => {
-        const num   = row.querySelector("[data-row-num]");
-        const meta  = row.querySelector("[data-row-meta]");
-        const desc  = row.querySelector("[data-row-desc]");
-        const img   = row.querySelector("[data-row-img]");
-        const btn   = row.querySelector("[data-row-btn]");
-        const line  = row.querySelector("[data-row-line]");
+        const num        = row.querySelector("[data-row-num]");
+        const meta       = row.querySelector("[data-row-meta]");
+        const desc       = row.querySelector("[data-row-desc]");
+        const img        = row.querySelector("[data-row-img]");
+        const btn        = row.querySelector("[data-row-btn]");
+        const line       = row.querySelector("[data-row-line]");
+        const rowBg      = row.querySelector("[data-row-bg]");
+        const goldBorder = row.querySelector("[data-row-gold-border]");
 
-        gsap.set(num,  { scale: 0.6, opacity: 0, transformOrigin: "left center" });
-        gsap.set(meta, { x: -20, opacity: 0 });
-        gsap.set(desc, { x: 20, opacity: 0 });
-        gsap.set(btn,  { y: 14, opacity: 0 });
-        gsap.set(img,  { clipPath: "inset(0 100% 0 0)", scale: 1.15 });
-        gsap.set(line, { scaleX: 0, transformOrigin: "left center" });
+        gsap.set(num,        { scale: 0.6, opacity: 0, color: "rgba(255,255,255,0.15)", transformOrigin: "left center" });
+        gsap.set(meta,       { x: -20, opacity: 0 });
+        gsap.set(desc,       { x: 20, opacity: 0 });
+        gsap.set(btn,        { y: 14, opacity: 0 });
+        gsap.set(img,        { clipPath: "inset(0 100% 0 0)", scale: 1.15 });
+        gsap.set(line,       { scaleX: 0, transformOrigin: "left center" });
+        gsap.set(rowBg,      { backgroundColor: "rgba(255,255,255,0)" });
+        gsap.set(goldBorder, { height: "0%" });
 
+        // ── Reveal-once: appears as the row scrolls into view ──────────
         gsap.timeline({
           scrollTrigger: {
             trigger: row,
-            start: "top 88%",
-            toggleActions: "play none none reverse",
+            start: "top 80%",
+            once: true,
           },
           defaults: { force3D: true },
         })
           .to(line, { scaleX: 1, duration: 0.7, ease: "expo.inOut" })
           .to(num,  { scale: 1, opacity: 1, duration: 0.7, ease: "back.out(1.6)" }, "-=0.4")
-          .to(meta, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, "-=0.5")
+          .to(meta, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, "-=0.55")
           .to(desc, { x: 0, opacity: 1, duration: 0.7, ease: "power3.out" }, "-=0.6")
           .to(img,  { clipPath: "inset(0 0% 0 0)", scale: 1, duration: 1.0, ease: "expo.out" }, "-=0.6")
           .to(btn,  { y: 0, opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.5");
+
+        // ── Active-highlight timeline (paused; toggled by viewport center)
+        const activeTl = gsap.timeline({ paused: true })
+          .to(rowBg,      { backgroundColor: "rgba(255,255,255,0.05)", duration: 0.4, ease: "power2.out" }, 0)
+          .to(goldBorder, { height: "100%", duration: 0.5, ease: "expo.out" }, 0)
+          .to(num,        { color: "#C9A84C", duration: 0.4, ease: "power2.out" }, 0);
+
+        // Row is "active" while the viewport's vertical center intersects it.
+        // start fires when row top crosses the center going up;
+        // end fires when row bottom crosses the center going up.
+        // With stacked rows that means exactly one row is active at any time.
+        ScrollTrigger.create({
+          trigger: row,
+          start: "top center",
+          end: "bottom center",
+          onEnter:     () => activeTl.play(),
+          onLeave:     () => activeTl.reverse(),
+          onEnterBack: () => activeTl.play(),
+          onLeaveBack: () => activeTl.reverse(),
+        });
       });
     }, sectionRef);
 
@@ -184,23 +212,23 @@ export function Portfolio15() {
 
               {/* Row */}
               <div
-                className="group relative overflow-hidden transition-all duration-500"
-                style={{ background: hovered === i ? "rgba(255,255,255,0.05)" : "transparent" }}
-                onMouseEnter={() => setHovered(i)}
-                onMouseLeave={() => setHovered(null)}
+                data-row-bg
+                className="relative overflow-hidden"
+                style={{ background: "transparent" }}
               >
                 {/* Gold left border */}
                 <div
-                  className="absolute left-0 top-0 w-[3px] bg-hoser-gold transition-all duration-500"
-                  style={{ height: hovered === i ? "100%" : "0%" }}
+                  data-row-gold-border
+                  className="absolute left-0 top-0 w-[3px] bg-hoser-gold"
+                  style={{ height: "0%" }}
                 />
 
                 <div className="grid grid-cols-1 gap-6 py-8 pl-6 md:grid-cols-[60px_1fr_1fr_220px] md:items-center md:py-10 lg:py-12">
                   {/* Number */}
                   <span
                     data-row-num
-                    className="font-heading text-4xl font-bold transition-colors duration-300 md:text-5xl"
-                    style={{ color: hovered === i ? "#C9A84C" : "rgba(255,255,255,0.15)" }}
+                    className="font-heading text-4xl font-bold md:text-5xl"
+                    style={{ color: "rgba(255,255,255,0.15)" }}
                   >
                     {p.id}
                   </span>
@@ -234,7 +262,7 @@ export function Portfolio15() {
                       <img
                         src={p.img}
                         alt={p.title}
-                        className="h-48 w-full object-cover transition-transform duration-700 group-hover:scale-110 md:h-full"
+                        className="h-48 w-full object-cover md:h-full"
                       />
                     </div>
                     <button

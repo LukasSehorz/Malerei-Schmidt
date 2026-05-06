@@ -6,8 +6,6 @@ import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import AboutUs from "./pages/AboutUs";
 import Awards from "./pages/Awards";
-import Blog from "./pages/Blog";
-import BlogPost from "./pages/BlogPost";
 import Contact from "./pages/Contact";
 import Pricing from "./pages/Pricing";
 import Process from "./pages/Process";
@@ -41,8 +39,6 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/ueber-uns" element={<AboutUs />} />
           <Route path="/auszeichnungen" element={<Awards />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/kontakt" element={<Contact />} />
           <Route path="/preise" element={<Pricing />} />
           <Route path="/prozess" element={<Process />} />

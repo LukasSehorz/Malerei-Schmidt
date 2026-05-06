@@ -1,10 +1,24 @@
 "use client";
 
 import React, { useRef, useEffect, useState, useCallback } from "react";
-import { useScroll, useMotionValueEvent } from "framer-motion";
 import { gsap, ScrollTrigger } from "../../../utils/gsap";
 
 const FRAME_COUNT = 361;
+
+// Step targets — each step's "rest frame" where the canvas comes to a stop
+// and the title + bullets fade in. Step 0 = pre-services (frame 0).
+const STEP_FRAMES   = [0, 60, 130, 200, 270, 340];
+// Slightly advanced frames for the bullet sub-step of each step —
+// gives the camera a subtle push forward when bullets reveal.
+const BULLET_FRAMES = [0, 80, 150, 220, 290, 358];
+const LAST_STEP     = STEP_FRAMES.length - 1; // 5
+
+// Per-step travel duration (seconds). Frame index is tweened over this time
+// regardless of how fast/far the user scrolled.
+const TRAVEL_DURATION  = 1.4;
+const TITLE_LEAD_IN    = 0.15; // delay after travel before title flies in
+const BULLET_STAGGER   = 0.55; // delay between bullets
+const STEP_LOCK_BUFFER = 0.15; // small extra lock so back-to-back wheel ticks don't double-fire
 
 // Each section: title + 3 bullets revealed one-by-one while scrolling
 const SECTIONS = [
@@ -40,7 +54,7 @@ const SECTIONS = [
   },
   {
     start: 0.60, end: 0.78,
-    lines: ["Ingenieur-", "bau"],
+    lines: ["Ingenieur", "bau"],
     eyebrow: "Leistung 04", number: "04",
     bullets: [
       "Brücken, Stützmauern und Sonderkonstruktionen",
@@ -59,9 +73,6 @@ const SECTIONS = [
     ],
   },
 ];
-
-// Thresholds within a section (0–1) at which each bullet appears
-const BULLET_THRESHOLDS = [0.45, 0.68, 0.87];
 
 export function VideoScrollSection() {
   const sectionRef = useRef(null);
@@ -94,6 +105,11 @@ export function VideoScrollSection() {
   // ── Sticky container (for zoom-out transition) ────────────────────────
   const stickyRef = useRef(null);
 
+  // ── Overlay wrapper — owns its own 100vh of natural scroll, separate
+  //    from the pinned canvas wrapper so the two ScrollTriggers can't
+  //    fight over positioning. ──────────────────────────────────────────
+  const overlayWrapperRef = useRef(null);
+
   // ── Intro overlay refs ────────────────────────────────────────────────
   const overlayRef        = useRef(null);
   const overlayEyebrowRef = useRef(null);
@@ -102,18 +118,22 @@ export function VideoScrollSection() {
   const overlayLineRef    = useRef(null);
   const overlayCueRef     = useRef(null);
 
-  // ── Scroll-state tracking ─────────────────────────────────────────────
-  const activeSectionRef    = useRef(-1);
-  const activeBulletsRef    = useRef(0);   // how many bullets currently shown
-  const prevScrollRef       = useRef(0);
-  const activeTitleDirRef   = useRef(-1);  // -1 = from left, 1 = from right
-  const charsRef            = useRef({ line1: [], line2: [] }); // current char spans
-  const snappingRef         = useRef(false); // lock during auto-snap to top
+  // ── Step-state tracking ───────────────────────────────────────────────
+  const currentStepRef      = useRef(0);             // 0..5 (0 = pre-services)
+  const isAnimatingRef      = useRef(false);         // observer lockout flag
+  const frameProxyRef       = useRef({ frame: 0 });  // tweenable frame counter
+  const activeBulletsRef    = useRef(0);
+  const activeTitleDirRef   = useRef(-1);
+  const charsRef            = useRef({ line1: [], line2: [] });
+  const observerRef         = useRef(null);
+  const pinTriggerRef       = useRef(null);
+  const lastWheelTimeRef    = useRef(0);
+  const overlayDismissingRef = useRef(false);
+  const bulletsRevealedRef  = useRef(false); // are the bullets for the current step visible?
 
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end end"],
-  });
+  // ── Step-0 intro text overlay ─────────────────────────────────────────
+  const stepZeroRef        = useRef(null);
+  const stepZeroCueDotRef  = useRef(null);
 
   // ── Canvas draw ───────────────────────────────────────────────────────
   const drawFrame = useCallback((frameIndex) => {
@@ -280,50 +300,389 @@ export function VideoScrollSection() {
     gsap.to(el, { opacity: 0, duration: 0.25, ease: "power2.in" });
   };
 
-  // ── Scroll driver ─────────────────────────────────────────────────────
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    prevScrollRef.current = latest;
+  // ── Step machine: animates the canvas frame index between rest points
+  //    via gsap.to (time-based, NOT scroll-coupled) and synchronises the
+  //    title + bullet reveals around the travel tween.
+  const goToStep = useCallback((target, { showBulletsAfter = false } = {}) => {
+    if (target < 0 || target > LAST_STEP) return false;
+    const current = currentStepRef.current;
+    if (target === current) return false;
+    if (isAnimatingRef.current) return false;
 
-    // Canvas frame
-    if (isReady) {
-      if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
-      rafIdRef.current = requestAnimationFrame(() =>
-        drawFrame(Math.floor(Math.max(0, Math.min(0.9999, latest)) * FRAME_COUNT))
-      );
+    isAnimatingRef.current = true;
+    bulletsRevealedRef.current = false;
+
+    const toFrame = STEP_FRAMES[target];
+
+    // Hide anything currently on-screen before the canvas starts moving.
+    if (current >= 1) exitTitle();
+    if (current === 0 && stepZeroRef.current) {
+      gsap.to(stepZeroRef.current, { opacity: 0, y: -18, duration: 0.38, ease: "power2.in" });
+    }
+    if (target === 0 && stepZeroRef.current) {
+      gsap.to(stepZeroRef.current, { opacity: 1, y: 0, duration: 0.55, ease: "power2.out", delay: TRAVEL_DURATION + TITLE_LEAD_IN });
     }
 
-    // Progress bar
-    if (progressBarRef.current) {
-      progressBarRef.current.style.transform = `scaleX(${latest})`;
+    const tl = gsap.timeline({
+      onComplete: () => {
+        if (progressBarRef.current) {
+          progressBarRef.current.style.transform = `scaleX(${target / LAST_STEP})`;
+        }
+        currentStepRef.current = target;
+
+        if (showBulletsAfter && target >= 1) {
+          // Auto-reveal bullets after backward navigation lands on prev step.
+          gsap.delayedCall(STEP_LOCK_BUFFER, () => {
+            bulletsRevealedRef.current = true;
+            const bf = BULLET_FRAMES[target];
+            if (bf !== undefined) {
+              gsap.to(frameProxyRef.current, {
+                frame: bf, duration: 0.85, ease: "power1.inOut", snap: { frame: 1 },
+                onUpdate: () => { const f = Math.round(frameProxyRef.current.frame); if (isReady) drawFrame(Math.max(0, Math.min(FRAME_COUNT - 1, f))); },
+              });
+            }
+            [0, 1, 2].forEach((i) => {
+              gsap.delayedCall(i * BULLET_STAGGER, () => showBullet(i));
+            });
+            gsap.delayedCall(2 * BULLET_STAGGER + STEP_LOCK_BUFFER, () => {
+              isAnimatingRef.current = false;
+            });
+          });
+        } else {
+          gsap.delayedCall(STEP_LOCK_BUFFER, () => {
+            isAnimatingRef.current = false;
+          });
+        }
+      },
+    });
+
+    tl.to(frameProxyRef.current, {
+      frame: toFrame,
+      duration: TRAVEL_DURATION,
+      ease: "power2.inOut",
+      snap: { frame: 1 },
+      onUpdate: () => {
+        const f = Math.round(frameProxyRef.current.frame);
+        const clamped = Math.max(0, Math.min(FRAME_COUNT - 1, f));
+        if (isReady) drawFrame(clamped);
+      },
+    });
+
+    // Title only — bullets are shown on the next separate scroll gesture.
+    if (target >= 1) {
+      const section = SECTIONS[target - 1];
+      tl.add(() => enterTitle(section), `+=${TITLE_LEAD_IN}`);
     }
 
-    // Section state machine
-    const newSectionIdx = SECTIONS.findIndex(s => latest >= s.start && latest < s.end);
-    if (newSectionIdx !== activeSectionRef.current) {
-      if (activeSectionRef.current >= 0) exitTitle();
-      activeSectionRef.current = newSectionIdx;
-      if (newSectionIdx >= 0) enterTitle(SECTIONS[newSectionIdx]);
-    }
+    return true;
+  }, [isReady, drawFrame]);
 
-    // Bullet reveal — one by one based on progress within current section
-    if (activeSectionRef.current >= 0) {
-      const section = SECTIONS[activeSectionRef.current];
-      const dur = section.end - section.start;
-      const sectionProgress = (latest - section.start) / dur;
+  // ── Pin + wheel wiring ────────────────────────────────────────────────
+  // We use a native wheel listener instead of GSAP Observer so that
+  // preventDefault is only called when the pin is genuinely active
+  // (pin.isActive === true). With Observer + a delayed-enable timer there
+  // was a race: the timer could fire while the scroll was still in the
+  // overlay zone, causing every wheel event to silently burn through all 5
+  // goToStep calls before releasing to the next section. The native approach
+  // has zero timer latency — the isActive flag is authoritative.
+  useEffect(() => {
+    if (!sectionRef.current || !stickyRef.current) return;
 
-      const bulletsToShow = BULLET_THRESHOLDS.filter(t => sectionProgress >= t).length;
+    const PIN_DISTANCE_VH = 6;
 
-      if (bulletsToShow > activeBulletsRef.current) {
-        // Show newly visible bullets
-        for (let i = activeBulletsRef.current; i < bulletsToShow; i++) showBullet(i);
-        activeBulletsRef.current = bulletsToShow;
-      } else if (bulletsToShow < activeBulletsRef.current) {
-        // Hide bullets when scrolling back
-        for (let i = bulletsToShow; i < activeBulletsRef.current; i++) hideBullet(i);
-        activeBulletsRef.current = bulletsToShow;
+    const pin = ScrollTrigger.create({
+      trigger: stickyRef.current,
+      start: "top top",
+      end:   () => `+=${window.innerHeight * PIN_DISTANCE_VH}`,
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 1,
+      onEnter: () => {
+        // Re-entering from above: reset to step 0 so we always start from
+        // the beginning, even if a previous run ended at LAST_STEP.
+        gsap.killTweensOf(frameProxyRef.current);
+        isAnimatingRef.current = false;
+        if (currentStepRef.current > 0) {
+          gsap.set(
+            [
+              line1Ref.current, line2Ref.current,
+              eyebrowTextRef.current, eyebrowLineRef.current,
+              ghostNumberRef.current,
+              ...bulletRefs.current,
+            ].filter(Boolean),
+            { opacity: 0 }
+          );
+        }
+        currentStepRef.current = 0;
+        bulletsRevealedRef.current = false;
+        frameProxyRef.current.frame = 0;
+        drawFrame(0);
+        lastWheelTimeRef.current = performance.now();
+        if (stepZeroRef.current) {
+          gsap.killTweensOf(stepZeroRef.current);
+          gsap.fromTo(stepZeroRef.current,
+            { opacity: 0, y: 22 },
+            { opacity: 1, y: 0, duration: 0.65, ease: "power2.out", delay: 0.1 }
+          );
+        }
+      },
+      onEnterBack: () => {
+        isAnimatingRef.current = false;
+        bulletsRevealedRef.current = true; // re-entering from below = was at last step with bullets
+      },
+    });
+    pinTriggerRef.current = pin;
+
+    const TOLERANCE = 10;
+    // Minimum gap between wheel events to consider a new gesture.
+    // Events closer than this are treated as momentum/inertia from the
+    // previous gesture and ignored, making each scroll advance exactly
+    // one step regardless of how hard or fast the user scrolls.
+    const STREAM_GAP_MS = 250;
+
+    const onWheel = (e) => {
+      const now = performance.now();
+      const pinST = pinTriggerRef.current;
+
+      // ── Overlay zone: hijack first scroll and tween to pin start in
+      //    one motion so a single scroll dismisses the overlay completely.
+      //    pinST.start is the absolute document scroll position where the
+      //    pin begins; the overlay occupies the 100vh just before that. ──
+      if (!pinST || !pinST.isActive) {
+        if (pinST) {
+          const sy = window.scrollY || window.pageYOffset;
+          const pinStart = pinST.start;
+          const overlayStart = pinStart - window.innerHeight;
+
+          // ── Overlay zone ──────────────────────────────────────────────
+          if (sy >= overlayStart - 4 && sy < pinStart - 4) {
+            e.preventDefault();
+            if (overlayDismissingRef.current) return;
+            if (Math.abs(e.deltaY) < TOLERANCE) return;
+            const gap = now - lastWheelTimeRef.current;
+            lastWheelTimeRef.current = now;
+            if (gap < STREAM_GAP_MS) return;
+
+            overlayDismissingRef.current = true;
+            const target = e.deltaY > 0
+              ? pinStart
+              : Math.max(0, overlayStart - window.innerHeight);
+            gsap.to(window, {
+              scrollTo: target,
+              duration: 0.9,
+              ease: "power2.inOut",
+              onComplete: () => { overlayDismissingRef.current = false; },
+            });
+          }
+
+          // ── Post-pin zone: one upward scroll → back to step 5 ────────
+          // Covers the camera-zoom zone + first viewport of next section.
+          const postPinThreshold = pinST.end + window.innerHeight * 1.5;
+          if (e.deltaY < 0 && sy >= pinST.end && sy <= postPinThreshold) {
+            e.preventDefault();
+            if (overlayDismissingRef.current) return;
+            if (Math.abs(e.deltaY) < TOLERANCE) return;
+            const gap = now - lastWheelTimeRef.current;
+            lastWheelTimeRef.current = now;
+            if (gap < STREAM_GAP_MS) return;
+
+            overlayDismissingRef.current = true;
+            gsap.to(window, {
+              scrollTo: pinST.end - 4,
+              duration: 0.9,
+              ease: "power2.inOut",
+              onComplete: () => { overlayDismissingRef.current = false; },
+            });
+          }
+        }
+        return;
       }
-    }
-  });
+      e.preventDefault();
+
+      if (isAnimatingRef.current) {
+        // Keep timestamp current so post-animation momentum events are
+        // correctly identified as part of the same stream.
+        lastWheelTimeRef.current = now;
+        return;
+      }
+      if (Math.abs(e.deltaY) < TOLERANCE) return;
+
+      // Skip if this event is part of an ongoing momentum stream.
+      const gap = now - lastWheelTimeRef.current;
+      lastWheelTimeRef.current = now;
+      if (gap < STREAM_GAP_MS) return;
+
+      // ── Helpers for two-phase (title → bullets) sub-step system ────────
+      const tweenToFrame = (targetFrame, duration = 0.7, ease = "power1.inOut") => {
+        gsap.to(frameProxyRef.current, {
+          frame: targetFrame,
+          duration,
+          ease,
+          snap: { frame: 1 },
+          onUpdate: () => {
+            const f = Math.round(frameProxyRef.current.frame);
+            drawFrame(Math.max(0, Math.min(FRAME_COUNT - 1, f)));
+          },
+        });
+      };
+
+      const showBulletsNow = () => {
+        bulletsRevealedRef.current = true;
+        isAnimatingRef.current = true;
+        // Subtle camera push to the bullet frame.
+        const bulletFrame = BULLET_FRAMES[currentStepRef.current];
+        if (bulletFrame !== undefined) tweenToFrame(bulletFrame, 0.85, "power1.inOut");
+        [0, 1, 2].forEach((i) => {
+          gsap.delayedCall(i * BULLET_STAGGER, () => showBullet(i));
+        });
+        gsap.delayedCall(2 * BULLET_STAGGER + STEP_LOCK_BUFFER, () => {
+          isAnimatingRef.current = false;
+        });
+      };
+
+      const hideBulletsNow = () => {
+        bulletsRevealedRef.current = false;
+        isAnimatingRef.current = true;
+        // Pull camera back to the title frame.
+        const titleFrame = STEP_FRAMES[currentStepRef.current];
+        if (titleFrame !== undefined) tweenToFrame(titleFrame, 0.55, "power1.inOut");
+        [0, 1, 2].forEach((i) => hideBullet(i));
+        gsap.delayedCall(0.55 + STEP_LOCK_BUFFER, () => { isAnimatingRef.current = false; });
+      };
+
+      if (e.deltaY > 0) {
+        if (currentStepRef.current >= LAST_STEP && bulletsRevealedRef.current) {
+          // Exit forward (bullets already shown on step 5).
+          const nextEl = sectionRef.current?.nextElementSibling;
+          const target = nextEl ? nextEl.offsetTop : pinST.end + window.innerHeight;
+          gsap.to(window, { scrollTo: target, duration: 0.9, ease: "power2.inOut" });
+        } else if (currentStepRef.current >= 1 && !bulletsRevealedRef.current) {
+          // Phase 2: reveal bullets for the current step.
+          showBulletsNow();
+        } else {
+          // Advance to next step (title only; bullets come on the next scroll).
+          goToStep(currentStepRef.current + 1);
+        }
+      } else {
+        if (currentStepRef.current <= 0) {
+          const overlayTarget = Math.max(0, pinST.start - window.innerHeight);
+          gsap.to(window, { scrollTo: overlayTarget, duration: 0.9, ease: "power2.inOut" });
+        } else if (bulletsRevealedRef.current) {
+          // Hide bullets (stay on same step title).
+          hideBulletsNow();
+        } else {
+          // Go back one step and auto-show that step's bullets.
+          const prev = currentStepRef.current - 1;
+          if (prev <= 0) {
+            goToStep(0);
+          } else {
+            goToStep(prev, { showBulletsAfter: true });
+          }
+        }
+      }
+    };
+
+    // Touch: track swipe direction across touchmove
+    let touchStartY = 0;
+    const onTouchStart = (e) => {
+      touchStartY = e.touches[0].clientY;
+    };
+    const onTouchMove = (e) => {
+      const pinST = pinTriggerRef.current;
+
+      // Overlay + post-pin zones: same one-swipe logic as wheel.
+      if (!pinST || !pinST.isActive) {
+        if (pinST) {
+          const sy = window.scrollY || window.pageYOffset;
+          const pinStart = pinST.start;
+          const overlayStart = pinStart - window.innerHeight;
+          const dy = touchStartY - e.touches[0].clientY;
+
+          if (sy >= overlayStart - 4 && sy < pinStart - 4) {
+            e.preventDefault();
+            if (overlayDismissingRef.current) return;
+            if (Math.abs(dy) < 30) return;
+            touchStartY = e.touches[0].clientY;
+            overlayDismissingRef.current = true;
+            const target = dy > 0
+              ? pinStart
+              : Math.max(0, overlayStart - window.innerHeight);
+            gsap.to(window, {
+              scrollTo: target,
+              duration: 0.9,
+              ease: "power2.inOut",
+              onComplete: () => { overlayDismissingRef.current = false; },
+            });
+          }
+
+          const postPinThreshold = pinST.end + window.innerHeight * 1.5;
+          if (dy < 0 && sy >= pinST.end && sy <= postPinThreshold) {
+            e.preventDefault();
+            if (overlayDismissingRef.current) return;
+            if (Math.abs(dy) < 30) return;
+            touchStartY = e.touches[0].clientY;
+            overlayDismissingRef.current = true;
+            gsap.to(window, {
+              scrollTo: pinST.end - 4,
+              duration: 0.9,
+              ease: "power2.inOut",
+              onComplete: () => { overlayDismissingRef.current = false; },
+            });
+          }
+        }
+        return;
+      }
+      e.preventDefault();
+      if (isAnimatingRef.current) return;
+      const dy = touchStartY - e.touches[0].clientY;
+      if (Math.abs(dy) < 30) return;
+      touchStartY = e.touches[0].clientY;
+      if (dy > 0) {
+        if (currentStepRef.current >= LAST_STEP && bulletsRevealedRef.current) {
+          const nextEl = sectionRef.current?.nextElementSibling;
+          const target = nextEl ? nextEl.offsetTop : pinST.end + window.innerHeight;
+          gsap.to(window, { scrollTo: target, duration: 0.9, ease: "power2.inOut" });
+        } else if (currentStepRef.current >= 1 && !bulletsRevealedRef.current) {
+          bulletsRevealedRef.current = true;
+          isAnimatingRef.current = true;
+          const bf = BULLET_FRAMES[currentStepRef.current];
+          if (bf !== undefined) gsap.to(frameProxyRef.current, { frame: bf, duration: 0.85, ease: "power1.inOut", snap: { frame: 1 }, onUpdate: () => { drawFrame(Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(frameProxyRef.current.frame)))); } });
+          [0, 1, 2].forEach((i) => { gsap.delayedCall(i * BULLET_STAGGER, () => showBullet(i)); });
+          gsap.delayedCall(2 * BULLET_STAGGER + STEP_LOCK_BUFFER, () => { isAnimatingRef.current = false; });
+        } else {
+          goToStep(currentStepRef.current + 1);
+        }
+      } else {
+        if (currentStepRef.current <= 0) {
+          const overlayTarget = Math.max(0, pinST.start - window.innerHeight);
+          gsap.to(window, { scrollTo: overlayTarget, duration: 0.9, ease: "power2.inOut" });
+        } else if (bulletsRevealedRef.current) {
+          bulletsRevealedRef.current = false;
+          isAnimatingRef.current = true;
+          const tf = STEP_FRAMES[currentStepRef.current];
+          if (tf !== undefined) gsap.to(frameProxyRef.current, { frame: tf, duration: 0.55, ease: "power1.inOut", snap: { frame: 1 }, onUpdate: () => { drawFrame(Math.max(0, Math.min(FRAME_COUNT - 1, Math.round(frameProxyRef.current.frame)))); } });
+          [0, 1, 2].forEach((i) => hideBullet(i));
+          gsap.delayedCall(0.55 + STEP_LOCK_BUFFER, () => { isAnimatingRef.current = false; });
+        } else {
+          const prev = currentStepRef.current - 1;
+          if (prev <= 0) { goToStep(0); }
+          else { goToStep(prev, { showBulletsAfter: true }); }
+        }
+      }
+    };
+
+    window.addEventListener("wheel", onWheel, { passive: false });
+    window.addEventListener("touchstart", onTouchStart, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+      pin.kill();
+      pinTriggerRef.current = null;
+    };
+  }, [goToStep]);
 
   // ── Camera-style transition between this section and the next ────────
   useEffect(() => {
@@ -339,12 +698,12 @@ export function VideoScrollSection() {
     nextEl.style.transformOrigin   = "center top";
     nextEl.style.willChange        = "transform, opacity";
 
-    // Phase 1 — pinned sticky pulls back during the last ~6% of the
-    // video section's scrollable range. Looks like the camera dollies out.
+    // Phase 1 — sticky pulls back over the last viewport-height of the
+    // section. Looks like the camera dollies out.
     const stickyTrigger = ScrollTrigger.create({
       trigger: section,
-      start:  () => `top+=${(section.offsetHeight - window.innerHeight) * 0.94} top`,
-      end:    () => `top+=${ section.offsetHeight - window.innerHeight}        top`,
+      start: () => `bottom bottom`,
+      end:   () => `bottom top`,
       scrub: 0.6,
       onUpdate: (self) => {
         const t = self.progress;                  // 0 → 1
@@ -390,45 +749,8 @@ export function VideoScrollSection() {
     };
   }, []);
 
-  // ── Snap to section top when re-entering from below ──────────────────
-  useEffect(() => {
-    let wasAtEnd = false;
-    let sectionTopCache = 0;
-
-    const cacheTop = () => {
-      if (sectionRef.current) {
-        sectionTopCache = sectionRef.current.getBoundingClientRect().top + window.scrollY;
-      }
-    };
-    cacheTop();
-
-    const onScroll = () => {
-      if (snappingRef.current) return;
-      const section = sectionRef.current;
-      if (!section) return;
-      const scrollY = window.scrollY;
-      const sectionEnd = sectionTopCache + section.offsetHeight - window.innerHeight;
-
-      if (scrollY >= sectionEnd - 30) {
-        wasAtEnd = true;
-      } else if (wasAtEnd && scrollY > sectionTopCache && scrollY < sectionEnd) {
-        // Re-entering from below — jump to section start
-        wasAtEnd = false;
-        snappingRef.current = true;
-        window.scrollTo({ top: sectionTopCache, behavior: 'instant' });
-        setTimeout(() => { snappingRef.current = false; }, 400);
-      } else if (scrollY <= sectionTopCache) {
-        wasAtEnd = false;
-      }
-    };
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', cacheTop);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', cacheTop);
-    };
-  }, []);
+  // (Removed: legacy "snap-to-top when re-entering from below" effect.
+  //  The Observer + pin model owns boundary handling now.)
 
   // ── Intro overlay: enter reveal + scroll-driven fade out ──────────────
   useEffect(() => {
@@ -469,29 +791,28 @@ export function VideoScrollSection() {
           y: 0, opacity: 1, duration: 0.6, ease: "power2.out",
         }, "-=0.4");
 
-      // Scroll-driven dismiss: overlay fades + scales out as user scrolls
-      // through the first viewport-height of the section. Once gone, the
-      // existing scroll animation (frames, bullets, title) takes over.
-      gsap.to(overlayRef.current, {
-        autoAlpha: 0,
-        scale: 1.05,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "top top-=70%",
-          scrub: true,
-        },
-      });
+      // Single unified dismiss timeline: strict sequence (overlay fully out,
+      // then nothing) driven by one ScrollTrigger with directional snap so
+      // a single scroll impulse glides past the overlay zone in one motion.
+      const dismissTl = gsap.timeline();
+      dismissTl
+        // Kill pointer interception immediately so the canvas below can
+        // receive Observer events during the fade (autoAlpha alone only
+        // hides at opacity 0, which is too late).
+        .set(overlayRef.current, { pointerEvents: "none" }, 0)
+        .to(overlayHeadingRef.current, {
+          y: -100, ease: "power2.in", duration: 0.7,
+        }, 0)
+        .to(overlayRef.current, {
+          autoAlpha: 0, scale: 1.05, ease: "power2.inOut", duration: 1,
+        }, 0);
 
-      // Heading lifts upward + subtle parallax during dismiss
-      gsap.to(overlayHeadingRef.current, {
-        y: -100,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "top top-=70%",
-          scrub: true,
-        },
+      ScrollTrigger.create({
+        trigger: overlayWrapperRef.current,
+        start: "top top",
+        end: "bottom top",
+        scrub: 0.4,
+        animation: dismissTl,
       });
 
       // Animated scroll cue indicator (continuous loop)
@@ -513,11 +834,14 @@ export function VideoScrollSection() {
     gsap.set(eyebrowLineRef.current, { scaleX: 0, transformOrigin: "left center" });
     gsap.set([eyebrowTextRef.current, ghostNumberRef.current], { opacity: 0 });
     gsap.set(bulletRefs.current, { opacity: 0 });
+    if (stepZeroRef.current) gsap.set(stepZeroRef.current, { opacity: 0, y: 22 });
 
     const handleResize = () => {
       if (!canvasRef.current) return;
       currentFrameRef.current = -1;
-      drawFrame(Math.floor(Math.max(0, Math.min(0.9999, scrollYProgress.get())) * FRAME_COUNT));
+      // Re-paint the current step's frame at the new canvas size.
+      const f = Math.round(frameProxyRef.current.frame);
+      drawFrame(Math.max(0, Math.min(FRAME_COUNT - 1, f)));
     };
     handleResize();
     window.addEventListener("resize", handleResize);
@@ -525,11 +849,100 @@ export function VideoScrollSection() {
       window.removeEventListener("resize", handleResize);
       if (rafIdRef.current) cancelAnimationFrame(rafIdRef.current);
     };
-  }, [scrollYProgress, drawFrame]);
+  }, [drawFrame]);
+
+  // ── Fade in step-zero overlay once all frames are loaded ─────────────
+  useEffect(() => {
+    if (!isReady || !stepZeroRef.current) return;
+    gsap.to(stepZeroRef.current, { opacity: 1, y: 0, duration: 0.8, ease: "power2.out", delay: 0.15 });
+    if (stepZeroCueDotRef.current) {
+      gsap.to(stepZeroCueDotRef.current, { y: 16, duration: 1.4, ease: "sine.inOut", yoyo: true, repeat: -1 });
+    }
+  }, [isReady]);
 
   return (
-    <section ref={sectionRef} className="relative w-full bg-[#f0f0ef]" style={{ height: "1100vh" }}>
-      <div ref={stickyRef} className="sticky top-0 h-screen w-full overflow-hidden" style={{ transformOrigin: "center center" }}>
+    <section ref={sectionRef} className="relative w-full bg-[#f0f0ef]">
+      {/* ── Overlay wrapper — naturally flowing 100vh. Owns the overlay
+          snap ScrollTrigger; separate from the pinned canvas wrapper so
+          the two cannot fight for positioning. ──────────────────────── */}
+      <div ref={overlayWrapperRef} className="relative h-screen w-full overflow-hidden">
+        {/* ── Intro overlay ── */}
+        <div
+          ref={overlayRef}
+          className="absolute inset-0 z-[45] flex flex-col justify-center px-[5%] pt-32 md:pt-40 pb-32 md:pb-40"
+          style={{ background: "#0a1020" }}
+        >
+          {/* Layered gradient (matches Hero aesthetic) */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(180deg, rgba(10,16,32,1) 0%, rgba(13,20,40,1) 45%, rgba(8,13,26,1) 100%)",
+            }}
+          />
+          {/* Soft gold radial glow (matches Hero) */}
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse at 70% 30%, rgba(201,168,76,0.12) 0%, transparent 55%)",
+            }}
+          />
+
+          {/* Top-right meta (matches Hero) */}
+          <div className="absolute top-24 right-[5%] hidden lg:flex items-center gap-3 font-body text-[11px] uppercase tracking-[0.3em] text-white/60">
+            <span className="h-px w-10 bg-hoser-gold/70" />
+            <span>Kapitel 02</span>
+          </div>
+
+          {/* Main content (left-aligned, mirrors Hero composition) */}
+          <div className="relative z-10 max-w-[1400px]">
+            <p
+              ref={overlayEyebrowRef}
+              className="mb-6 font-body text-sm font-semibold uppercase tracking-[0.4em] text-hoser-gold flex items-center gap-4"
+            >
+              <span ref={overlayLineRef} className="block h-px w-12 bg-hoser-gold" />
+              Eine Reise durch unsere Gewerke
+            </p>
+
+            <h2
+              ref={overlayHeadingRef}
+              className="font-heading font-bold leading-[1.0] tracking-tight text-white"
+              style={{ fontSize: "clamp(2.4rem, 6vw, 6rem)" }}
+            >
+              Unsere Leistungen <br className="hidden md:block" />nah erleben.
+            </h2>
+
+            <p
+              ref={overlaySubRef}
+              className="mt-14 md:mt-20 font-body text-base md:text-lg leading-relaxed text-white/70 max-w-xl"
+            >
+              Scrollen Sie durch fünf Gewerke und entdecken Sie, wie wir vom
+              ersten Erdaushub bis zur schlüsselfertigen Übergabe jeden Schritt
+              beherrschen.
+            </p>
+          </div>
+
+          {/* Scroll cue (matches Hero) */}
+          <div
+            ref={overlayCueRef}
+            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+          >
+            <span className="font-body text-[10px] uppercase tracking-[0.4em] text-white/50">
+              Weiterscrollen
+            </span>
+            <div className="relative h-12 w-px bg-white/15 overflow-hidden">
+              <span
+                data-cue-dot
+                className="absolute top-0 left-1/2 -translate-x-1/2 h-3 w-px bg-hoser-gold"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Canvas wrapper — pinned by ScrollTrigger ── */}
+      <div ref={stickyRef} className="relative h-screen w-full overflow-hidden" style={{ transformOrigin: "center center" }}>
 
         {/* Canvas */}
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
@@ -551,6 +964,46 @@ export function VideoScrollSection() {
           style={{ fontSize: "clamp(6rem, 14vw, 18rem)", letterSpacing: "-0.04em", opacity: 0 }}
           aria-hidden="true"
         />
+
+        {/* ── Step-0 intro text — visible only before any step is chosen ── */}
+        <div
+          ref={stepZeroRef}
+          className="pointer-events-none absolute bottom-[11%] left-[5%] z-30"
+          style={{ opacity: 0 }}
+        >
+          <div className="mb-5 flex items-center gap-4">
+            <span className="block h-px bg-hoser-gold" style={{ width: "2.2rem" }} />
+            <span className="font-body text-xs font-semibold uppercase tracking-[0.35em] text-hoser-gold">
+              5 Gewerke · Unsere Leistungen
+            </span>
+          </div>
+          <div
+            className="font-heading font-bold leading-[0.92] tracking-tight text-white"
+            style={{
+              fontSize: "clamp(2.8rem, 6vw, 7rem)",
+              textShadow: "0 4px 60px rgba(0,0,0,0.98), 0 2px 16px rgba(0,0,0,0.9)",
+            }}
+          >
+            Erleben Sie unsere<br />Leistungen hautnah.
+          </div>
+          <p
+            className="mt-5 font-body text-base leading-relaxed text-white/60 max-w-[30rem]"
+            style={{ textShadow: "0 2px 20px rgba(0,0,0,0.95)" }}
+          >
+            Scrollen Sie, um fünf Gewerke und jeden Schritt unserer Arbeit zu entdecken.
+          </p>
+          <div className="mt-7 flex items-center gap-3">
+            <div className="relative h-10 w-px overflow-hidden bg-white/15">
+              <span
+                ref={stepZeroCueDotRef}
+                className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-hoser-gold"
+              />
+            </div>
+            <span className="font-body text-[10px] uppercase tracking-[0.4em] text-white/45">
+              Weiterscrollen
+            </span>
+          </div>
+        </div>
 
         {/* ── Title block — repositions left/right ── */}
         <div ref={titleBlockRef} className="pointer-events-none absolute bottom-[11%] z-30" style={{ left: "5%" }}>
@@ -611,91 +1064,6 @@ export function VideoScrollSection() {
           </filter>
           <rect width="100%" height="100%" filter="url(#vss-grain)" />
         </svg>
-
-        {/* ── Intro overlay ── */}
-        <div
-          ref={overlayRef}
-          className="absolute inset-0 z-[45] flex flex-col justify-end px-[5%] pb-24 md:pb-28"
-          style={{ background: "#0a1020" }}
-        >
-          {/* Layered gradient (matches Hero aesthetic) */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "linear-gradient(180deg, rgba(10,16,32,1) 0%, rgba(13,20,40,1) 45%, rgba(8,13,26,1) 100%)",
-            }}
-          />
-          {/* Soft gold radial glow (matches Hero) */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background:
-                "radial-gradient(ellipse at 70% 30%, rgba(201,168,76,0.12) 0%, transparent 55%)",
-            }}
-          />
-
-          {/* Vertical side mark (matches Hero) */}
-          <div
-            className="absolute left-[5%] top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-6"
-            style={{ writingMode: "vertical-rl", transform: "rotate(180deg) translateY(50%)" }}
-          >
-            <span className="font-body text-[11px] font-semibold uppercase tracking-[0.4em] text-hoser-gold/80">
-              Hoser · seit 1957
-            </span>
-            <span className="h-24 w-px bg-hoser-gold/40" />
-          </div>
-
-          {/* Top-right meta (matches Hero) */}
-          <div className="absolute top-24 right-[5%] hidden lg:flex items-center gap-3 font-body text-[11px] uppercase tracking-[0.3em] text-white/60">
-            <span className="h-px w-10 bg-hoser-gold/70" />
-            <span>Kapitel 02</span>
-          </div>
-
-          {/* Main content (left-aligned, mirrors Hero composition) */}
-          <div className="relative z-10 max-w-[1400px]">
-            <p
-              ref={overlayEyebrowRef}
-              className="mb-6 font-body text-sm font-semibold uppercase tracking-[0.4em] text-hoser-gold flex items-center gap-4"
-            >
-              <span ref={overlayLineRef} className="block h-px w-12 bg-hoser-gold" />
-              Eine Reise durch unsere Gewerke
-            </p>
-
-            <h2
-              ref={overlayHeadingRef}
-              className="font-heading font-bold leading-[1.0] tracking-tight text-white"
-              style={{ fontSize: "clamp(2.4rem, 6vw, 6rem)" }}
-            >
-              Unsere Leistungen <br className="hidden md:block" />nah erleben.
-            </h2>
-
-            <p
-              ref={overlaySubRef}
-              className="mt-10 md:mt-12 font-body text-base md:text-lg leading-relaxed text-white/70 max-w-xl"
-            >
-              Scrollen Sie durch fünf Gewerke und entdecken Sie, wie wir vom
-              ersten Erdaushub bis zur schlüsselfertigen Übergabe jeden Schritt
-              beherrschen.
-            </p>
-          </div>
-
-          {/* Scroll cue (matches Hero) */}
-          <div
-            ref={overlayCueRef}
-            className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
-          >
-            <span className="font-body text-[10px] uppercase tracking-[0.4em] text-white/50">
-              Weiterscrollen
-            </span>
-            <div className="relative h-12 w-px bg-white/15 overflow-hidden">
-              <span
-                data-cue-dot
-                className="absolute top-0 left-1/2 -translate-x-1/2 h-3 w-px bg-hoser-gold"
-              />
-            </div>
-          </div>
-        </div>
 
         {/* Loading screen */}
         {!isReady && (

@@ -22,7 +22,6 @@ const navCols = [
       { label: "Unser Prozess", to: "/prozess" },
       { label: "Projekte", to: "/projekte" },
       { label: "Referenzen", to: "/referenzen" },
-      { label: "Blog", to: "/blog" },
     ],
   },
   {

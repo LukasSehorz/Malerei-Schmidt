@@ -31,10 +31,11 @@ const splitWords = (el, text) => {
     const wrap = document.createElement("span");
     wrap.style.display = "inline-block";
     wrap.style.overflow = "hidden";
+    if (i < arr.length - 1) wrap.style.marginRight = "0.28em";
     const inner = document.createElement("span");
     inner.style.display = "inline-block";
     inner.style.willChange = "transform";
-    inner.textContent = word + (i < arr.length - 1 ? " " : "");
+    inner.textContent = word;
     wrap.appendChild(inner);
     el.appendChild(wrap);
     return inner;

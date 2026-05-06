@@ -10,10 +10,11 @@ const splitWords = (el, text) => {
     wrap.style.display = "inline-block";
     wrap.style.overflow = "hidden";
     wrap.style.paddingBottom = "0.08em";
+    if (i < arr.length - 1) wrap.style.marginRight = "0.28em";
     const inner = document.createElement("span");
     inner.style.display = "inline-block";
     inner.style.willChange = "transform";
-    inner.textContent = word + (i < arr.length - 1 ? " " : "");
+    inner.textContent = word;
     wrap.appendChild(inner);
     el.appendChild(wrap);
     return inner;
@@ -31,6 +32,31 @@ export function HeroLeistungen() {
   const sideMarkRef = useRef(null);
   const ctaRef      = useRef(null);
   const scrollRef   = useRef(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    let cooldown = false;
+
+    const onWheel = (e) => {
+      if (cooldown || e.deltaY <= 0) return;
+      const rect = section.getBoundingClientRect();
+      if (rect.top > 10 || rect.bottom < window.innerHeight * 0.4) return;
+      e.preventDefault();
+      cooldown = true;
+      const allSections = Array.from(document.querySelectorAll("section"));
+      const idx = allSections.indexOf(section);
+      const next = idx >= 0 ? allSections[idx + 1] : null;
+      const targetY = next
+        ? next.getBoundingClientRect().top + window.scrollY
+        : window.innerHeight;
+      window.scrollTo(0, targetY);
+      setTimeout(() => { cooldown = false; }, 600);
+    };
+
+    section.addEventListener("wheel", onWheel, { passive: false });
+    return () => section.removeEventListener("wheel", onWheel);
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -163,17 +189,7 @@ export function HeroLeistungen() {
            }}
       />
 
-      {/* Vertical side mark (left) */}
-      <div
-        ref={sideMarkRef}
-        className="absolute left-[5%] top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-6"
-        style={{ writingMode: "vertical-rl", transform: "rotate(180deg) translateY(50%)" }}
-      >
-        <span className="font-body text-[11px] font-semibold uppercase tracking-[0.4em] text-hoser-gold">
-          Hoser · seit 1957
-        </span>
-        <span className="h-24 w-px bg-hoser-gold/50" />
-      </div>
+      {/* Vertical side mark removed — collided with the oversized heading. */}
 
       {/* Top-right meta strip */}
       <div className="absolute top-24 right-[5%] hidden lg:flex items-center gap-3 font-body text-[11px] uppercase tracking-[0.3em] text-white/60">

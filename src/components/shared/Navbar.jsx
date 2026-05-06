@@ -20,7 +20,6 @@ const navLinks = [
     ],
   },
   { label: "Prozess", href: "/prozess" },
-  { label: "Blog", href: "/blog" },
 ];
 
 function DropdownLink({ link, active }) {
