@@ -61,13 +61,14 @@ export function VideoSection() {
       gsap.set([clipRef.current, ".vs-video"], { force3D: true });
 
       // ── Entry: Portal clip-path + Ken Burns combined into ONE timeline ──
-      // Single ScrollTrigger, linear ease, lower scrub value → smoother feel.
+      // scrub: 0.08 keeps subtle smoothing for natural scrolling without
+      // creating visible lag during programmatic snap from hero.
       const entryTl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top 80%",
           end: "top 12%",
-          scrub: 0.5,
+          scrub: 0.08,
         },
       });
 
@@ -84,14 +85,16 @@ export function VideoSection() {
       );
 
       // ── Phase 2: Title text mask reveal ──────────────────────────────
+      // Trigger near snap target so reveal plays AFTER the page settles —
+      // not mid-snap, where it would compete with the scrolling animation.
       gsap.from(".vs-line-inner", {
         y: "115%",
-        stagger: 0.18,
-        duration: 1.1,
+        stagger: 0.12,
+        duration: 0.8,
         ease: "power3.out",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 25%",
+          start: "top 8%",
           toggleActions: "play none none reverse",
         },
       });
@@ -99,12 +102,12 @@ export function VideoSection() {
       gsap.from(".vs-divider", {
         scaleX: 0,
         transformOrigin: "center center",
-        duration: 1.0,
+        duration: 0.65,
         ease: "power3.inOut",
-        delay: 0.55,
+        delay: 0.4,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top 25%",
+          start: "top 8%",
           toggleActions: "play none none reverse",
         },
       });
@@ -176,17 +179,21 @@ export function VideoSection() {
 
   return (
     <section
+      id="video-section"
       ref={sectionRef}
-      className="relative bg-text-primary"
-      style={{ height: "280vh" }}
+      className="relative"
+      style={{ height: "280vh", backgroundColor: "#FDFCF8" }}
     >
-      <div className="sticky top-0 h-screen overflow-hidden">
+      <div className="sticky top-0 h-screen overflow-hidden" style={{ backgroundColor: "#FDFCF8" }}>
+
+        {/* Explicit light background layer behind everything */}
+        <div className="absolute inset-0" style={{ backgroundColor: "#FDFCF8", zIndex: 0 }} />
 
         {/* Clip-path wrapper for the entry portal effect */}
         <div
           ref={clipRef}
           className="absolute inset-0"
-          style={{ willChange: "clip-path" }}
+          style={{ willChange: "clip-path", zIndex: 1 }}
         >
           <video
             ref={videoRef}
@@ -229,7 +236,7 @@ export function VideoSection() {
                   className="font-bold"
                   style={{
                     textDecoration: "underline",
-                    textDecorationColor: "#C8962E",
+                    textDecorationColor: "#7A8FC8",
                     textUnderlineOffset: "6px",
                     textDecorationThickness: "2px",
                   }}
@@ -245,7 +252,7 @@ export function VideoSection() {
                   className="font-bold"
                   style={{
                     textDecoration: "underline",
-                    textDecorationColor: "#C8962E",
+                    textDecorationColor: "#7A8FC8",
                     textUnderlineOffset: "6px",
                     textDecorationThickness: "2px",
                   }}
@@ -255,17 +262,17 @@ export function VideoSection() {
               </span>
             </div>
           </div>
-          <div className="vs-divider mt-8 h-px w-16 bg-hoser-gold opacity-80" />
+          <div className="vs-divider mt-8 h-px w-16 bg-white/70" />
         </div>
 
         {/* Key facts overlay — appears AFTER the title fades */}
         <div className="absolute inset-0 z-20 flex items-center px-[5%]">
           <div className="container">
-            <p className="vs-keyfact-eyebrow mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-hoser-gold">
+            <p className="vs-keyfact-eyebrow mb-3 font-body text-sm font-semibold uppercase tracking-[0.28em] text-white">
               So bauen wir
             </p>
             <div
-              className="vs-keyfact-divider mb-12 h-px w-16 bg-hoser-gold/70"
+              className="vs-keyfact-divider mb-12 h-px w-16 bg-white/60"
               style={{ transformOrigin: "left center" }}
             />
 
@@ -275,7 +282,7 @@ export function VideoSection() {
                   key={f.lead + f.leadUnit}
                   className="vs-keyfact relative pl-6"
                 >
-                  <div className="absolute left-0 top-0 h-full w-px bg-hoser-gold/55" />
+                  <div className="absolute left-0 top-0 h-full w-px bg-white/45" />
 
                   <div className="mb-2 flex items-baseline gap-3">
                     <span

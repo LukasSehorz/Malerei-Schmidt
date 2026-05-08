@@ -71,7 +71,7 @@ export function VideoAbout() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#f0f0ef] px-[5%] py-16 md:py-24">
+    <section ref={sectionRef} className="bg-background-secondary px-[5%] py-16 md:py-24">
       <div className="container max-w-3xl mx-auto">
 
         {/* Text above */}
@@ -82,7 +82,7 @@ export function VideoAbout() {
           <h2
             ref={headingRef}
             className="font-heading font-bold text-text-primary leading-tight"
-            style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "#0a1020" }}
+            style={{ fontSize: "clamp(2rem, 4vw, 3rem)", color: "#0A1628" }}
           >
             Drei Generationen. Eine Überzeugung.
           </h2>
@@ -102,8 +102,8 @@ export function VideoAbout() {
         </div>
 
         {/* Text below */}
-        <p ref={paraRef} className="mt-6 font-body text-base leading-relaxed text-[#0a1020]/60 md:text-lg max-w-xl">
-          Was Michael Hoser 1952 mit drei Mitarbeitern begann, tragen heute
+        <p ref={paraRef} className="mt-6 font-body text-base leading-relaxed text-[#0A1628]/60 md:text-lg max-w-xl">
+          Was Michael Schmid-Bau 1952 mit drei Mitarbeitern begann, tragen heute
           über 60 Fachkräfte weiter. Die Werte haben sich nicht verändert –
           nur die Möglichkeiten, sie umzusetzen.
         </p>

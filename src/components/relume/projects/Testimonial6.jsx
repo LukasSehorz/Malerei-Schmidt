@@ -123,7 +123,7 @@ export function Testimonial6() {
 
         {/* Heading */}
         <div className="mb-14 md:mb-18">
-          <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-hoser-gold">
+          <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-[#5AACCF]">
             Kundenstimmen
           </p>
           <h2
@@ -141,20 +141,20 @@ export function Testimonial6() {
             <div
               key={t.name}
               ref={(el) => (cardsRef.current[idx] = el)}
-              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 p-8 backdrop-blur-md transition-all duration-500 hover:border-hoser-gold/40"
+              className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/10 p-8 backdrop-blur-md transition-all duration-500 hover:border-[#5AACCF]/40"
               style={{ background: "rgba(255,255,255,0.05)" }}
             >
               {/* Decorative quote mark */}
               <span
                 data-quote-mark
-                className="absolute right-6 top-4 font-heading font-bold leading-none text-hoser-gold/10 transition-all duration-500 group-hover:text-hoser-gold/20"
+                className="absolute right-6 top-4 font-heading font-bold leading-none text-[#5AACCF]/10 transition-all duration-500 group-hover:text-[#5AACCF]/20"
                 style={{ fontSize: "8rem" }}
               >
                 "
               </span>
 
               {/* Stars */}
-              <div className="mb-6 flex gap-1 text-hoser-gold">
+              <div className="mb-6 flex gap-1 text-[#5AACCF]">
                 {[...Array(5)].map((_, i) => (
                   <BiSolidStar key={i} data-star className="size-4" />
                 ))}
@@ -173,7 +173,7 @@ export function Testimonial6() {
                 <img
                   src={t.img}
                   alt={t.name}
-                  className="size-12 rounded-full object-cover ring-2 ring-hoser-gold/30"
+                  className="size-12 rounded-full object-cover ring-2 ring-[#5AACCF]/30"
                 />
                 <div>
                   <p className="font-body text-sm font-semibold text-white">{t.name}</p>
@@ -182,7 +182,7 @@ export function Testimonial6() {
               </div>
 
               {/* Bottom gold accent */}
-              <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-hoser-gold transition-all duration-500 group-hover:w-full" />
+              <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-[#5AACCF] transition-all duration-500 group-hover:w-full" />
             </div>
           ))}
         </div>

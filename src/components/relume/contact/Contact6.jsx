@@ -1,140 +1,137 @@
 "use client";
 
-import {
-  Button,
-  Checkbox,
-  Input,
-  Label,
-  RadioGroup,
-  RadioGroupItem,
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Textarea,
-} from "@relume_io/relume-ui";
 import React from "react";
 import { BiEnvelope, BiMap, BiPhone } from "react-icons/bi";
 
+const inputCls = [
+  "w-full border border-[rgba(14,42,107,0.20)] bg-white px-4 py-3",
+  "font-body text-sm text-[#0A1628] placeholder:text-[#0A1628]/40",
+  "outline-none transition-colors duration-200",
+  "focus:border-[#0E2A6B] focus:ring-0",
+].join(" ");
+
+const labelCls = "block mb-2 font-body text-xs font-semibold uppercase tracking-[0.15em] text-[#0A1628]/60";
+
 export function Contact6() {
   return (
-    <section id="relume" className="px-[5%] py-16 md:py-24 lg:py-28">
-      <div className="container grid grid-cols-1 items-start gap-y-12 md:grid-flow-row md:grid-cols-2 md:gap-x-12 lg:grid-flow-col lg:gap-x-20 lg:gap-y-16">
+    <section style={{ backgroundColor: "#FDFCF8" }} className="px-[5%] py-16 md:py-24 lg:py-28">
+      <div className="container grid grid-cols-1 items-start gap-y-12 md:grid-cols-2 md:gap-x-12 lg:gap-x-20">
+
+        {/* Left: info */}
         <div>
-          <div className="mb-6 md:mb-8">
-            <p className="mb-3 font-semibold md:mb-4">Anfragen</p>
-            <h2 className="mb-5 text-5xl font-bold md:mb-6 md:text-7xl lg:text-8xl">
+          <div className="mb-8">
+            <p className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-[#0E2A6B]">
+              Anfragen
+            </p>
+            <h2 className="mb-5 font-heading text-5xl font-bold text-[#0A1628] md:text-6xl lg:text-7xl">
               Ihr Projekt
             </h2>
-            <p className="md:text-md">
+            <p className="font-body text-base text-[#0A1628]/60">
               Wir antworten innerhalb eines Arbeitstages
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-4 py-2">
+          <div className="grid gap-4">
             <div className="flex items-center gap-4">
-              <BiEnvelope className="size-6 flex-none" />
-              <p>info@hoser-bauunternehmung.de</p>
+              <BiEnvelope className="size-5 flex-none text-[#0E2A6B]" />
+              <p className="font-body text-sm text-[#0A1628]">schmid-bau@gmx.net</p>
             </div>
             <div className="flex items-center gap-4">
-              <BiPhone className="size-6 flex-none" />
-              <p>08121 – 47 11 0</p>
+              <BiPhone className="size-5 flex-none text-[#0E2A6B]" />
+              <p className="font-body text-sm text-[#0A1628]">08762 / 426420</p>
             </div>
             <div className="flex items-center gap-4">
-              <BiMap className="size-6 flex-none" />
-              <p>Adalbert-Stifter-Weg 29, 85570 Markt Schwaben</p>
+              <BiMap className="size-5 flex-none text-[#0E2A6B]" />
+              <p className="font-body text-sm text-[#0A1628]">Kreuzstraße 19, 85459 Berglern</p>
             </div>
           </div>
         </div>
-        <form className="grid max-w-lg grid-cols-1 grid-rows-[auto_auto] gap-6">
-          <div className="grid grid-cols-2 gap-6">
-            <div className="grid w-full items-center">
-              <Label htmlFor="firstName" className="mb-2">
-                Vorname
-              </Label>
-              <Input type="text" id="firstName" />
+
+        {/* Right: form */}
+        <form className="grid gap-5">
+          <div className="grid grid-cols-2 gap-5">
+            <div>
+              <label htmlFor="firstName" className={labelCls}>Vorname</label>
+              <input type="text" id="firstName" className={inputCls} />
             </div>
-            <div className="grid w-full items-center">
-              <Label htmlFor="lastName" className="mb-2">
-                Nachname
-              </Label>
-              <Input type="text" id="lastName" />
+            <div>
+              <label htmlFor="lastName" className={labelCls}>Nachname</label>
+              <input type="text" id="lastName" className={inputCls} />
             </div>
           </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div className="grid w-full items-center">
-              <Label htmlFor="email" className="mb-2">
-                E-Mail
-              </Label>
-              <Input type="email" id="email" />
+
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+            <div>
+              <label htmlFor="email" className={labelCls}>E-Mail</label>
+              <input type="email" id="email" className={inputCls} />
             </div>
-            <div className="grid w-full items-center">
-              <Label htmlFor="phone" className="mb-2">
-                Telefonnummer
-              </Label>
-              <Input type="text" id="phone" />
+            <div>
+              <label htmlFor="phone" className={labelCls}>Telefon</label>
+              <input type="tel" id="phone" className={inputCls} />
             </div>
           </div>
-          <div className="grid w-full items-center">
-            <Label className="mb-2">Art des Projekts</Label>
-            <Select>
-              <SelectTrigger>
-                <SelectValue placeholder="Bitte wählen" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="first-choice">First Choice</SelectItem>
-                <SelectItem value="second-choice">Second Choice</SelectItem>
-                <SelectItem value="third-choice">Third Choice</SelectItem>
-              </SelectContent>
-            </Select>
+
+          <div>
+            <label htmlFor="project" className={labelCls}>Art des Projekts</label>
+            <select
+              id="project"
+              className={inputCls + " appearance-none cursor-pointer"}
+              defaultValue=""
+            >
+              <option value="" disabled>Bitte wählen</option>
+              <option value="neubau">Neubau</option>
+              <option value="sanierung">Sanierung</option>
+              <option value="erweiterung">Erweiterung</option>
+              <option value="beratung">Beratung</option>
+              <option value="sonstiges">Sonstiges</option>
+            </select>
           </div>
-          <div className="grid w-full items-center py-3 md:py-4">
-            <Label className="mb-3 md:mb-4">Wie beschreiben Sie sich?</Label>
-            <RadioGroup className="grid grid-cols-2 gap-x-6 gap-y-3.5">
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="Neubau" id="#first_choice" />
-                <Label htmlFor="#first_choice">Neubau</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="First choice" id="#second_choice" />
-                <Label htmlFor="#second_choice">Sanierung</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="First choice" id="#third_choice" />
-                <Label htmlFor="#third_choice">Erweiterung</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="First choice" id="#fourth_choice" />
-                <Label htmlFor="#fourth_choice">Modernisierung</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="First choice" id="#fifth_choice" />
-                <Label htmlFor="#fifth_choice">Beratung</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="First choice" id="#other" />
-                <Label htmlFor="#other">Sonstiges</Label>
-              </div>
-            </RadioGroup>
+
+          <div>
+            <p className={labelCls + " mb-3"}>Wie beschreiben Sie sich?</p>
+            <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+              {["Neubau","Sanierung","Erweiterung","Modernisierung","Beratung","Sonstiges"].map((opt) => (
+                <label key={opt} className="flex items-center gap-2.5 cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="beschreibung"
+                    value={opt}
+                    className="appearance-none size-4 rounded-full border-2 border-[rgba(14,42,107,0.30)] checked:border-[#0E2A6B] checked:bg-[#0E2A6B] transition-colors duration-200 cursor-pointer flex-none"
+                  />
+                  <span className="font-body text-sm text-[#0A1628]/70 group-hover:text-[#0A1628] transition-colors">{opt}</span>
+                </label>
+              ))}
+            </div>
           </div>
-          <div className="grid w-full items-center">
-            <Label htmlFor="message" className="mb-2">
-              Nachricht
-            </Label>
-            <Textarea
+
+          <div>
+            <label htmlFor="message" className={labelCls}>Nachricht</label>
+            <textarea
               id="message"
+              rows={6}
               placeholder="Erzählen Sie uns von Ihrem Projekt"
-              className="min-h-[11.25rem] overflow-auto"
+              className={inputCls + " resize-none"}
             />
           </div>
-          <div className="mb-3 flex items-center space-x-2 text-sm md:mb-4">
-            <Checkbox id="terms" />
-            <Label htmlFor="terms" className="cursor-pointer">
+
+          <div className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              id="terms"
+              className="mt-0.5 size-4 appearance-none border-2 border-[rgba(14,42,107,0.30)] checked:border-[#0E2A6B] checked:bg-[#0E2A6B] transition-colors duration-200 cursor-pointer flex-none"
+            />
+            <label htmlFor="terms" className="font-body text-sm text-[#0A1628]/60 cursor-pointer leading-snug">
               Ich akzeptiere die Datenschutzerklärung
-            </Label>
+            </label>
           </div>
+
           <div>
-            <Button title="Senden">Senden</Button>
+            <button
+              type="submit"
+              className="inline-flex items-center gap-2 border border-[#0E2A6B] bg-[#0E2A6B] px-8 py-4 font-body text-sm font-semibold uppercase tracking-[0.1em] text-white transition-all duration-300 hover:bg-transparent hover:text-[#0E2A6B]"
+            >
+              Senden
+              <span>→</span>
+            </button>
           </div>
         </form>
       </div>

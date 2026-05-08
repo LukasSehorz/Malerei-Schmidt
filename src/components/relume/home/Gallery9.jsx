@@ -13,15 +13,15 @@ const projects = [
   },
   {
     id: "02",
-    image: "/images/villa-twilight.jpg",
-    title: "Wohnpark Haydn, Markt Schwaben",
+    image: "/images/wohnpark-haydn.jpg",
+    title: "Wohnpark Haydn, Berglern",
     category: "Wohnungsbau · 56 WE + Tiefgarage",
     year: "2015",
   },
   {
     id: "03",
     image: "/images/craftsmen-stone-facade.jpg",
-    title: "Firma Seidenader, Markt Schwaben",
+    title: "Firma Seidenader, Berglern",
     category: "Industriebau · Produktionshalle + Büro",
     year: "2007",
   },
@@ -151,16 +151,16 @@ export function Gallery9() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-background-primary px-[5%] py-16 md:py-24 lg:py-28">
+    <section ref={sectionRef} className="px-[5%] py-16 md:py-24 lg:py-28" style={{ backgroundColor: "#FDFCF8" }}>
       <div className="container">
 
         {/* Heading */}
         <div className="g9-heading-area mb-14 max-w-2xl md:mb-18">
-          <p className="g9-eyebrow mb-4 font-body text-sm font-semibold uppercase tracking-[0.25em] text-hoser-gold">
+          <p className="g9-eyebrow mb-4 font-body text-sm font-semibold uppercase tracking-[0.25em] text-[#0E2A6B]">
             Portfolio
           </p>
           <h2
-            className="font-heading font-bold leading-[1.05] tracking-tight text-text-primary"
+            className="font-heading font-bold leading-[1.05] tracking-tight text-[#0A1628]"
             style={{ fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)" }}
           >
             <span className="block" style={{ overflow: "hidden", paddingBottom: "0.08em" }}>
@@ -168,7 +168,7 @@ export function Gallery9() {
             </span>
             <span className="block" style={{ overflow: "hidden", paddingBottom: "0.08em" }}>
               <span className="g9-heading-inner block">
-                <em className="font-serif font-light not-italic text-text-secondary">
+                <em className="font-serif font-light not-italic text-[#5A6478]">
                   Projekte.
                 </em>
               </span>
@@ -204,7 +204,7 @@ export function Gallery9() {
 
                   {/* Title overlay */}
                   <div className="g9-card-content absolute bottom-0 left-0 right-0 p-6 md:p-8">
-                    <div className="g9-card-line mb-3 h-px w-8 bg-hoser-gold" />
+                    <div className="g9-card-line mb-3 h-px w-8 bg-[#0E2A6B]" />
                     <h3
                       className="font-heading font-bold leading-tight tracking-tight text-white"
                       style={{ fontSize: "clamp(1.25rem, 2.2vw, 2rem)" }}
@@ -220,7 +220,7 @@ export function Gallery9() {
                 {/* Number panel */}
                 <div className="g9-num-panel flex items-center justify-center">
                   <span
-                    className="font-heading font-bold leading-none tracking-tight text-text-primary/10 select-none"
+                    className="font-heading font-bold leading-none tracking-tight text-[#0A1628]/10 select-none"
                     style={{ fontSize: "clamp(8rem, 18vw, 18rem)" }}
                     aria-hidden="true"
                   >
@@ -236,16 +236,16 @@ export function Gallery9() {
         <div className="g9-cta-row mt-12 flex flex-wrap items-center gap-6 md:mt-16">
           <a
             href="/projekte"
-            className="g9-cta inline-flex items-center bg-hoser-gold px-8 py-4 font-body text-sm font-semibold uppercase tracking-[0.1em] text-white transition-opacity duration-200 hover:opacity-85"
+            className="g9-cta inline-flex items-center bg-[#0E2A6B] px-8 py-4 font-body text-sm font-semibold uppercase tracking-[0.1em] text-white transition-opacity duration-200 hover:opacity-85"
           >
             Alle Projekte ansehen
           </a>
           <a
             href="/projekte"
-            className="g9-cta inline-flex items-center gap-3 font-body text-sm font-semibold uppercase tracking-[0.1em] text-text-secondary transition-colors duration-200 hover:text-text-primary"
+            className="g9-cta inline-flex items-center gap-3 font-body text-sm font-semibold uppercase tracking-[0.1em] text-[#5A6478] transition-colors duration-200 hover:text-[#0A1628]"
           >
             Projektübersicht
-            <span className="text-hoser-gold">→</span>
+            <span className="text-[#0E2A6B]">→</span>
           </a>
         </div>
 

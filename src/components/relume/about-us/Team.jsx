@@ -4,21 +4,16 @@ import React, { useEffect, useRef } from "react";
 import { gsap } from "../../../utils/gsap";
 
 const team = [
-  { name: "Claudia Hoser",      role: "Geschäftsführerin",          img: "/images/team/ceo_woman.jpg" },
-  { name: "Josef Lippacher",    role: "Geschäftsführer",            img: "/images/team/ceo_man.jpg" },
-  { name: "Martin Bauer",       role: "Bauleiter",                  img: "/images/team/site_manager.jpg" },
-  { name: "Stefan Huber",       role: "Polier",                     img: "/images/team/polier.jpg" },
-  { name: "Andreas Maier",      role: "Polier",                     img: "/images/team/site_manager.jpg" },
-  { name: "Thomas Schneider",   role: "Maurermeister",              img: "/images/team/mason.jpg" },
-  { name: "Michael Wagner",     role: "Beton- & Stahlbetonbauer",   img: "/images/team/concrete.jpg" },
-  { name: "Klaus Fischer",      role: "Kanalbauer",                 img: "/images/team/kanal.jpg" },
-  { name: "Sebastian Müller",   role: "Kranführer",                 img: "/images/team/crane_op.jpg" },
-  { name: "Florian Zimmermann", role: "Baggerfahrer",               img: "/images/team/excavator.jpg" },
-  { name: "Peter Hofmann",      role: "Schalungszimmerer",          img: "/images/team/concrete.jpg" },
-  { name: "Hans Berger",        role: "Maschinenführer",            img: "/images/team/excavator.jpg" },
-  { name: "Eva Keller",         role: "Buchhaltung",                img: "/images/team/office_woman1.jpg" },
-  { name: "Sandra Richter",     role: "Projektassistenz",           img: "/images/team/office_woman2.jpg" },
-  { name: "Christian Wolf",     role: "Azubi – Maurer",             img: "/images/team/apprentice.jpg" },
+  { name: "Michael Schmid",     role: "Geschäftsführer",            img: "/images/michael-schmid.png" },
+  { name: "Maurermeister",      role: "Hochbau & Rohbau",           img: "/images/team/mason.jpg" },
+  { name: "Polier",             role: "Bauleitung",                 img: "/images/team/polier.jpg" },
+  { name: "Kranführer",         role: "Ladekran & Transport",       img: "/images/team/crane_op.jpg" },
+  { name: "Tiefbauer",          role: "Tiefbau & Erdarbeiten",      img: "/images/team/kanal.jpg" },
+  { name: "Gerüstbauer",        role: "Gerüstbau",                  img: "/images/team/site_manager.jpg" },
+  { name: "Fahrer",             role: "Schüttgut & Transporte",     img: "/images/team/excavator.jpg" },
+  { name: "Baustoffhandel",     role: "Lager & Beratung",           img: "/images/team/concrete.jpg" },
+  { name: "Baufachkraft",       role: "Sanierung & Renovierung",    img: "/images/team/apprentice.jpg" },
+  { name: "Büro",               role: "Administration",             img: "/images/team/office_woman1.jpg" },
 ];
 
 const splitWords = (el, text) => {
@@ -98,23 +93,23 @@ export function Team() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-[#f0f0ef] px-[5%] py-16 md:py-24 lg:py-28">
+    <section ref={sectionRef} className="px-[5%] py-16 md:py-24 lg:py-28" style={{ backgroundColor: "#FDFCF8" }}>
       <div className="container">
 
         {/* Heading */}
         <div className="mb-14 md:mb-18">
-          <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-[#C9A84C]">
-            Menschen bei Hoser
+          <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-[#0E2A6B]">
+            Menschen bei Schmid-Bau
           </p>
           <h2
             ref={headingRef}
-            className="font-heading font-bold leading-tight tracking-tight text-[#0a1020]"
+            className="font-heading font-bold leading-tight tracking-tight text-[#0A1628]"
             style={{ fontSize: "clamp(2rem, 4vw, 4rem)" }}
           >
             Unser Team
           </h2>
-          <p ref={subRef} className="mt-4 max-w-xl font-body text-base text-[#0a1020]/60">
-            Eigenes, ausgebildetes Fachpersonal – kein Rückgriff auf Werklohnfirmen.
+          <p ref={subRef} className="mt-4 max-w-xl font-body text-base text-[#0A1628]/60">
+            Zehnköpfiges Team mit breitem Leistungsspektrum – von Hochbau bis Transporte.
           </p>
         </div>
 
@@ -136,14 +131,14 @@ export function Team() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                 {/* Gold bottom line on hover */}
-                <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#C9A84C] transition-all duration-500 group-hover:w-full" />
+                <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-[#0E2A6B] transition-all duration-500 group-hover:w-full" />
               </div>
 
               {/* Info */}
-              <h3 data-team-name className="font-heading text-sm font-bold text-[#0a1020] md:text-base">
+              <h3 data-team-name className="font-heading text-sm font-bold text-[#0A1628] md:text-base">
                 {member.name}
               </h3>
-              <p data-team-role className="mt-1 font-body text-xs text-[#C9A84C]/80">
+              <p data-team-role className="mt-1 font-body text-xs text-[#0E2A6B]/80">
                 {member.role}
               </p>
             </div>

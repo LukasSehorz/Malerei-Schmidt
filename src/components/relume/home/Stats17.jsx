@@ -4,10 +4,10 @@ import { useRef, useEffect } from "react";
 import { gsap } from "../../../utils/gsap";
 
 const stats = [
-  { value: "547", label: "Abgeschlossene Projekte", num: 547, suffix: "" },
+  { value: "57",  label: "Abgeschlossene Projekte",  num: 57,  suffix: "" },
   { value: "98%", label: "Pünktliche Fertigstellung", num: 98,  suffix: "%" },
   { value: "96%", label: "Im Budgetrahmen",           num: 96,  suffix: "%" },
-  { value: "70+", label: "Jahre in Bayern",           num: 70,  suffix: "+" },
+  { value: "30+", label: "Jahre in der Region",       num: 30,  suffix: "+" },
 ];
 
 export function Stats17() {
@@ -94,8 +94,8 @@ export function Stats17() {
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-text-primary"
-      style={{ height: "100vh" }}
+      className="relative overflow-hidden"
+      style={{ height: "100vh", backgroundColor: "#FDFCF8" }}
     >
       {/* Background image — clip-path animated wrapper */}
       <div className="s17-bg-clip absolute inset-0 z-0">
@@ -105,7 +105,7 @@ export function Stats17() {
           className="s17-bg-img absolute inset-0 size-full object-cover"
           style={{ willChange: "transform" }}
         />
-        <div className="s17-overlay absolute inset-0 bg-text-primary" />
+        <div className="s17-overlay absolute inset-0" style={{ backgroundColor: "#FDFCF8" }} />
       </div>
 
       {/* Content — hidden until image fills the section */}
@@ -114,22 +114,22 @@ export function Stats17() {
 
           {/* Left */}
           <div>
-            <p className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.2em] text-hoser-gold md:mb-4">
+            <p className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.28em] text-[#0E2A6B] md:mb-4">
               Unsere Zahlen
             </p>
-            <h2 className="mb-5 font-heading text-5xl font-bold leading-tight tracking-tight text-text-alternative md:mb-6 md:text-7xl lg:text-8xl">
+            <h2 className="mb-5 font-heading text-5xl font-bold leading-tight tracking-tight text-[#0A1628] md:mb-6 md:text-7xl lg:text-8xl">
               Ergebnisse,<br />die für sich sprechen
             </h2>
-            <p className="font-body text-base text-text-alternative/75 md:text-lg">
-              Über 70 Jahre Bauen in Bayern. Hunderte von Gebäuden. Ein Ruf.
+            <p className="font-body text-base text-[#0A1628]/65 md:text-lg">
+              Seit 1992 in der Region Erding. Projekte für Generationen. Ein Name.
             </p>
             <div className="mt-8">
               <a
                 href="/projekte"
-                className="inline-flex items-center gap-3 border border-text-alternative/30 px-7 py-3 font-body text-sm font-semibold tracking-wide text-text-alternative transition-all duration-200 hover:border-hoser-gold hover:text-hoser-gold"
+                className="group inline-flex items-center gap-3 border border-[#0E2A6B]/30 px-7 py-3 font-body text-sm font-semibold tracking-[0.14em] uppercase text-[#0E2A6B] transition-all duration-200 hover:bg-[#0E2A6B] hover:text-white hover:border-[#0E2A6B]"
               >
                 Projekte entdecken
-                <span>→</span>
+                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
               </a>
             </div>
           </div>
@@ -138,11 +138,11 @@ export function Stats17() {
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 py-2 md:gap-x-12 md:gap-y-12">
             {stats.map((stat) => (
               <div key={stat.label} className="relative pl-6">
-                <div className="s17-item-border absolute left-0 top-0 h-full w-0.5 bg-hoser-gold" />
-                <p className="s17-num mb-2 font-heading text-5xl font-bold leading-tight text-text-alternative md:text-6xl lg:text-7xl">
+                <div className="s17-item-border absolute left-0 top-0 h-full w-0.5 bg-[#0E2A6B]/70" />
+                <p className="s17-num mb-2 font-heading text-5xl font-bold leading-tight text-[#0A1628] md:text-6xl lg:text-7xl">
                   {stat.value}
                 </p>
-                <p className="font-body text-sm font-medium text-text-alternative/70 md:text-base">
+                <p className="font-body text-sm font-medium text-[#0A1628]/65 md:text-base">
                   {stat.label}
                 </p>
               </div>

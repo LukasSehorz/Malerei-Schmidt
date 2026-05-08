@@ -3,10 +3,10 @@
 import React from "react";
 
 const stats = [
-  { value: "1952", label: "Gründungsjahr" },
-  { value: "70+", label: "Jahre Erfahrung in Bayern" },
-  { value: "5", label: "Gewerke aus einer Hand" },
-  { value: "3.", label: "Generation Familienunternehmen" },
+  { value: "1992", label: "Gründungsjahr" },
+  { value: "30+", label: "Jahre Erfahrung in der Region" },
+  { value: "10", label: "Leistungen aus einer Hand" },
+  { value: "10", label: "Mitarbeiter im Team" },
 ];
 
 export function Stats15() {
@@ -16,7 +16,7 @@ export function Stats15() {
         <img
           src="/images/munich-residential.jpg"
           className="size-full object-cover"
-          alt="Hoser Bauprojekt"
+          alt="Schmid-Bau Bauprojekt"
         />
         <div className="absolute inset-0 bg-text-primary/75" />
       </div>
@@ -27,11 +27,11 @@ export function Stats15() {
               Das Unternehmen in Zahlen
             </p>
             <h2 className="mb-5 font-heading text-4xl font-bold leading-tight tracking-tight text-white md:mb-6 md:text-5xl lg:text-6xl">
-              Markt Schwaben.<br />Seit drei Generationen.
+              Berglern.<br />Seit drei Generationen.
             </h2>
             <p className="font-body text-base text-white/65 md:text-lg">
-              Gegründet von Michael Hoser, weitergeführt von Dieter und Manfred Hoser,
-              heute geleitet von Claudia Hoser und Josef Lippacher.
+              Gegründet von Michael Schmid-Bau, weitergeführt von Dieter und Manfred Schmid-Bau,
+              heute geleitet von Claudia Schmid-Bau und Michael Schmid.
             </p>
             <div className="mt-8">
               <a

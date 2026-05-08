@@ -6,17 +6,17 @@ import { gsap } from "../../../utils/gsap";
 const features = [
   {
     title: "Handwerk als Berufung",
-    body: "Gegründet 1952 von Michael Hoser als Maurerfirma mit drei Mitarbeitern. Heute führen wir das Unternehmen in der dritten Generation – mit denselben Werten, aber modernster Technik und eigenem, ausgebildetem Fachpersonal.",
+    body: "Gegründet 1992 als Familienbetrieb. Seit 2007 führt Michael Schmid das väterliche Unternehmen und setzt auf bewährte Werte: Qualität, Verlässlichkeit und persönliche Betreuung auf jedem Bauprojekt.",
     image: "/images/craftsmen-stone-facade.jpg",
   },
   {
-    title: "Verlässlichkeit",
-    body: "Klare Angebote, transparente Zeitpläne, direkte Kommunikation. Wir koordinieren Architekten, Ingenieure und Fachgewerke – Sie haben einen Ansprechpartner von der ersten Besprechung bis zur Schlüsselübergabe.",
+    title: "Persönlichkeit & Beständigkeit",
+    body: "Klare Angebote, direkte Kommunikation, ein Ansprechpartner. Mit unserem zehnköpfigen Team betreuen wir jedes Projekt von der Planung bis zur Schlüsselübergabe – zuverlässig und termintreu.",
     image: "/images/team-blueprints.jpg",
   },
   {
     title: "Verwurzelt in der Region",
-    body: "Markt Schwaben ist unser Zuhause. Seit über 70 Jahren bauen wir im Raum Ebersberg, Erding und München-Ost. Wir kennen die lokalen Behörden, Genehmigungsverfahren und die Anforderungen dieser Region.",
+    body: "Berglern ist unsere Heimat. Seit 1992 bauen wir in der Region Erding und weit darüber hinaus. Seit 2015 finden Sie uns in einer ehemaligen Schnapsbrennerei – ein Ort mit Charakter, wie unsere Arbeit.",
     image: "/images/munich-residential.jpg",
   },
 ];
@@ -124,16 +124,16 @@ export function Layout237() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="bg-background-primary px-[5%] py-16 md:py-24 lg:py-28">
+    <section ref={sectionRef} className="px-[5%] py-16 md:py-24 lg:py-28" style={{ backgroundColor: "#FDFCF8" }}>
       <div className="container">
 
         {/* Heading */}
         <div className="l237-heading-area mb-14 max-w-2xl md:mb-18">
-          <p className="l237-eyebrow mb-4 font-body text-sm font-semibold uppercase tracking-[0.25em] text-hoser-gold">
+          <p className="l237-eyebrow mb-4 font-body text-sm font-semibold uppercase tracking-[0.25em] text-[#0E2A6B]">
             Unsere Philosophie
           </p>
           <h2
-            className="font-heading font-bold leading-[1.05] tracking-tight text-text-primary"
+            className="font-heading font-bold leading-[1.05] tracking-tight text-[#0A1628]"
             style={{ fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)" }}
           >
             <span className="block" style={{ overflow: "hidden", paddingBottom: "0.08em" }}>
@@ -141,7 +141,7 @@ export function Layout237() {
             </span>
             <span className="block" style={{ overflow: "hidden", paddingBottom: "0.08em" }}>
               <span className="l237-heading-inner block">
-                <em className="font-serif font-light not-italic text-text-secondary">
+                <em className="font-serif font-light not-italic text-[#5A6478]">
                   Wie wir bauen.
                 </em>
               </span>
@@ -176,11 +176,12 @@ export function Layout237() {
                 />
 
                 <div
-                  className="pointer-events-none absolute top-4 font-heading font-bold leading-none text-white/6 select-none"
+                  className="pointer-events-none absolute top-4 font-heading font-bold leading-none select-none"
                   style={{
                     fontSize: "clamp(5rem, 14vw, 12rem)",
                     right: isEven ? "2rem" : "auto",
                     left: isEven ? "auto" : "2rem",
+                    color: "rgba(255,255,255,0.45)",
                   }}
                   aria-hidden="true"
                 >
@@ -190,7 +191,7 @@ export function Layout237() {
                 <div
                   className={`l237-card-content absolute bottom-0 ${isEven ? "left-0" : "right-0"} p-8 md:p-12 max-w-xl`}
                 >
-                  <div className="l237-card-line mb-4 h-px w-8 bg-hoser-gold" />
+                  <div className="l237-card-line mb-4 h-px w-8 bg-[#0E2A6B]" />
                   <h3
                     className="mb-3 font-heading font-bold leading-tight tracking-tight text-white"
                     style={{ fontSize: "clamp(1.5rem, 2.8vw, 2.4rem)" }}
@@ -210,16 +211,16 @@ export function Layout237() {
         <div className="l237-cta-row mt-12 flex flex-wrap items-center gap-6 md:mt-16">
           <a
             href="/leistungen"
-            className="l237-cta inline-flex items-center bg-hoser-gold px-8 py-4 font-body text-sm font-semibold uppercase tracking-[0.1em] text-white transition-opacity duration-200 hover:opacity-85"
+            className="l237-cta inline-flex items-center bg-[#0E2A6B] px-8 py-4 font-body text-sm font-semibold uppercase tracking-[0.1em] text-white transition-opacity duration-200 hover:opacity-85"
           >
             Leistungen entdecken
           </a>
           <a
             href="/ueber-uns"
-            className="l237-cta inline-flex items-center gap-3 font-body text-sm font-semibold uppercase tracking-[0.1em] text-text-secondary transition-colors duration-200 hover:text-text-primary"
+            className="l237-cta inline-flex items-center gap-3 font-body text-sm font-semibold uppercase tracking-[0.1em] text-[#5A6478] transition-colors duration-200 hover:text-[#0A1628]"
           >
             Unsere Geschichte
-            <span className="text-hoser-gold">→</span>
+            <span className="text-[#0E2A6B]">→</span>
           </a>
         </div>
 

@@ -44,7 +44,7 @@ export function ProzessHero() {
       {/* Background image */}
       <img
         src="/images/prozess-hero.jpg"
-        alt="Hoser Bauunternehmen – Prozess"
+        alt="Schmid-Bau GmbH – Prozess"
         className="prozess-hero-bg absolute inset-0 h-full w-full object-cover object-center"
         style={{ willChange: "transform" }}
       />
@@ -52,7 +52,7 @@ export function ProzessHero() {
       <div
         className="absolute inset-0"
         style={{
-          background: "linear-gradient(to right, rgba(4,10,22,0.96) 0%, rgba(4,10,22,0.82) 40%, rgba(4,10,22,0.3) 75%, rgba(4,10,22,0.05) 100%)",
+          background: "linear-gradient(to right, rgba(14,42,107,0.82) 0%, rgba(14,42,107,0.60) 40%, rgba(14,42,107,0.25) 75%, rgba(14,42,107,0.05) 100%)",
         }}
       />
 
@@ -127,7 +127,7 @@ export function ProzessHero() {
         {/* Row 1: Scrollen vertical text + CTA, items-center keeps them vertically centered */}
         <div className="flex items-center gap-5">
           <span
-            className="prozess-hero-scroll block font-body text-[0.6rem] uppercase tracking-[0.4em] text-white/30"
+            className="prozess-hero-scroll block font-body text-[0.6rem] uppercase tracking-[0.4em] text-white/60"
             style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
           >
             Scrollen
@@ -160,10 +160,10 @@ export function ProzessHero() {
               </svg>
             </span>
             <span className="text-left">
-              <span className="block font-body text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-hoser-gold">
+              <span className="block font-body text-[0.7rem] font-semibold uppercase tracking-[0.32em] text-[#5AACCF]">
                 Prozess entdecken
               </span>
-              <span className="mt-1 block font-body text-[0.65rem] uppercase tracking-[0.22em] text-white/40">
+              <span className="mt-1 block font-body text-[0.65rem] uppercase tracking-[0.22em] text-white/70">
                 5 Schritte · 1 Versprechen
               </span>
             </span>
@@ -171,7 +171,7 @@ export function ProzessHero() {
         </div>
 
         {/* Row 2: animated line+dot below the Scrollen text */}
-        <span className="prozess-hero-scroll relative mt-4 ml-[3px] block h-16 w-px bg-white/15 overflow-hidden">
+        <span className="prozess-hero-scroll relative mt-4 ml-[3px] block h-16 w-px bg-white/35 overflow-hidden">
           <span className="prozess-hero-dot absolute left-0 top-0 block w-px h-4 bg-hoser-gold" />
         </span>
       </div>

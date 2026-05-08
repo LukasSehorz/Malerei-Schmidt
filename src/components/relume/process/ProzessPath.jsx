@@ -85,12 +85,14 @@ const PATH_D =
   "C 3820,150 4180,300 4500,300";
 
 export function ProzessPath() {
-  const sectionRef = useRef(null);
-  const stripRef   = useRef(null);
-  const pathRef    = useRef(null);
-  const dotRefs    = useRef([]);
-  const cardRefs   = useRef([]);
-  const imgRefs    = useRef([]);
+  const sectionRef  = useRef(null);
+  const stripRef    = useRef(null);
+  const pathRef     = useRef(null);
+  const headingRef  = useRef(null);
+  const prozessRef  = useRef(null);
+  const dotRefs     = useRef([]);
+  const cardRefs    = useRef([]);
+  const imgRefs     = useRef([]);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -197,6 +199,13 @@ export function ProzessPath() {
           duration: STEP_DURATION,
           ease: STEP_EASE,
         }, 0);
+
+        // Heading + PROZESS fade out when leaving step 0, fade in when returning
+        if (dir > 0 && prev === 0) {
+          tl.to([headingRef.current, prozessRef.current], { opacity: 0, y: -12, duration: 0.4, ease: "power2.in" }, 0);
+        } else if (dir < 0 && target === 0) {
+          tl.to([headingRef.current, prozessRef.current], { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }, STEP_DURATION * 0.4);
+        }
 
         if (dir > 0) {
           // ── FORWARD: reveal new step ────────────────────────────────
@@ -319,6 +328,7 @@ export function ProzessPath() {
           setCardContent(i, visible);
         });
         currentStep = idx;
+        gsap.set([headingRef.current, prozessRef.current], { opacity: idx === 0 ? 1 : 0, y: idx === 0 ? 0 : -12 });
       };
 
       // ── Pinning ScrollTrigger ─────────────────────────────────────────
@@ -491,34 +501,37 @@ export function ProzessPath() {
         style={{
           position: "relative",
           height: "100vh", overflow: "hidden",
-          background: "#06101E",
+          background: "#FDFCF8",
         }}
       >
-        {/* Subtle grid texture */}
-        <div
-          style={{
-            position: "absolute", inset: 0, zIndex: 0,
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px)," +
-              "linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
 
-        {/* Section label */}
-        <div style={{
-          position: "absolute", top: 36, left: "5%", zIndex: 10,
-          display: "flex", alignItems: "center", gap: 12,
-        }}>
-          <span style={{ display: "block", height: 1, width: 32, background: "#C8962E" }} />
-          <span style={{
-            fontFamily: "DM Sans, sans-serif",
-            fontSize: "0.68rem", fontWeight: 600,
-            letterSpacing: "0.25em", textTransform: "uppercase",
-            color: "#C8962E",
+        {/* Section label — fixed to section, not strip */}
+        <div
+          ref={headingRef}
+          style={{
+            position: "absolute", top: 96, left: "5%", zIndex: 10,
+            pointerEvents: "none",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
+            <span style={{ display: "block", height: 1, width: 32, background: "#0E2A6B" }} />
+            <span style={{
+              fontFamily: "DM Sans, sans-serif",
+              fontSize: "0.68rem", fontWeight: 600,
+              letterSpacing: "0.25em", textTransform: "uppercase",
+              color: "#0E2A6B",
+            }}>
+              Der Schmid-Bau-Prozess
+            </span>
+          </div>
+          <h2 style={{
+            fontFamily: "Syne, sans-serif", fontWeight: 800,
+            fontSize: "clamp(2rem, 3.5vw, 3.5rem)",
+            color: "#0A1628", lineHeight: 1.1, letterSpacing: "-0.02em",
+            margin: 0,
           }}>
-            Der Hoser-Prozess
-          </span>
+            Von der Idee<br />zum Schlüssel.
+          </h2>
         </div>
 
         {/* Horizontal strip */}
@@ -546,7 +559,7 @@ export function ProzessPath() {
           >
             <path
               d={PATH_D}
-              stroke="rgba(255,255,255,0.08)"
+              stroke="rgba(14,42,107,0.12)"
               strokeWidth="2"
               fill="none"
               strokeLinecap="round"
@@ -554,7 +567,7 @@ export function ProzessPath() {
             <path
               ref={pathRef}
               d={PATH_D}
-              stroke="rgba(255,255,255,0.70)"
+              stroke="rgba(14,42,107,0.70)"
               strokeWidth="2"
               fill="none"
               strokeLinecap="round"
@@ -565,9 +578,9 @@ export function ProzessPath() {
                 ref={(el) => (dotRefs.current[i] = el)}
                 style={{ transformOrigin: `${node.x}px ${node.y}px` }}
               >
-                <circle cx={node.x} cy={node.y} r="22" fill="rgba(200,150,46,0.12)" />
-                <circle cx={node.x} cy={node.y} r="13" fill="#06101E" stroke="rgba(255,255,255,0.65)" strokeWidth="2" />
-                <circle cx={node.x} cy={node.y} r="4.5" fill="#C8962E" />
+                <circle cx={node.x} cy={node.y} r="22" fill="rgba(14,42,107,0.10)" />
+                <circle cx={node.x} cy={node.y} r="13" fill="#FDFCF8" stroke="rgba(14,42,107,0.65)" strokeWidth="2" />
+                <circle cx={node.x} cy={node.y} r="4.5" fill="#0E2A6B" />
               </g>
             ))}
           </svg>
@@ -598,8 +611,8 @@ export function ProzessPath() {
                   position: "relative",
                   width: "100%", aspectRatio: "16/9",
                   borderRadius: 4, overflow: "hidden",
-                  border: "1px solid rgba(255,255,255,0.10)",
-                  boxShadow: "0 18px 44px -16px rgba(0,0,0,0.7)",
+                  border: "1px solid rgba(14,42,107,0.15)",
+                  boxShadow: "0 18px 44px -16px rgba(14,42,107,0.20)",
                 }}>
                   {step.img && (
                     <img
@@ -615,7 +628,7 @@ export function ProzessPath() {
                   )}
                   <div style={{
                     position: "absolute", inset: 0,
-                    background: "linear-gradient(135deg, rgba(6,16,30,0.35) 0%, rgba(6,16,30,0) 50%, rgba(6,16,30,0.45) 100%)",
+                    background: "linear-gradient(135deg, rgba(7,25,74,0.35) 0%, rgba(7,25,74,0) 50%, rgba(7,25,74,0.55) 100%)",
                   }} />
                   <span style={{
                     position: "absolute", bottom: 10, left: 12,
@@ -662,12 +675,12 @@ export function ProzessPath() {
                         <li key={bi} className="card-bullet" style={{
                           display: "flex", alignItems: "flex-start", gap: 8,
                           fontFamily: "DM Sans, sans-serif", fontSize: "0.88rem",
-                          color: "rgba(255,255,255,0.50)", lineHeight: 1.55,
+                          color: "rgba(10,22,40,0.55)", lineHeight: 1.55,
                           marginBottom: 5, textAlign: "left",
                         }}>
                           <span style={{
                             width: 4, height: 4, borderRadius: "50%",
-                            background: "#C8962E", flexShrink: 0, marginTop: 6,
+                            background: "#0E2A6B", flexShrink: 0, marginTop: 6,
                           }} />
                           {b}
                         </li>
@@ -675,7 +688,7 @@ export function ProzessPath() {
                     </ul>
                     <h3 className="card-title" style={{
                       fontFamily: "Syne, sans-serif", fontWeight: 700,
-                      fontSize: "1.35rem", color: "rgba(255,255,255,0.92)",
+                      fontSize: "1.35rem", color: "#0A1628",
                       marginBottom: 6, lineHeight: 1.2, textAlign: "center",
                     }}>
                       {step.title}
@@ -684,19 +697,19 @@ export function ProzessPath() {
                       textAlign: "center", fontFamily: "DM Sans, sans-serif",
                       fontSize: "0.72rem", fontWeight: 600,
                       letterSpacing: "0.25em", textTransform: "uppercase",
-                      color: "#C8962E", marginBottom: 14,
+                      color: "#0E2A6B", marginBottom: 14,
                     }}>
                       {step.num}
                     </p>
                     <div className="card-icon" style={{ display: "flex", justifyContent: "center" }}>
                       <div style={{
                         width: 62, height: 62,
-                        border: "1.5px solid rgba(255,255,255,0.22)",
+                        border: "1.5px solid rgba(14,42,107,0.25)",
                         borderRadius: "50%",
                         display: "flex", alignItems: "center", justifyContent: "center",
-                        background: "rgba(200,150,46,0.08)",
+                        background: "rgba(14,42,107,0.06)",
                       }}>
-                        <Icon size={26} color="rgba(255,255,255,0.85)" />
+                        <Icon size={26} color="rgba(14,42,107,0.80)" />
                       </div>
                     </div>
                   </>
@@ -705,25 +718,25 @@ export function ProzessPath() {
                     <div className="card-icon" style={{ display: "flex", justifyContent: "center", marginBottom: 14 }}>
                       <div style={{
                         width: 62, height: 62,
-                        border: "1.5px solid rgba(255,255,255,0.22)",
+                        border: "1.5px solid rgba(14,42,107,0.25)",
                         borderRadius: "50%",
                         display: "flex", alignItems: "center", justifyContent: "center",
-                        background: "rgba(200,150,46,0.08)",
+                        background: "rgba(14,42,107,0.06)",
                       }}>
-                        <Icon size={26} color="rgba(255,255,255,0.85)" />
+                        <Icon size={26} color="rgba(14,42,107,0.80)" />
                       </div>
                     </div>
                     <p className="card-num" style={{
                       textAlign: "center", fontFamily: "DM Sans, sans-serif",
                       fontSize: "0.72rem", fontWeight: 600,
                       letterSpacing: "0.25em", textTransform: "uppercase",
-                      color: "#C8962E", marginBottom: 6,
+                      color: "#0E2A6B", marginBottom: 6,
                     }}>
                       {step.num}
                     </p>
                     <h3 className="card-title" style={{
                       fontFamily: "Syne, sans-serif", fontWeight: 700,
-                      fontSize: "1.35rem", color: "rgba(255,255,255,0.92)",
+                      fontSize: "1.35rem", color: "#0A1628",
                       marginBottom: 14, lineHeight: 1.2, textAlign: "center",
                     }}>
                       {step.title}
@@ -733,12 +746,12 @@ export function ProzessPath() {
                         <li key={bi} className="card-bullet" style={{
                           display: "flex", alignItems: "flex-start", gap: 8,
                           fontFamily: "DM Sans, sans-serif", fontSize: "0.88rem",
-                          color: "rgba(255,255,255,0.50)", lineHeight: 1.55,
+                          color: "rgba(10,22,40,0.55)", lineHeight: 1.55,
                           marginBottom: 5, textAlign: "left",
                         }}>
                           <span style={{
                             width: 4, height: 4, borderRadius: "50%",
-                            background: "#C8962E", flexShrink: 0, marginTop: 6,
+                            background: "#0E2A6B", flexShrink: 0, marginTop: 6,
                           }} />
                           {b}
                         </li>
@@ -750,17 +763,22 @@ export function ProzessPath() {
             );
           })}
 
-          {/* Step number watermark */}
-          <div style={{
-            position: "absolute", left: "3vw", top: "50%",
-            transform: "translateY(-50%)",
+        </div>
+
+        {/* PROZESS watermark — left-aligned, fixed to section, fades with heading */}
+        <div
+          ref={prozessRef}
+          style={{
+            position: "absolute", left: "5%", top: "50%",
+          transform: "translateY(-50%)",
             fontFamily: "Syne, sans-serif", fontWeight: 900,
-            fontSize: "clamp(4rem, 8vw, 7rem)",
-            color: "rgba(255,255,255,0.03)", userSelect: "none",
+            fontSize: "clamp(2.4rem, 4.5vw, 4.5rem)",
+            color: "rgba(14,42,107,0.07)", userSelect: "none",
             zIndex: 0, letterSpacing: "-0.04em",
-          }}>
-            PROZESS
-          </div>
+            whiteSpace: "nowrap", pointerEvents: "none",
+          }}
+        >
+          PROZESS
         </div>
 
         {/* Scroll hint */}
@@ -771,12 +789,12 @@ export function ProzessPath() {
           <span style={{
             fontFamily: "DM Sans, sans-serif", fontSize: "0.68rem",
             letterSpacing: "0.2em", textTransform: "uppercase",
-            color: "rgba(255,255,255,0.25)",
+            color: "rgba(14,42,107,0.40)",
           }}>
             Scrollen
           </span>
-          <span style={{ display: "block", height: 1, width: 28, background: "rgba(255,255,255,0.2)" }} />
-          <span style={{ color: "rgba(255,255,255,0.3)", fontSize: "0.9rem" }}>→</span>
+          <span style={{ display: "block", height: 1, width: 28, background: "rgba(14,42,107,0.25)" }} />
+          <span style={{ color: "rgba(14,42,107,0.50)", fontSize: "0.9rem" }}>→</span>
         </div>
       </div>
     </section>

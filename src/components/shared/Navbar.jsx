@@ -55,8 +55,8 @@ function DropdownLink({ link, active }) {
         className={clsx(
           "relative flex items-center gap-1 text-sm font-medium tracking-wide transition-all duration-200",
           active
-            ? "text-hoser-gold opacity-100"
-            : "text-text-primary opacity-70 hover:opacity-100 hover:text-hoser-gold"
+            ? "text-[#5AACCF] opacity-100"
+            : "text-white opacity-65 hover:opacity-100 hover:text-[#5AACCF]"
         )}
       >
         {link.label}
@@ -66,7 +66,7 @@ function DropdownLink({ link, active }) {
         {active && (
           <motion.span
             layoutId="nav-underline"
-            className="absolute -bottom-[1.5px] left-0 right-0 h-px bg-hoser-gold"
+            className="absolute -bottom-[1.5px] left-0 right-0 h-px bg-[#5AACCF]"
           />
         )}
       </Link>
@@ -79,13 +79,13 @@ function DropdownLink({ link, active }) {
             transition={{ duration: 0.15 }}
             className="absolute left-0 top-full pt-2 z-50"
           >
-            <div className="min-w-[160px] border border-[#0a1020]/12 bg-[#f5f4f1] shadow-xl py-1">
+            <div className="min-w-[160px] border border-white/10 bg-[#0A1628] shadow-xlarge py-1">
               {link.children.map((child) => (
                 <Link
                   key={child.href}
                   to={child.href}
                   onClick={(e) => handleChildClick(e, child)}
-                  className="block px-5 py-3 text-sm font-medium text-[#0a1020] transition-colors duration-150 hover:text-hoser-gold hover:bg-hoser-gold/8"
+                  className="block px-5 py-3 text-sm font-medium text-white/70 transition-colors duration-150 hover:text-white hover:bg-white/5"
                 >
                   {child.label}
                 </Link>
@@ -105,7 +105,7 @@ export function Navbar() {
   const toggle = () => setIsMobileMenuOpen((prev) => !prev);
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border-primary bg-background-primary/95 backdrop-blur-md">
+    <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#0A1628]/95 backdrop-blur-md">
       <div className="grid h-auto min-h-[4.5rem] grid-cols-[1fr_max-content_1fr] items-center px-[5%]">
 
         {/* Left: hamburger (mobile) or nav links (desktop) */}
@@ -116,17 +116,17 @@ export function Navbar() {
             aria-label="Navigation öffnen"
           >
             <motion.span
-              className="h-[1.5px] w-6 bg-text-primary origin-center block"
+              className="h-[1.5px] w-6 bg-white origin-center block"
               animate={isMobileMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
               transition={{ duration: 0.25, ease: "easeInOut" }}
             />
             <motion.span
-              className="h-[1.5px] w-6 bg-text-primary block"
+              className="h-[1.5px] w-6 bg-white block"
               animate={isMobileMenuOpen ? { opacity: 0 } : { opacity: 1 }}
               transition={{ duration: 0.15 }}
             />
             <motion.span
-              className="h-[1.5px] w-6 bg-text-primary origin-center block"
+              className="h-[1.5px] w-6 bg-white origin-center block"
               animate={isMobileMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
               transition={{ duration: 0.25, ease: "easeInOut" }}
             />
@@ -147,15 +147,15 @@ export function Navbar() {
                   className={clsx(
                     "relative text-sm font-medium tracking-wide transition-all duration-200",
                     active
-                      ? "text-hoser-gold opacity-100"
-                      : "text-text-primary opacity-70 hover:opacity-100 hover:text-hoser-gold"
+                      ? "text-[#5AACCF] opacity-100"
+                      : "text-white opacity-65 hover:opacity-100 hover:text-[#5AACCF]"
                   )}
                 >
                   {link.label}
                   {active && (
                     <motion.span
                       layoutId="nav-underline"
-                      className="absolute -bottom-[1.5px] left-0 right-0 h-px bg-hoser-gold"
+                      className="absolute -bottom-[1.5px] left-0 right-0 h-px bg-[#5AACCF]"
                     />
                   )}
                 </Link>
@@ -174,14 +174,14 @@ export function Navbar() {
               strokeLinejoin="round"
               strokeLinecap="round"
               fill="none"
-              className="text-text-primary"
+              className="text-white"
             />
           </svg>
-          <span className="font-heading text-xl font-bold tracking-[0.08em] text-text-primary uppercase">
-            Hoser
+          <span className="font-heading text-xl font-bold tracking-[0.08em] text-white uppercase">
+            Schmid-Bau
           </span>
-          <span className="font-heading text-[0.62rem] font-semibold tracking-[0.18em] text-text-secondary uppercase self-end pb-[3px]">
-            Bauunternehmen
+          <span className="font-heading text-[0.62rem] font-semibold tracking-[0.18em] text-white/50 uppercase self-end pb-[3px]">
+            GmbH
           </span>
         </Link>
 
@@ -190,22 +190,22 @@ export function Navbar() {
           <Link
             to="/kontakt"
             className={clsx(
-              "hidden lg:inline-flex items-center px-5 py-2 font-body text-sm font-medium tracking-wide transition-colors duration-200 border",
+              "hidden lg:inline-flex items-center border px-5 py-2 font-body text-sm font-medium tracking-wide transition-colors duration-200",
               pathname === "/kontakt"
-                ? "border-hoser-gold text-hoser-gold"
-                : "border-border-primary text-text-primary hover:border-hoser-gold hover:text-hoser-gold"
+                ? "border-white/60 text-[#5AACCF]"
+                : "border-white/30 text-white/75 hover:border-white/60 hover:text-white"
             )}
           >
             Kontakt
           </Link>
           <a
-            href="tel:+498121471100"
-            className="hidden sm:inline-flex items-center gap-2 border border-border-primary px-5 py-2 font-body text-sm font-medium tracking-wide text-text-primary transition-colors duration-200 hover:border-hoser-gold hover:text-hoser-gold"
+            href="tel:+4908762426420"
+            className="hidden sm:inline-flex items-center gap-2 border border-white/30 px-5 py-2 font-body text-sm font-medium tracking-wide text-white/75 transition-colors duration-200 hover:border-white/60 hover:text-white"
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-60">
               <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.36h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/>
             </svg>
-            08121 – 47 11 0
+            08762 / 426420
           </a>
         </div>
       </div>
@@ -231,14 +231,14 @@ export function Navbar() {
               transition={{ type: "spring", duration: 0.45, bounce: 0 }}
               className={clsx(
                 "fixed left-0 top-0 z-50 flex h-dvh w-[85%] max-w-sm flex-col",
-                "bg-background-primary border-r border-border-primary shadow-xlarge px-8 pb-10"
+                "bg-[#0A1628] border-r border-white/10 shadow-xlarge px-8 pb-10"
               )}
             >
-              <div className="flex items-center justify-between py-5 mb-8 border-b border-border-primary">
-                <span className="font-heading text-xl font-bold tracking-[0.12em] uppercase text-text-primary">
-                  Hoser Bau
+              <div className="flex items-center justify-between py-5 mb-8 border-b border-white/10">
+                <span className="font-heading text-xl font-bold tracking-[0.12em] uppercase text-white">
+                  Schmid-Bau
                 </span>
-                <button onClick={toggle} className="size-8 flex items-center justify-center text-text-primary text-2xl leading-none">
+                <button onClick={toggle} className="size-8 flex items-center justify-center text-white/70 text-2xl leading-none">
                   ×
                 </button>
               </div>
@@ -249,10 +249,10 @@ export function Navbar() {
                       to={link.href}
                       onClick={toggle}
                       className={clsx(
-                        "py-4 text-base font-medium border-b border-border-primary transition-all duration-200",
+                        "py-4 text-base font-medium border-b border-white/10 transition-all duration-200",
                         pathname === link.href
-                          ? "text-hoser-gold pl-2"
-                          : "text-text-primary hover:text-hoser-gold hover:pl-2"
+                          ? "text-[#5AACCF] pl-2"
+                          : "text-white/70 hover:text-white hover:pl-2"
                       )}
                     >
                       {link.label}
@@ -263,10 +263,10 @@ export function Navbar() {
                         to={child.href}
                         onClick={toggle}
                         className={clsx(
-                          "py-3 pl-6 text-sm font-medium border-b border-border-primary/50 transition-all duration-200",
+                          "py-3 pl-6 text-sm font-medium border-b border-white/8 transition-all duration-200",
                           pathname === child.href
-                            ? "text-hoser-gold"
-                            : "text-text-secondary hover:text-hoser-gold"
+                            ? "text-[#5AACCF]"
+                            : "text-white/45 hover:text-white"
                         )}
                       >
                         {child.label}
@@ -279,7 +279,7 @@ export function Navbar() {
                 <Link
                   to="/kontakt"
                   onClick={toggle}
-                  className="flex w-full items-center justify-center bg-hoser-gold px-6 py-3 text-sm font-semibold tracking-wide text-white hover:opacity-90 transition-opacity duration-200"
+                  className="flex w-full items-center justify-center bg-[#5AACCF] px-6 py-3 text-sm font-semibold tracking-wide text-white hover:opacity-90 transition-opacity duration-200"
                 >
                   Beratung anfragen
                 </Link>

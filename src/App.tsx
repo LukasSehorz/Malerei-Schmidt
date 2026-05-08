@@ -31,7 +31,11 @@ export default function App() {
       <ScrollToTop />
       <AnimatePresence>
         {!introComplete && (
-          <IntroScreen key="intro" onComplete={() => setIntroComplete(true)} />
+          <IntroScreen key="intro" onComplete={() => {
+            (window as any).__schmidIntroDone = true;
+            window.dispatchEvent(new CustomEvent("schmid-intro-complete"));
+            setIntroComplete(true);
+          }} />
         )}
       </AnimatePresence>
       <Routes>

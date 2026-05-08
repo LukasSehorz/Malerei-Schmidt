@@ -43,10 +43,12 @@ export function SectionTransition({ light = false }) {
     return () => ctx.revert();
   }, []);
 
+  // Light theme: both variants use brand-blue ink against the off-white canvas;
+  // `light` is a quieter version for subtle transitions, default has more presence.
   const colour = light
-    ? "bg-gradient-to-r from-transparent via-black/15 to-transparent"
-    : "bg-gradient-to-r from-transparent via-hoser-gold/35 to-transparent";
-  const diamond = light ? "bg-black/20" : "bg-hoser-gold/55";
+    ? "bg-gradient-to-r from-transparent via-hoser-gold/15 to-transparent"
+    : "bg-gradient-to-r from-transparent via-hoser-gold/40 to-transparent";
+  const diamond = light ? "bg-hoser-gold/30" : "bg-hoser-gold/70";
 
   return (
     <div

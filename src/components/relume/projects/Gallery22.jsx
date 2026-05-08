@@ -10,18 +10,18 @@ const photos = [
     span: "col-span-2 row-span-2",
   },
   {
-    src: "/images/bild10.jpg",
-    caption: "Rohbauarbeiten mit eigenem Fachpersonal – keine Werklohnfirmen, volle Kontrolle.",
+    src: "/images/Beispiel-Projekte/Geruestbau-300x225.webp",
+    caption: "Gerüstbau für sichere und effiziente Arbeiten auf jeder Baustelle.",
     span: "col-span-1 row-span-1",
   },
   {
-    src: "/images/bild11.jpg",
-    caption: "Sichtbetonbau auf höchstem Niveau – präzise Schalung und makellose Oberflächen.",
+    src: "/images/Beispiel-Projekte/Referenz5-300x170.webp",
+    caption: "Referenzprojekte aus dem Raum Erding und München – realisiert mit eigenem Fachpersonal.",
     span: "col-span-1 row-span-1",
   },
   {
-    src: "/images/bild12.jpg",
-    caption: "Tiefbau und Erschließung – millimetergenaue Arbeit tief im Erdreich.",
+    src: "/images/Beispiel-Projekte/Rohbau-300x225.webp",
+    caption: "Solider Rohbau als Basis für alle Folgegewerke – präzise und termingerecht.",
     span: "col-span-1 row-span-1",
   },
   {
@@ -129,7 +129,7 @@ export function Gallery22() {
 
         {/* Heading */}
         <div className="mb-12 md:mb-16">
-          <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-hoser-gold">
+          <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-[#5AACCF]">
             Einblicke
           </p>
           <h2
@@ -184,7 +184,7 @@ export function Gallery22() {
                     transform: hovered === i ? "translateY(0)" : "translateY(12px)",
                   }}
                 >
-                  <div className="mb-3 h-[2px] w-8 bg-hoser-gold" />
+                  <div className="mb-3 h-[2px] w-8 bg-[#5AACCF]" />
                   <p className="font-body text-sm leading-relaxed text-white/90 md:text-base">
                     {p.caption}
                   </p>

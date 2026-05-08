@@ -1,156 +1,157 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useEffect } from "react";
+import { gsap, ScrollTrigger } from "../../../utils/gsap";
 
-const claudia = {
+const michael = {
   num: "01",
-  name: "Claudia Hoser",
-  title: "Dipl. Ingenieurin (FH)",
-  role: "Geschäftsführerin",
-  image: "/images/claudia-detail.jpg",
-  email: "claudia.hoser@hoser-bauunternehmung.de",
-  bio: "Als Tochter von Manfred Hoser steht Claudia für die Kontinuität eines Familienunternehmens, das seit 1952 in Markt Schwaben verwurzelt ist. Mit ihrem Studium der Bauingenieurwissenschaften und jahrelanger Praxiserfahrung verantwortet sie heute die gesamte Projektleitung.",
+  name: "Michael Schmid",
+  title: "Geschäftsführer",
+  role: "Inhaber",
+  image: "/images/michael-schmid.png",
+  email: "schmid-bau@gmx.net",
+  bio: "2007 übernahm Michael Schmid das väterliche Unternehmen und führt es seitdem mit Persönlichkeit und Beständigkeit weiter. Mit einem zehnköpfigen Team realisiert er Projekte von der Planung bis zur Schlüsselübergabe – in der Region Erding und weit darüber hinaus.",
   facts: [
-    { label: "Generation", value: "3. Hoser-Geschäftsführung" },
-    { label: "Schwerpunkt", value: "Hochbau & Wohnungsbau" },
-    { label: "Studium", value: "Bauingenieurwesen (FH)" },
+    { label: "Unternehmen", value: "Schmid-Bau GmbH" },
+    { label: "Schwerpunkt", value: "Hochbau, Tiefbau & Baustoffhandel" },
+    { label: "Übernahme", value: "2007 (Familienbetrieb seit 1992)" },
   ],
 };
-
-const josef = {
-  num: "02",
-  name: "Josef Lippacher",
-  title: "Dipl. Ingenieur (FH)",
-  role: "Geschäftsführer",
-  image: "/images/josef-detail.jpg",
-  email: "josef.lippacher@hoser-bauunternehmung.de",
-  bio: "Josef Lippacher bringt fundiertes Ingenieurwissen und operative Stärke in die Geschäftsführung. Er verantwortet Kalkulation, Tiefbau und die termingerechte Abwicklung aller Bauprojekte – mit dem Anspruch, jedes Vorhaben im Zeit- und Budgetrahmen zu realisieren.",
-  facts: [
-    { label: "Schwerpunkt", value: "Tiefbau & Gewerbebau" },
-    { label: "Stärke", value: "Kalkulation & Projektsteuerung" },
-    { label: "Studium", value: "Bauingenieurwesen (FH)" },
-  ],
-};
-
-function TextPanel({ person }) {
-  return (
-    <div className="flex h-full flex-col justify-center px-12 md:px-16 lg:px-20">
-      <p className="mb-4 font-body text-xs font-semibold uppercase tracking-[0.3em] text-hoser-gold">
-        {person.num} · Geschäftsführung
-      </p>
-      <h2
-        className="mb-2 font-heading font-bold leading-tight tracking-tight text-white"
-        style={{ fontSize: "clamp(2rem, 3.5vw, 3.5rem)" }}
-      >
-        {person.name}
-      </h2>
-      <p className="mb-8 font-body text-sm uppercase tracking-[0.15em] text-white/40">
-        {person.title} · {person.role}
-      </p>
-      <div className="mb-8 h-px w-12 bg-hoser-gold/50" />
-      <p className="mb-10 max-w-md font-body text-sm leading-relaxed text-white/55 md:text-base">
-        {person.bio}
-      </p>
-      <div className="mb-10 space-y-4">
-        {person.facts.map((f) => (
-          <div key={f.label} className="flex items-baseline gap-4">
-            <span className="w-28 shrink-0 font-body text-xs font-semibold uppercase tracking-[0.15em] text-hoser-gold/70">
-              {f.label}
-            </span>
-            <span className="font-body text-sm text-white/70">{f.value}</span>
-          </div>
-        ))}
-      </div>
-      <a
-        href={`mailto:${person.email}`}
-        className="inline-flex items-center gap-2 font-body text-xs text-white/30 transition-colors duration-200 hover:text-hoser-gold"
-      >
-        {person.email}
-      </a>
-    </div>
-  );
-}
 
 export function TeamSection() {
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+  const sectionRef = useRef(null);
 
-  // Animations-Timeline (kein blasses Ausblenden mehr, stattdessen elegantes Sliden):
-  // 0.00 - 0.15: Claudia ist voll sichtbar
-  // 0.15 - 0.35: Claudia slidet nach außen aus dem Bild
-  // 0.35 - 0.65: Das helle Panel rutscht von rechts nach links
-  // 0.65 - 0.85: Josef slidet von außen ins Bild
-  // 0.85 - 1.00: Josef ist voll sichtbar
+  useEffect(() => {
+    const scope = sectionRef.current;
+    if (!scope) return;
 
-  // Claudia slidet aus dem Bild (Text nach links, Bild nach rechts)
-  const claudiaTextX = useTransform(scrollYProgress, [0.15, 0.35], ["0%", "-100%"]);
-  const claudiaImageX = useTransform(scrollYProgress, [0.15, 0.35], ["0%", "100%"]);
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: scope,
+          start: "top 75%",
+          once: true,
+        },
+        defaults: { ease: "power3.out" },
+      });
 
-  // Hintergrund-Panel wechselt die Seite
-  const lightPanelX = useTransform(scrollYProgress, [0.35, 0.65], ["100%", "0%"]);
+      // Image: clip-path wipe in from right
+      tl.fromTo(".team-img-wrap",
+        { clipPath: "inset(0 100% 0 0)" },
+        { clipPath: "inset(0 0% 0 0)", duration: 1.1, ease: "power2.inOut" },
+        0
+      );
 
-  // Josef slidet ins Bild (Bild von links, Text von rechts)
-  const josefImageX = useTransform(scrollYProgress, [0.65, 0.85], ["-100%", "0%"]);
-  const josefTextX = useTransform(scrollYProgress, [0.65, 0.85], ["100%", "0%"]);
+      // Eyebrow label
+      tl.fromTo(".team-eyebrow",
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 },
+        0.2
+      );
+
+      // Name – mask reveal
+      tl.fromTo(".team-name-inner",
+        { y: "105%" },
+        { y: "0%", duration: 0.85 },
+        0.35
+      );
+
+      // Sub-title
+      tl.fromTo(".team-subtitle",
+        { y: 16, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.55 },
+        0.55
+      );
+
+      // Gold divider line
+      tl.fromTo(".team-divider",
+        { scaleX: 0, transformOrigin: "left center" },
+        { scaleX: 1, duration: 0.6 },
+        0.65
+      );
+
+      // Bio paragraph
+      tl.fromTo(".team-bio",
+        { y: 22, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7 },
+        0.75
+      );
+
+      // Fact rows staggered
+      tl.fromTo(".team-fact",
+        { y: 16, opacity: 0 },
+        { y: 0, opacity: 1, stagger: 0.1, duration: 0.5 },
+        0.9
+      );
+
+      // Email
+      tl.fromTo(".team-email",
+        { y: 10, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.45 },
+        1.2
+      );
+    }, scope);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div ref={containerRef} style={{ height: "400vh" }}>
-      <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#040D1C]">
+    <div className="relative" style={{ backgroundColor: "#0A1628" }} ref={sectionRef}>
 
-        {/* ── Der bewegliche helle Hintergrund (für die Bilder) ── */}
-        <motion.div 
-          className="absolute top-0 bottom-0 left-0 w-1/2 bg-[#f0ede8]"
-          style={{ x: lightPanelX, willChange: "transform" }}
-        />
+      <div className="relative h-screen w-full overflow-hidden flex">
 
-        {/* ── Phase 1: Claudia — Text Links, Bild Rechts ── */}
-        <div className="absolute inset-0 flex pointer-events-none overflow-hidden">
-          {/* Links: Dunkler Text */}
-          <motion.div 
-            className="flex h-full w-1/2 bg-transparent pointer-events-auto"
-            style={{ x: claudiaTextX, willChange: "transform" }}
+        {/* Links: Text */}
+        <div className="flex h-full w-1/2 flex-col justify-center px-12 md:px-16 lg:px-20">
+          <p className="team-eyebrow mb-5 font-body text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: "#5AACCF" }}>
+            {michael.num} · Geschäftsführung
+          </p>
+
+          <div style={{ overflow: "hidden", marginBottom: "0.5rem" }}>
+            <h2
+              className="team-name-inner font-heading font-bold leading-tight tracking-tight text-white"
+              style={{ fontSize: "clamp(2rem, 3.5vw, 3.5rem)" }}
+            >
+              {michael.name}
+            </h2>
+          </div>
+
+          <p className="team-subtitle mb-8 font-body text-sm uppercase tracking-[0.18em] text-white/50">
+            {michael.title} · {michael.role}
+          </p>
+
+          <div className="team-divider mb-8 h-px w-12" style={{ backgroundColor: "#5AACCF" }} />
+
+          <p className="team-bio mb-10 max-w-md font-body text-sm leading-relaxed text-white/60 md:text-base">
+            {michael.bio}
+          </p>
+
+          <div className="mb-10 space-y-4">
+            {michael.facts.map((f) => (
+              <div key={f.label} className="team-fact flex items-baseline gap-4">
+                <span className="w-28 shrink-0 font-body text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: "#5AACCF" }}>
+                  {f.label}
+                </span>
+                <span className="font-body text-sm text-white/80">{f.value}</span>
+              </div>
+            ))}
+          </div>
+
+          <a
+            href={`mailto:${michael.email}`}
+            className="team-email inline-flex items-center gap-2 font-body text-sm text-white/50 transition-colors duration-200 hover:text-white"
           >
-            <TextPanel person={claudia} />
-          </motion.div>
-          {/* Rechts: Helles Bild */}
-          <motion.div 
-            className="flex h-full w-1/2 items-end justify-center bg-transparent pointer-events-auto"
-            style={{ x: claudiaImageX, willChange: "transform" }}
-          >
-            <img
-              src={claudia.image}
-              alt={claudia.name}
-              className="h-full w-full object-cover"
-              style={{ objectPosition: "50% 15%" }}
-            />
-          </motion.div>
+            {michael.email} <span style={{ color: "#5AACCF" }}>→</span>
+          </a>
         </div>
 
-        {/* ── Phase 2: Josef — Bild Links, Text Rechts ── */}
-        <div className="absolute inset-0 flex pointer-events-none overflow-hidden">
-          {/* Links: Helles Bild */}
-          <motion.div 
-            className="flex h-full w-1/2 items-end justify-center bg-transparent pointer-events-auto"
-            style={{ x: josefImageX, willChange: "transform" }}
-          >
-            <img
-              src={josef.image}
-              alt={josef.name}
-              className="h-full w-full object-cover"
-              style={{ objectPosition: "30% 15%" }}
-            />
-          </motion.div>
-          {/* Rechts: Dunkler Text */}
-          <motion.div 
-            className="flex h-full w-1/2 bg-transparent pointer-events-auto"
-            style={{ x: josefTextX, willChange: "transform" }}
-          >
-            <TextPanel person={josef} />
-          </motion.div>
+        {/* Rechts: Bild */}
+        <div className="team-img-wrap h-full w-1/2 bg-[#f0ede8]">
+          <img
+            src={michael.image}
+            alt={michael.name}
+            className="h-full w-full object-cover"
+            style={{ objectPosition: "30% 15%" }}
+          />
         </div>
 
       </div>

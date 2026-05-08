@@ -40,7 +40,7 @@ const vorteile = [
   {
     num: "04",
     title: "Familiäres Team",
-    desc: "70 Jahre Familienunternehmen. Flache Hierarchien, direkte Kommunikation, Respekt und Zusammenhalt.",
+    desc: "Seit 1992 Familienunternehmen. Flache Hierarchien, direkte Kommunikation, Respekt und Zusammenhalt.",
   },
   {
     num: "05",
@@ -139,7 +139,7 @@ export function KarriereVorteile() {
       ref={sectionRef}
       id="jobs"
       className="overflow-hidden"
-      style={{ background: "linear-gradient(135deg, #0d1a2e 0%, #111827 60%, #0a1020 100%)" }}
+      style={{ background: "linear-gradient(135deg, #0E2A6B 0%, #0A2059 60%, #07194A 100%)" }}
     >
       {/* Top: image background behind heading */}
       <div
@@ -150,29 +150,29 @@ export function KarriereVorteile() {
           backgroundPosition: "center 30%",
         }}
       >
-        {/* Overlay: transparent in the middle so image shows, dark at edges */}
+        {/* Brand-blue overlay for legibility */}
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(to bottom, rgba(10,16,32,0.55) 0%, rgba(10,16,32,0.30) 40%, rgba(13,21,32,0.70) 75%, rgba(13,21,32,1) 100%)",
+            background: "linear-gradient(to bottom, rgba(14,42,107,0.62) 0%, rgba(14,42,107,0.40) 40%, rgba(7,25,74,0.78) 75%, rgba(7,25,74,1) 100%)",
           }}
         />
 
         {/* Decorative background text */}
         <div
           ref={ghostRef}
-          className="pointer-events-none absolute right-[-2%] top-[50%] -translate-y-1/2 select-none font-heading font-bold leading-none text-white/[0.06]"
+          className="pointer-events-none absolute right-[-2%] top-[50%] -translate-y-1/2 select-none font-heading font-bold leading-none text-white/[0.07]"
           style={{ fontSize: "clamp(6rem, 18vw, 20rem)" }}
           aria-hidden="true"
         >
-          HOSER
+          SCHMID
         </div>
 
         <div className="container relative z-10">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-end">
             <div>
-              <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-[#C9A84C]">
-                Karriere bei Hoser
+              <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.28em] text-white/85">
+                Karriere bei Schmid-Bau
               </p>
               <h2
                 ref={headingRef}
@@ -183,16 +183,16 @@ export function KarriereVorteile() {
               </h2>
             </div>
             <div className="md:text-right">
-              <p ref={subRef} className="font-body text-base leading-relaxed text-white/70 max-w-md md:ml-auto">
+              <p ref={subRef} className="font-body text-base leading-relaxed text-white/75 max-w-md md:ml-auto">
                 Als gewachsenes Familienunternehmen bieten wir mehr als nur einen Job –
                 einen Arbeitsplatz, der sich lohnt. Langfristig, sicher und fair.
               </p>
               <a
                 ref={ctaRef}
                 href="#stellenangebote"
-                className="mt-6 inline-flex items-center gap-2 border border-[#C9A84C]/50 px-6 py-3 font-body text-sm font-semibold uppercase tracking-[0.1em] text-[#C9A84C] transition-all duration-200 hover:bg-[#C9A84C] hover:text-white hover:border-[#C9A84C]"
+                className="mt-6 inline-flex items-center gap-2 border border-white/35 px-6 py-3 font-body text-sm font-semibold uppercase tracking-[0.12em] text-white transition-all duration-200 hover:bg-white hover:text-hoser-gold hover:border-white"
               >
-                Alle Stellen ansehen →
+                Alle Stellen ansehen <span>→</span>
               </a>
             </div>
           </div>
@@ -202,23 +202,23 @@ export function KarriereVorteile() {
       {/* Benefits grid */}
       <div className="px-[5%] pb-16 md:pb-24 lg:pb-28">
         <div className="container">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.06]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.10]">
             {vorteile.map((v, idx) => (
               <div
                 key={v.num}
                 ref={(el) => (cellsRef.current[idx] = el)}
-                className="group relative bg-[#0d1520] p-8 md:p-10 transition-colors duration-300 hover:bg-white/[0.04]"
+                className="group relative bg-[#0A2059] p-8 md:p-10 transition-colors duration-300 hover:bg-[#0C2666]"
               >
-                <span data-vt-num className="mb-6 block font-body text-[10px] font-semibold uppercase tracking-[0.3em] text-[#C9A84C]/60">
+                <span data-vt-num className="mb-6 block font-body text-[10px] font-semibold uppercase tracking-[0.32em] text-white/60">
                   {v.num}
                 </span>
-                <h3 data-vt-title className="mb-3 font-heading text-lg font-bold text-white md:text-xl transition-colors duration-300 group-hover:text-[#C9A84C]">
+                <h3 data-vt-title className="mb-3 font-heading text-lg font-bold text-white md:text-xl transition-colors duration-300">
                   {v.title}
                 </h3>
-                <p data-vt-desc className="font-body text-sm leading-relaxed text-white/45">
+                <p data-vt-desc className="font-body text-sm leading-relaxed text-white/55">
                   {v.desc}
                 </p>
-                <div data-vt-line className="absolute bottom-0 left-0 h-[2px] w-full bg-[#C9A84C]/30" />
+                <div data-vt-line className="absolute bottom-0 left-0 h-[2px] w-full bg-white/40" />
               </div>
             ))}
           </div>

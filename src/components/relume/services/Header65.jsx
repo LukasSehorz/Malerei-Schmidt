@@ -17,7 +17,7 @@ export function Header65() {
         </h1>
         <p className="font-body text-base leading-relaxed text-white/65 md:text-lg">
           Hochbau, Tiefbau, Sanierung, Ingenieurbau und Gewerbebau –
-          wir übernehmen Baumeisterarbeiten aller Art im Raum Ebersberg,
+          wir übernehmen Baumeisterarbeiten aller Art im Raum Erding,
           Erding und München-Ost. Mit eigenem Fachpersonal und modernster Technik.
         </p>
       </div>
@@ -25,7 +25,7 @@ export function Header65() {
         <img
           src="/images/craftsmen-stone-facade.jpg"
           className="size-full object-cover"
-          alt="Hoser Bauunternehmung Leistungen"
+          alt="Schmid-Bau GmbH Leistungen"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
       </div>

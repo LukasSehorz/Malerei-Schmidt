@@ -5,7 +5,7 @@ import { Contact6 } from "./Contact6";
 
 export default function Page() {
   return (
-    <div>
+    <div style={{ backgroundColor: "#FDFCF8" }}>
       <Header65 />
       <Contact14 />
       <Contact6 />

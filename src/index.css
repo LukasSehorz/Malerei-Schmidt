@@ -9,8 +9,8 @@
 
   body {
     font-family: "DM Sans", sans-serif;
-    background-color: #08111F;
-    color: #FFFFFF;
+    background-color: #FDFCF8;
+    color: #0A1628;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -18,6 +18,12 @@
   h1, h2, h3, h4, h5, h6 {
     font-family: "Syne", sans-serif;
     letter-spacing: -0.02em;
+  }
+
+  /* Native selection in brand color */
+  ::selection {
+    background-color: rgba(14, 42, 107, 0.18);
+    color: #0A1628;
   }
 }
 

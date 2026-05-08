@@ -122,7 +122,7 @@ export function Layout239_1() {
         // Hover: gold underline grows
         cell.addEventListener("mouseenter", () => {
           gsap.to(accent, { scaleX: 1, duration: 0.5, ease: "power3.out" });
-          gsap.to(label,  { y: -3, color: "#C9A84C", duration: 0.4, ease: "power3.out" });
+          gsap.to(label,  { y: -3, color: "#0E2A6B", duration: 0.4, ease: "power3.out" });
         });
         cell.addEventListener("mouseleave", () => {
           gsap.to(accent, { scaleX: 0, duration: 0.4, ease: "power3.in",
@@ -196,7 +196,7 @@ export function Layout239_1() {
         </p>
         <h2
           ref={headingRef}
-          className="font-heading font-bold leading-tight tracking-tight text-[#0a1020]"
+          className="font-heading font-bold leading-tight tracking-tight text-[#0A1628]"
           style={{ fontSize: "clamp(2rem, 4vw, 4rem)" }}
         >
           Qualität, die man nachweisen kann.
@@ -204,29 +204,29 @@ export function Layout239_1() {
       </div>
 
       {/* Certifications dark strip — full width */}
-      <div ref={certStripRef} className="mb-16" style={{ borderTop: "2px solid #C9A84C" }}>
+      <div ref={certStripRef} className="mb-16" style={{ borderTop: "2px solid #0E2A6B" }}>
         <div
           className="grid grid-cols-2 md:grid-cols-4"
-          style={{ background: "linear-gradient(135deg, #0d1a2e 0%, #111827 60%, #0a1020 100%)" }}
+          style={{ background: "linear-gradient(135deg, #0E2A6B 0%, #0A2059 60%, #07194A 100%)" }}
         >
           {certifications.map((c, i) => (
             <div
               key={c.label}
               ref={(el) => (certCellsRef.current[i] = el)}
-              className={`group relative flex flex-col justify-between py-8 px-8 transition-colors duration-300 hover:bg-white/[0.03] cursor-default ${
-                i < certifications.length - 1 ? "border-r border-white/8" : ""
+              className={`group relative flex flex-col justify-between py-8 px-8 transition-colors duration-300 hover:bg-white/[0.05] cursor-default ${
+                i < certifications.length - 1 ? "border-r border-white/12" : ""
               }`}
             >
-              <span data-cert-eyebrow className="mb-4 font-body text-[10px] font-semibold uppercase tracking-[0.3em] text-hoser-gold/70">
+              <span data-cert-eyebrow className="mb-4 font-body text-[10px] font-semibold uppercase tracking-[0.32em] text-white/70">
                 Zertifiziert
               </span>
               <span data-cert-label className="font-heading text-2xl font-bold text-white md:text-3xl">
                 {c.label}
               </span>
-              <span data-cert-sub className="mt-3 font-body text-xs text-white/40 tracking-wide">
+              <span data-cert-sub className="mt-3 font-body text-xs text-white/55 tracking-wide">
                 {c.sub}
               </span>
-              <div data-cert-accent className="absolute bottom-0 left-0 h-[2px] w-full bg-hoser-gold" />
+              <div data-cert-accent className="absolute bottom-0 left-0 h-[2px] w-full bg-white/85" />
             </div>
           ))}
         </div>
@@ -234,13 +234,13 @@ export function Layout239_1() {
 
       {/* Partner label */}
       <div className="container px-[5%] mb-6">
-        <p ref={partnerLabelRef} className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#0a1020]/40">
+        <p ref={partnerLabelRef} className="font-body text-xs font-semibold uppercase tracking-[0.2em] text-[#0A1628]/40">
           Partner & Lieferanten
         </p>
       </div>
 
       {/* Partner marquee — full width */}
-      <div ref={marqueeWrapRef} className="overflow-hidden border-y border-[#0a1020]/8">
+      <div ref={marqueeWrapRef} className="overflow-hidden border-y border-[#0A1628]/8">
         <div className="marquee-track py-6">
           {track.map((p, i) => (
             <div
@@ -256,7 +256,7 @@ export function Layout239_1() {
                   style={{ maxHeight: "36px", width: "auto", maxWidth: "140px", display: "block" }}
                 />
               ) : (
-                <span className="font-heading text-lg font-bold text-[#0a1020]/30">
+                <span className="font-heading text-lg font-bold text-[#0A1628]/30">
                   {p.label}
                 </span>
               )}

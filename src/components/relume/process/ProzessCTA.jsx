@@ -37,7 +37,7 @@ export function ProzessCTA() {
     <section
       ref={sectionRef}
       className="relative min-h-screen w-full overflow-hidden flex items-center"
-      style={{ background: "#040A16" }}
+      style={{ background: "#0E2A6B" }}
     >
       {/* Background photo */}
       <img
@@ -66,7 +66,7 @@ export function ProzessCTA() {
           width: "55vw", height: "55vw",
           borderRadius: "50%",
           background:
-            "radial-gradient(closest-side, rgba(200,150,46,0.16), transparent 70%)",
+            "radial-gradient(closest-side, rgba(255,255,255,0.18), transparent 70%)",
           filter: "blur(60px)",
         }}
       />
@@ -91,7 +91,7 @@ export function ProzessCTA() {
         style={{
           right: "6vw", top: "10%", bottom: "10%",
           width: "1px",
-          background: "linear-gradient(to bottom, transparent, rgba(200,150,46,0.4), transparent)",
+          background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.45), transparent)",
         }}
       />
 
@@ -104,7 +104,7 @@ export function ProzessCTA() {
           transform: "translateY(-50%)",
           fontFamily: "Syne, sans-serif", fontWeight: 900,
           fontSize: "clamp(10rem, 22vw, 24rem)",
-          color: "rgba(200,150,46,0.05)",
+          color: "rgba(255,255,255,0.06)",
           letterSpacing: "-0.06em",
           lineHeight: 1,
           userSelect: "none",
@@ -118,8 +118,8 @@ export function ProzessCTA() {
       <div className="relative z-10 px-[6%] py-32 md:py-36 lg:py-40 w-full md:max-w-[68%] lg:max-w-[58%]">
         {/* "06 — Der nächste Schritt" eyebrow */}
         <div className="mb-12 flex items-center gap-4">
-          <span className="cta-line block h-px w-10 flex-shrink-0 bg-hoser-gold" />
-          <span className="cta-num inline-block font-body text-[0.68rem] font-semibold uppercase tracking-[0.32em] text-hoser-gold">
+          <span className="cta-line block h-px w-10 flex-shrink-0 bg-white" />
+          <span className="cta-num inline-block font-body text-[0.68rem] font-semibold uppercase tracking-[0.32em] text-white">
             06 — Der nächste Schritt
           </span>
         </div>
@@ -140,7 +140,7 @@ export function ProzessCTA() {
           </span>
           <span className="block" style={{ overflow: "hidden", paddingBottom: "0.08em" }}>
             <span className="cta-title-line block">
-              Ein <span className="text-hoser-gold">Gespräch</span>
+              Ein <span className="text-white">Gespräch</span>
             </span>
           </span>
           <span className="block" style={{ overflow: "hidden", paddingBottom: "0.08em" }}>
@@ -160,7 +160,7 @@ export function ProzessCTA() {
           <a
             href="#kontakt"
             className="cta-btn group relative inline-flex items-center gap-4 overflow-hidden px-8 py-[18px] font-body text-[0.7rem] font-semibold uppercase tracking-[0.22em]"
-            style={{ background: "#C8962E", color: "#040A16" }}
+            style={{ background: "#FFFFFF", color: "#0E2A6B" }}
           >
             <span className="relative z-10">Erstgespräch vereinbaren</span>
             <svg
@@ -175,7 +175,7 @@ export function ProzessCTA() {
             {/* Sweep on hover */}
             <span
               className="absolute inset-0 -translate-x-full transition-transform duration-700 ease-[cubic-bezier(0.65,0,0.35,1)] group-hover:translate-x-0"
-              style={{ background: "rgba(4,10,22,0.18)" }}
+              style={{ background: "rgba(7,25,74,0.30)" }}
               aria-hidden="true"
             />
           </a>
@@ -186,7 +186,7 @@ export function ProzessCTA() {
             className="cta-btn group inline-flex items-center gap-4 font-body text-[0.7rem] uppercase tracking-[0.22em] text-white/65 transition-colors hover:text-white"
           >
             <span>Direkt anrufen</span>
-            <span className="block h-px w-6 transition-all duration-500 group-hover:w-12 bg-white/25 group-hover:bg-hoser-gold" />
+            <span className="block h-px w-6 transition-all duration-500 group-hover:w-12 bg-white/25 group-hover:bg-white" />
             <span
               className="text-sm font-semibold tracking-[0.05em] text-white/85"
               style={{ fontFamily: "Syne, sans-serif" }}

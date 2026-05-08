@@ -151,14 +151,14 @@ export function HeroLeistungen() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-[#0a1020] text-white"
+      className="relative w-full overflow-hidden bg-[#0E2A6B] text-white"
       style={{ height: "100vh", minHeight: "720px" }}
     >
       {/* Background image */}
       <img
         ref={imageRef}
         src="/images/leistungen-hero.jpg"
-        alt="Hoser Bauunternehmung – Leistungen"
+        alt="Schmid-Bau GmbH – Leistungen"
         className="absolute inset-0 h-full w-full object-cover"
         style={{ willChange: "transform, filter" }}
       />
@@ -169,14 +169,14 @@ export function HeroLeistungen() {
         className="absolute inset-0"
         style={{
           background:
-            "linear-gradient(180deg, rgba(10,16,32,0.55) 0%, rgba(10,16,32,0.35) 35%, rgba(10,16,32,0.85) 100%)",
+            "linear-gradient(180deg, rgba(14,42,107,0.65) 0%, rgba(14,42,107,0.4) 35%, rgba(7,25,74,0.92) 100%)",
         }}
       />
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at 70% 30%, rgba(201,168,76,0.10) 0%, transparent 55%)",
+            "radial-gradient(ellipse at 70% 30%, rgba(255,255,255,0.07) 0%, transparent 55%)",
         }}
       />
 
@@ -192,8 +192,8 @@ export function HeroLeistungen() {
       {/* Vertical side mark removed — collided with the oversized heading. */}
 
       {/* Top-right meta strip */}
-      <div className="absolute top-24 right-[5%] hidden lg:flex items-center gap-3 font-body text-[11px] uppercase tracking-[0.3em] text-white/60">
-        <span className="h-px w-10 bg-hoser-gold/70" />
+      <div className="absolute top-24 right-[5%] hidden lg:flex items-center gap-3 font-body text-[11px] uppercase tracking-[0.3em] text-white/70">
+        <span className="h-px w-10 bg-white/55" />
         <span>Bauunternehmung</span>
       </div>
 
@@ -202,9 +202,9 @@ export function HeroLeistungen() {
         <div className="max-w-[1400px]">
           <p
             ref={eyebrowRef}
-            className="mb-6 font-body text-sm font-semibold uppercase tracking-[0.4em] text-hoser-gold flex items-center gap-4"
+            className="mb-6 font-body text-sm font-semibold uppercase tracking-[0.4em] text-white/85 flex items-center gap-4"
           >
-            <span className="h-px w-12 bg-hoser-gold" />
+            <span className="h-px w-12 bg-white/65" />
             Leistungen
           </p>
 
@@ -221,7 +221,7 @@ export function HeroLeistungen() {
               ref={subRef}
               className="md:col-span-6 lg:col-span-5 font-body text-base md:text-lg leading-relaxed text-white/75 max-w-xl"
             >
-              Fünf Gewerke. Ein Ansprechpartner. Vom ersten Spatenstich bis zur
+              Ein Ansprechpartner. Vom ersten Spatenstich bis zur
               schlüsselfertigen Übergabe – wir verbinden traditionelles Handwerk
               mit modernster Bautechnik.
             </p>
@@ -231,11 +231,11 @@ export function HeroLeistungen() {
               className="md:col-span-3 lg:col-span-3 flex md:flex-col gap-8 md:gap-2"
             >
               <div>
-                <span className="block font-body text-[11px] uppercase tracking-[0.25em] text-hoser-gold mb-1">
+                <span className="block font-body text-[11px] uppercase tracking-[0.28em] text-white/65 mb-1">
                   Standort
                 </span>
                 <span className="font-heading text-lg font-semibold text-white">
-                  Wasserburg am Inn
+                  Berglern · Erding
                 </span>
               </div>
             </div>
@@ -244,7 +244,7 @@ export function HeroLeistungen() {
               <a
                 ref={ctaRef}
                 href="#leistungen"
-                className="group inline-flex items-center gap-3 border border-hoser-gold/70 bg-hoser-gold/0 hover:bg-hoser-gold px-8 py-4 font-body text-sm font-semibold uppercase tracking-[0.15em] text-hoser-gold hover:text-[#0a1020] transition-all duration-300"
+                className="group inline-flex items-center gap-3 border border-white/45 hover:bg-[#0E2A6B] hover:border-[#0E2A6B] px-8 py-4 font-body text-sm font-semibold uppercase tracking-[0.15em] text-white transition-all duration-300"
               >
                 <span>Gewerke entdecken</span>
                 <span className="text-base transition-transform duration-300 group-hover:translate-x-1">

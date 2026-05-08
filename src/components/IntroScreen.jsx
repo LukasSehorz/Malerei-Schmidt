@@ -2,14 +2,14 @@
 import { useEffect, useState } from "react";
 import { motion, LayoutGroup } from "framer-motion";
 
-const TEXT = "Hoser Bauunternehmung";
+const TEXT = "Schmid-Bau GmbH";
 const CHARS = TEXT.split("");
 
 const FONT = {
   fontFamily: "Syne, sans-serif",
   fontWeight: 700,
   fontSize: "clamp(1.5rem, 3.2vw, 3.8rem)",
-  color: "white",
+  color: "#FFFFFF",
   letterSpacing: "0.06em",
   whiteSpace: "pre",
   display: "inline-block",
@@ -49,7 +49,7 @@ export default function IntroScreen({ onComplete }) {
             <svg viewBox="0 0 48 48" fill="none" style={{ display: "block", ...HOUSE_SIZE }}>
               <motion.path
                 d={HOUSE_PATH}
-                stroke="white" strokeWidth="2.5"
+                stroke="#FFFFFF" strokeWidth="2.5"
                 strokeLinejoin="round" strokeLinecap="round" fill="none"
                 initial={{ pathLength: 0, opacity: 0 }}
                 animate={{ pathLength: 1, opacity: 1 }}
@@ -74,7 +74,7 @@ export default function IntroScreen({ onComplete }) {
               <svg viewBox="0 0 48 48" fill="none" style={{ display: "block", ...HOUSE_SIZE }}>
                 <path
                   d={HOUSE_PATH}
-                  stroke="white" strokeWidth="2.5"
+                  stroke="#FFFFFF" strokeWidth="2.5"
                   strokeLinejoin="round" strokeLinecap="round" fill="none"
                 />
               </svg>

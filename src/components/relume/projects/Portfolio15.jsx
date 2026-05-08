@@ -21,66 +21,68 @@ const splitWords = (el, text) => {
   });
 };
 
+const PLACEHOLDER = "/images/placeholder.svg";
+
 const projects = [
   {
     id: "01",
-    title: "Brauerei Schweiger",
-    category: "Neubau & Sanierung",
-    desc: "Umbau und Erweiterung der Gaststätte Brauhaus in Markt Schwaben",
-    location: "Markt Schwaben",
-    img: "/images/bild-schweiger.jpg",
-    detail: "Im Zuge der Modernisierung wurde die traditionsreiche Gaststätte Brauhaus Schweiger in Markt Schwaben umgebaut und umfassend erweitert. Hoser Bauunternehmen übernahm sämtliche Hochbauarbeiten – von der Planung und Statik bis zur schlüsselfertigen Übergabe. Besonderes Augenmerk lag auf der Erhaltung des charakteristischen Erscheinungsbilds bei gleichzeitig moderner Funktionalität.",
-    images: ["/images/bild-s1.jpg", "/images/bild-s2.jpg", "/images/bild-s3.jpg", "/images/bild-s4.jpg"],
+    title: "Kindergarten Erding",
+    category: "Öffentlicher Bau",
+    desc: "Neubau einer zweigruppigen Kindertagesstätte mit Außenanlage",
+    location: "Erding",
+    img: "/images/bild-kindergarten.jpg",
+    detail: "Im Auftrag der Gemeinde Erding errichtete Schmid-Bau GmbH eine moderne Kindertagesstätte mit zwei Gruppen, Technikraum und gestalteter Außenanlage. Das Gebäude erfüllt höchste energetische Anforderungen und überzeugt durch eine freundliche, funktionale Architektur. Alle Arbeiten wurden termingerecht und im vereinbarten Kostenrahmen abgeschlossen.",
+    images: [PLACEHOLDER, PLACEHOLDER, PLACEHOLDER],
   },
   {
     id: "02",
-    title: "Wohnanlage München / Trudering",
-    category: "Wohnbau",
-    desc: "Neubau einer Wohnanlage mit 97 Wohneinheiten und Tiefgarage",
-    location: "München-Trudering",
-    img: "/images/bild-trudering.jpg",
-    detail: "In München-Trudering errichtete Hoser Bauunternehmen eine moderne Wohnanlage mit 97 Wohneinheiten und einer zweigeschossigen Tiefgarage. Das Projekt umfasste alle Gewerke des Rohbaus sowie die vollständige Erschließung des Grundstücks. Strenge Terminplanung und Festpreisgarantie sicherten den reibungslosen Ablauf dieses Großprojekts.",
-    images: ["/images/bild-w1.jpg", "/images/bild-w2.jpg", "/images/bild-w3.jpg"],
+    title: "Feuerwehrhaus Berglern",
+    category: "Öffentlicher Bau",
+    desc: "Neubau des Feuerwehrgerätehauses mit Schulungsraum und Stellplätzen",
+    location: "Berglern",
+    img: "/images/bild-feuerwehr.jpg",
+    detail: "Für die Freiwillige Feuerwehr Berglern realisierte Schmid-Bau GmbH einen modernen Neubau mit drei Fahrzeugstellplätzen, Umkleideräumen, Schulungsraum und Außenbereich. Konstruktion und Ausbau wurden vollständig in Eigenregie koordiniert – von der Planung bis zur schlüsselfertigen Übergabe.",
+    images: [PLACEHOLDER, PLACEHOLDER, PLACEHOLDER],
   },
   {
     id: "03",
-    title: "Raiffeisen Bank",
+    title: "Mehrzweckhalle Taufkirchen",
     category: "Gewerbebau",
-    desc: "Neubau der Raiffeisen Geschäftsstelle Anzing",
-    location: "Anzing",
-    img: "/images/bild-bank.jpg",
-    detail: "Für die Raiffeisenbank realisierte Hoser Bauunternehmen den Neubau der Geschäftsstelle in Anzing. Das repräsentative Bankgebäude vereint moderne Architektur mit hohen Anforderungen an Sicherheit und Barrierefreiheit. Alle Arbeiten wurden termingerecht und im vereinbarten Kostenrahmen abgeschlossen.",
-    images: ["/images/bild-r1.jpg", "/images/bild-r2.jpg", "/images/bild-r3.jpg"],
+    desc: "Neubau einer Gemeinschafts- und Veranstaltungshalle mit Bühne",
+    location: "Taufkirchen / Vils",
+    img: "/images/bild-mehrzweck.jpg",
+    detail: "In Taufkirchen an der Vils entstand eine großzügige Mehrzweckhalle für Veranstaltungen, Vereine und Gemeindezwecke. Schmid-Bau GmbH übernahm alle Rohbau- und Ausbauarbeiten. Besonderes Merkmal ist die flexible Raumaufteilung sowie die hochwertige Holz-Beton-Konstruktion der Dachkonstruktion.",
+    images: [PLACEHOLDER, PLACEHOLDER, PLACEHOLDER],
   },
   {
     id: "04",
-    title: "Firma Seidenader",
-    category: "Industriebau",
-    desc: "Neubau einer Produktionshalle mit Bürogebäude und Außenanlage",
-    location: "Markt Schwaben",
-    img: "/images/bild-seidenader.jpg",
-    detail: "Für die Firma Seidenader entstand in Markt Schwaben eine neue Produktionshalle mit angeschlossenem Bürogebäude und vollständig gestalteter Außenanlage. Hoser Bauunternehmen koordinierte alle Gewerke und sorgte für eine reibungslose Integration von Produktions- und Verwaltungsbereich. Besondere Anforderungen an Tragwerk und Hallenstatik wurden präzise umgesetzt.",
-    images: ["/images/bild-f1.jpg", "/images/bild-f2.jpg", "/images/bild-f3.jpg", "/images/bild-f4.jpg"],
+    title: "Einfamilienhaus Dorfen",
+    category: "Wohnbau",
+    desc: "Schlüsselfertiger Neubau eines Einfamilienhauses mit Carport",
+    location: "Dorfen",
+    img: "/images/bild-wohnhaus.jpg",
+    detail: "Für eine Privatfamilie in Dorfen realisierte Schmid-Bau GmbH ein schlüsselfertiges Einfamilienhaus mit Keller, Carport und Gartengestaltung. Das klare, moderne Erscheinungsbild mit hochwertigen Materialien und durchdachter Grundrissplanung wurde in enger Zusammenarbeit mit dem Bauherrn entwickelt.",
+    images: [PLACEHOLDER, PLACEHOLDER, PLACEHOLDER],
   },
   {
     id: "05",
-    title: "Friedhof Riem",
-    category: "Ingenieurbau",
-    desc: "Neubau einer Aussegnungshalle mit Lärmschutzwand und Besuchersteg in Sichtbeton",
-    location: "München-Riem",
-    img: "/images/bild-riem.jpg",
-    detail: "Am Friedhof München-Riem entstand eine neue Aussegnungshalle in Sichtbetonbauweise – ergänzt durch eine Lärmschutzwand zur angrenzenden Autobahn sowie einem Besuchersteg. Das Projekt stellte höchste Anforderungen an Schalungsqualität und Betonoberfläche. Hoser Bauunternehmen realisierte das architektonisch anspruchsvolle Bauwerk mit der geforderten Präzision.",
-    images: ["/images/bild-a1.jpg", "/images/bild-a2.jpg", "/images/bild-a3.jpg", "/images/bild-a4.jpg"],
+    title: "Gewerbehalle Walpertskirchen",
+    category: "Industriebau",
+    desc: "Neubau einer Lager- und Betriebshalle mit Bürotrakt",
+    location: "Walpertskirchen",
+    img: "/images/bild-gewerbehalle.jpg",
+    detail: "Für ein regional ansässiges Unternehmen errichtete Schmid-Bau GmbH in Walpertskirchen eine Gewerbe- und Lagerhalle mit angeschlossenem Bürotrakt. Die Stahlkonstruktion bietet maximale Nutzflexibilität bei kurzer Bauzeit. Sämtliche Erschließungs- und Außenanlagenarbeiten wurden ebenfalls von Schmid-Bau übernommen.",
+    images: [PLACEHOLDER, PLACEHOLDER, PLACEHOLDER],
   },
   {
     id: "06",
-    title: "Villa Herdweg",
-    category: "Wohnbau",
-    desc: "Neubau eines Einfamilienhauses mit Einliegerwohnung und Garagen",
-    location: "Ottenhofen / Herdweg",
-    img: "/images/bild-villa.jpg",
-    detail: "In Ottenhofen realisierte Hoser Bauunternehmen eine repräsentative Villa mit Einliegerwohnung und Doppelgarage. Hochwertige Materialien, sorgfältige Detailplanung und eine enge Abstimmung mit dem Bauherrn prägten dieses Projekt. Das Ergebnis ist ein modernes Eigenheim, das Komfort, Eleganz und Funktionalität vereint.",
-    images: ["/images/bild-v1.jpg", "/images/bild-v2.jpg", "/images/bild-v3.jpg", "/images/bild-v4.jpg"],
+    title: "Sanierung Bauernhof Buch",
+    category: "Sanierung",
+    desc: "Kernsanierung und Modernisierung eines denkmalgeschützten Bauernhofs",
+    location: "Buch am Buchrain",
+    img: "/images/bild-bauernhof.jpg",
+    detail: "In Buch am Buchrain sanierte Schmid-Bau GmbH einen historischen Bauernhof unter denkmalschutzrechtlichen Auflagen. Neue Fenster, Dämmung, Haustechnik und Fassade wurden behutsam integriert, ohne den traditionellen Charakter des Gebäudes zu beeinträchtigen. Ein anspruchsvolles Projekt, das Handwerkskunst und moderne Bautechnik vereint.",
+    images: [PLACEHOLDER, PLACEHOLDER, PLACEHOLDER],
   },
 ];
 
@@ -161,7 +163,7 @@ export function Portfolio15() {
         const activeTl = gsap.timeline({ paused: true })
           .to(rowBg,      { backgroundColor: "rgba(255,255,255,0.05)", duration: 0.4, ease: "power2.out" }, 0)
           .to(goldBorder, { height: "100%", duration: 0.5, ease: "expo.out" }, 0)
-          .to(num,        { color: "#C9A84C", duration: 0.4, ease: "power2.out" }, 0);
+          .to(num,        { color: "#5AACCF", duration: 0.4, ease: "power2.out" }, 0);
 
         // Row is "active" while the viewport's vertical center intersects it.
         // start fires when row top crosses the center going up;
@@ -188,7 +190,7 @@ export function Portfolio15() {
 
         {/* Heading */}
         <div className="mb-16 md:mb-20">
-          <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-hoser-gold">
+          <p ref={eyebrowRef} className="mb-3 font-body text-sm font-semibold uppercase tracking-[0.25em] text-[#5AACCF]">
             Referenzprojekte
           </p>
           <h2
@@ -219,7 +221,7 @@ export function Portfolio15() {
                 {/* Gold left border */}
                 <div
                   data-row-gold-border
-                  className="absolute left-0 top-0 w-[3px] bg-hoser-gold"
+                  className="absolute left-0 top-0 w-[3px] bg-[#5AACCF]"
                   style={{ height: "0%" }}
                 />
 
@@ -235,7 +237,7 @@ export function Portfolio15() {
 
                   {/* Title + Category */}
                   <div data-row-meta>
-                    <p className="mb-2 font-body text-[11px] font-semibold uppercase tracking-[0.25em] text-hoser-gold">
+                    <p className="mb-2 font-body text-[11px] font-semibold uppercase tracking-[0.25em] text-[#5AACCF]">
                       {p.category}
                     </p>
                     <h3 className="font-heading text-2xl font-bold text-white md:text-3xl">
@@ -249,7 +251,7 @@ export function Portfolio15() {
                       {p.desc}
                     </p>
                     <div className="mt-3 flex items-center gap-2">
-                      <div className="h-px w-4 bg-hoser-gold/50" />
+                      <div className="h-px w-4 bg-[#5AACCF]/50" />
                       <p className="font-body text-xs uppercase tracking-[0.2em] text-white/50">
                         {p.location}
                       </p>
@@ -268,11 +270,11 @@ export function Portfolio15() {
                     <button
                       data-row-btn
                       onClick={() => toggle(i)}
-                      className="flex items-center justify-between border border-white/20 px-4 py-2.5 font-body text-xs font-semibold uppercase tracking-[0.15em] text-white/80 transition-all duration-300 hover:border-hoser-gold hover:text-hoser-gold"
+                      className="flex items-center justify-between border border-white/20 px-4 py-2.5 font-body text-xs font-semibold uppercase tracking-[0.15em] text-white/80 transition-all duration-300 hover:border-[#5AACCF] hover:text-[#5AACCF]"
                     >
                       <span>{expanded === i ? "Schließen" : "Mehr erfahren"}</span>
                       <span
-                        className="ml-3 text-hoser-gold transition-transform duration-300"
+                        className="ml-3 text-[#5AACCF] transition-transform duration-300"
                         style={{ transform: expanded === i ? "rotate(45deg)" : "rotate(0deg)" }}
                       >
                         +
@@ -291,15 +293,15 @@ export function Portfolio15() {
                   <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
                     {/* Info text */}
                     <div>
-                      <p className="mb-3 font-body text-[11px] font-semibold uppercase tracking-[0.25em] text-hoser-gold">
+                      <p className="mb-3 font-body text-[11px] font-semibold uppercase tracking-[0.25em] text-[#5AACCF]">
                         Projektbeschreibung
                       </p>
                       <p className="font-body text-base leading-relaxed text-white/80">
                         {p.detail}
                       </p>
                       <div className="mt-6 flex items-center gap-3">
-                        <div className="h-px w-6 bg-hoser-gold/60" />
-                        <span className="font-body text-xs uppercase tracking-[0.2em] text-hoser-gold/70">
+                        <div className="h-px w-6 bg-[#5AACCF]/60" />
+                        <span className="font-body text-xs uppercase tracking-[0.2em] text-[#5AACCF]/70">
                           {p.category} · {p.location}
                         </span>
                       </div>

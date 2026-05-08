@@ -23,129 +23,57 @@ const splitWords = (el, text) => {
 
 const jobs = [
   {
-    title: "Maurer",
+    title: "Maurer (m/w/d)",
     type: "Vollzeit",
-    location: "Raum München / Ebersberg / Erding",
-    desc: "Maurerarbeiten auf unseren Baustellen im Großraum München. Du arbeitest an abwechslungsreichen Projekten – vom Wohnungsbau bis zur Gewerbehalle.",
+    location: "Berglern · Region Erding",
+    desc: "Erstellung von Wänden, Mauern und Decken im Hochbau. Mitwirken bei Wohn- und Geschäftshäusern, Hallen, Ställen, Kellern und Bodenplatten.",
     anforderungen: [
       "Abgeschlossene Ausbildung als Maurer",
-      "Erfahrung im Roh- und Mauerwerksbau",
+      "Erfahrung in Schalungsarbeiten, Betonieren und Verputzen",
       "Teamfähigkeit und Zuverlässigkeit",
       "Führerschein Klasse B von Vorteil",
     ],
     bieten: [
-      "Übertarifliche Entlohnung",
-      "Moderne Arbeitsmittel und Schutzausrüstung",
-      "Langfristige Anstellung in einem stabilen Unternehmen",
-      "Kollegiales, eingespieltes Team",
+      "Überdurchschnittliche Bezahlung",
+      "Arbeitskleidung & Sozialleistungen",
+      "Junges, motiviertes Team mit Spaß an der Arbeit",
+      "Volle Auftragsbücher – keine Angst vor Kurzarbeit",
     ],
   },
   {
-    title: "Schalungszimmerer",
+    title: "Kranfahrer (m/w/d)",
     type: "Vollzeit",
-    location: "Raum München / Ebersberg / Erding",
-    desc: "Planung und Ausführung von Schalungsarbeiten für Beton- und Stahlbetonbau auf anspruchsvollen Bauprojekten in Bayern.",
+    location: "Berglern · Region Erding",
+    desc: "Sichere und präzise Steuerung unserer Krane sowie Unterstützung des Teams bei Hebe- und Transportarbeiten auf unseren Baustellen.",
     anforderungen: [
-      "Ausbildung als Zimmerer, Schalungsbauer oder vergleichbar",
-      "Erfahrung mit Systemschalungen (z. B. PERI, Doka)",
-      "Lesen von Schalungsplänen",
-      "Körperliche Belastbarkeit",
+      "Kranführerschein (und idealerweise Erfahrung am Haken)",
+      "Verantwortungsbewusstsein und Teamgeist",
+      "Lust, mit moderner Technik zu arbeiten",
+      "Zuverlässigkeit und Sorgfalt",
     ],
     bieten: [
-      "Attraktive Vergütung über Tarif",
-      "Modernster Schalungspark (PERI-Systeme)",
-      "Spannende Großprojekte in der Region",
-      "Weiterbildungsmöglichkeiten",
+      "Sicherer Arbeitsplatz in einem starken Team",
+      "Faire Bezahlung",
+      "Moderne Maschinen & Ausstattung",
+      "Abwechslungsreiche Projekte in der Region",
     ],
   },
   {
-    title: "Beton- & Stahlbetonbauer",
+    title: "Bauhelfer (m/w/d)",
     type: "Vollzeit",
-    location: "Raum München / Ebersberg / Erding",
-    desc: "Betonarbeiten und Bewehrung auf anspruchsvollen Bauprojekten in Bayern – von Fundamenten bis hin zu komplexen Stahlbetonkonstruktionen.",
+    location: "Berglern · Region Erding",
+    desc: "Unterstützen bei verschiedenen Bauarbeiten und Auf-/Abbauarbeiten. Du packst gern mit an und willst Teil eines starken Teams sein.",
     anforderungen: [
-      "Abgeschlossene Ausbildung als Beton- und Stahlbetonbauer",
-      "Erfahrung in der Bewehrungsmontage",
-      "Qualitätsbewusstsein und Genauigkeit",
-      "Teamarbeit auf Großbaustellen",
+      "Handwerkliches Geschick & Lust auf körperliche Arbeit",
+      "Zuverlässigkeit und Teamgeist",
+      "Erfahrung auf dem Bau? Super – aber kein Muss",
+      "Führerschein Klasse B wäre von Vorteil",
     ],
     bieten: [
-      "Übertarifliche Bezahlung",
-      "Abwechslungsreiche Projekte – kein Einerlei",
-      "Eigener, gepflegter Maschinenpark",
-      "Familienfreundliches Arbeitsklima",
-    ],
-  },
-  {
-    title: "Kanalbauer",
-    type: "Vollzeit",
-    location: "Raum München / Ebersberg / Erding",
-    desc: "Tiefbau, Kanal- und Wasserleitungsarbeiten für Kommunen und private Auftraggeber im Großraum München.",
-    anforderungen: [
-      "Ausbildung als Kanalbauer oder Tiefbauer",
-      "Erfahrung im Kanal- und Leitungsbau",
-      "Kenntnisse der einschlägigen DIN-Normen",
-      "Führerschein Klasse B erforderlich, C/CE von Vorteil",
-    ],
-    bieten: [
-      "Tarifgerechte, überdurchschnittliche Vergütung",
-      "Kommunale und private Großprojekte",
-      "Sicherer Arbeitsplatz mit langer Projektkontinuität",
-      "Moderne Tiefbaugeräte und Verbausysteme",
-    ],
-  },
-  {
-    title: "Kranführer",
-    type: "Vollzeit",
-    location: "Raum München / Ebersberg / Erding",
-    desc: "Bedienung und Wartung von Turmdreh- und Mobilkränen auf unseren Baustellen. Verantwortungsvolle Tätigkeit im Herzen des Baugeschehens.",
-    anforderungen: [
-      "Kranführerschein (Turmdrehkran und/oder Mobilkran)",
-      "Erfahrung im Baukraneinsatz",
-      "Zuverlässigkeit und Verantwortungsbewusstsein",
-      "Bereitschaft zur regelmäßigen Fortbildung",
-    ],
-    bieten: [
-      "Übertarifliche Vergütung",
-      "Moderner Kranpark (Liebherr)",
-      "Eigenverantwortliches Arbeiten",
-      "Lange Projektlaufzeiten – kein ständiger Wechsel",
-    ],
-  },
-  {
-    title: "Baggerfahrer",
-    type: "Vollzeit",
-    location: "Raum München / Ebersberg / Erding",
-    desc: "Erdarbeiten, Aushub und Geländegestaltung mit modernen Baggern und Erdbaumaschinen auf unseren Baustellen.",
-    anforderungen: [
-      "Erfahrung als Baggerfahrer / Maschinenführer",
-      "Führerschein Klasse B, CE von Vorteil",
-      "Sorgfältiger Umgang mit Maschinen",
-      "Flexibilität und Einsatzbereitschaft",
-    ],
-    bieten: [
-      "Attraktive Entlohnung",
-      "Neuwertige Maschinen (Komatsu/Liebherr)",
-      "Abwechslungsreiche Einsätze im Raum München",
-      "Teamorientiertes Umfeld",
-    ],
-  },
-  {
-    title: "Schlosser / Landmaschinenmechaniker",
-    type: "Vollzeit",
-    location: "Werkstatt in Markt Schwaben",
-    desc: "Instandhaltung und Reparatur unseres umfangreichen Maschinenparks und Fuhrparks – eine abwechslungsreiche Werkstatttätigkeit mit Eigenverantwortung.",
-    anforderungen: [
-      "Ausbildung als Schlosser, KFZ-Mechatroniker, Landmaschinenmechaniker oder ähnlich",
-      "Erfahrung in der Diagnose und Reparatur von Baumaschinen",
-      "Selbstständiges Arbeiten",
-      "Führerschein Klasse B",
-    ],
-    bieten: [
-      "Gut ausgestattete Werkstatt in Markt Schwaben",
-      "Abwechslungsreiche Aufgaben an verschiedenen Maschinentypen",
-      "Übertarifliche Bezahlung",
-      "Direkter Kontakt zur Geschäftsführung",
+      "Sicherer Job in einem motivierten Team",
+      "Faire Bezahlung",
+      "Abwechslungsreiche Aufgaben auf spannenden Projekten",
+      "Direkte Zusammenarbeit mit erfahrenen Kollegen",
     ],
   },
 ];
@@ -218,7 +146,7 @@ export function Karriere() {
       ref={sectionRef}
       id="stellenangebote"
       className="overflow-hidden"
-      style={{ background: "linear-gradient(180deg, #0a1020 0%, #111827 100%)" }}
+      style={{ background: "linear-gradient(180deg, #0E2A6B 0%, #07194A 100%)" }}
     >
       {/* Heading with image background */}
       <div
@@ -232,7 +160,7 @@ export function Karriere() {
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(to bottom, rgba(10,16,32,0.50) 0%, rgba(10,16,32,0.30) 40%, rgba(10,16,32,0.75) 75%, rgba(10,16,32,1) 100%)",
+            background: "linear-gradient(to bottom, rgba(14,42,107,0.55) 0%, rgba(14,42,107,0.30) 40%, rgba(14,42,107,0.78) 75%, rgba(7,25,74,1) 100%)",
           }}
         />
         <div className="container relative z-10">
@@ -277,10 +205,10 @@ export function Karriere() {
                 <div
                   className="relative overflow-hidden transition-all duration-300"
                   style={{
-                    background: isOpen ? "rgba(201,168,76,0.06)" : "rgba(255,255,255,0.02)",
+                    background: isOpen ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.02)",
                     border: "1px solid",
-                    borderColor: isOpen ? "rgba(201,168,76,0.4)" : "rgba(255,255,255,0.08)",
-                    borderLeft: `3px solid ${isOpen ? "#C9A84C" : "rgba(255,255,255,0.08)"}`,
+                    borderColor: isOpen ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.08)",
+                    borderLeft: `3px solid ${isOpen ? "#FFFFFF" : "rgba(255,255,255,0.12)"}`,
                   }}
                 >
                   {/* Ghost number */}
@@ -294,7 +222,7 @@ export function Karriere() {
                   {/* Card header — always visible */}
                   <div className="p-7 pb-5">
                     <div className="mb-3 flex flex-wrap items-center gap-2">
-                      <span className="font-body text-[10px] font-semibold uppercase tracking-[0.28em] text-[#C9A84C]/70">
+                      <span className="font-body text-[10px] font-semibold uppercase tracking-[0.28em] text-white/70">
                         {job.type}
                       </span>
                       <span className="text-white/15">·</span>
@@ -304,7 +232,7 @@ export function Karriere() {
                     </div>
 
                     <h3
-                      className="mb-4 font-heading font-bold text-white transition-colors duration-200 group-hover:text-[#C9A84C]"
+                      className="mb-4 font-heading font-bold text-white transition-colors duration-200 group-hover:text-white"
                       style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
                     >
                       {job.title}
@@ -315,7 +243,7 @@ export function Karriere() {
                         {job.desc.split(".")[0]}.
                       </p>
                       <div
-                        className="flex-shrink-0 w-8 h-8 rounded-full border border-white/15 flex items-center justify-center text-[#C9A84C] text-lg transition-all duration-300 group-hover:border-[#C9A84C]/50"
+                        className="flex-shrink-0 w-8 h-8 rounded-full border border-white/25 flex items-center justify-center text-white text-lg transition-all duration-300 group-hover:border-white/70"
                         style={{ transform: isOpen ? "rotate(45deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
                       >
                         +
@@ -334,26 +262,26 @@ export function Karriere() {
                       </p>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
                         <div>
-                          <p className="mb-3 font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-[#C9A84C]">
+                          <p className="mb-3 font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-white">
                             Was du mitbringst
                           </p>
                           <ul className="space-y-2">
                             {job.anforderungen.map((a) => (
                               <li key={a} className="flex items-start gap-2.5 font-body text-xs text-white/50">
-                                <span className="mt-[5px] flex-shrink-0 w-[4px] h-[4px] rounded-full bg-[#C9A84C]/70" />
+                                <span className="mt-[5px] flex-shrink-0 w-[4px] h-[4px] rounded-full bg-white/60" />
                                 {a}
                               </li>
                             ))}
                           </ul>
                         </div>
                         <div>
-                          <p className="mb-3 font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-[#C9A84C]">
+                          <p className="mb-3 font-body text-[10px] font-semibold uppercase tracking-[0.25em] text-white">
                             Was wir bieten
                           </p>
                           <ul className="space-y-2">
                             {job.bieten.map((b) => (
                               <li key={b} className="flex items-start gap-2.5 font-body text-xs text-white/50">
-                                <span className="mt-[5px] flex-shrink-0 w-[4px] h-[4px] rounded-full bg-[#C9A84C]/70" />
+                                <span className="mt-[5px] flex-shrink-0 w-[4px] h-[4px] rounded-full bg-white/60" />
                                 {b}
                               </li>
                             ))}
@@ -361,9 +289,9 @@ export function Karriere() {
                         </div>
                       </div>
                       <a
-                        href="mailto:jobs@hoser-bauunternehmung.de"
+                        href="mailto:schmid-bau@gmx.net"
                         onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-2 bg-[#C9A84C] px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-[0.1em] text-white transition-opacity hover:opacity-85"
+                        className="inline-flex items-center gap-2 bg-white px-5 py-2.5 font-body text-xs font-semibold uppercase tracking-[0.12em] text-hoser-gold transition-opacity hover:opacity-90"
                       >
                         Jetzt bewerben →
                       </a>
@@ -379,7 +307,7 @@ export function Karriere() {
         <div ref={contactRef} className="border border-white/10 px-8 py-10 md:px-12">
           <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:items-center">
             <div>
-              <p className="mb-2 font-body text-xs font-semibold uppercase tracking-[0.25em] text-[#C9A84C]">
+              <p className="mb-2 font-body text-xs font-semibold uppercase tracking-[0.25em] text-white">
                 Initiativbewerbung & Kontakt
               </p>
               <h3 className="font-heading text-2xl font-bold text-white md:text-3xl">
@@ -388,23 +316,23 @@ export function Karriere() {
               <p className="mt-3 font-body text-sm text-white/50 leading-relaxed">
                 Wir freuen uns jederzeit über Initiativbewerbungen qualifizierter Handwerker.
                 Schriftlich an:<br />
-                <span className="text-white/70">Hoser Bauunternehmung GmbH · Adalbert-Stifter-Weg 29 · 85570 Markt Schwaben</span>
+                <span className="text-white/70">Schmid-Bau GmbH · Kreuzstraße 19 · 85459 Berglern</span>
               </p>
             </div>
             <div className="flex flex-col gap-3">
               <a
-                href="mailto:jobs@hoser-bauunternehmung.de"
-                className="inline-flex items-center gap-3 border border-white/15 px-6 py-4 font-body text-sm text-white transition-all duration-200 hover:border-[#C9A84C] hover:text-[#C9A84C]"
+                href="mailto:schmid-bau@gmx.net"
+                className="inline-flex items-center gap-3 border border-white/15 px-6 py-4 font-body text-sm text-white transition-all duration-200 hover:border-white hover:bg-white/5"
               >
-                <span className="text-[#C9A84C] text-base">✉</span>
-                jobs@hoser-bauunternehmung.de
+                <span className="text-white text-base">✉</span>
+                schmid-bau@gmx.net
               </a>
               <a
-                href="tel:+498121471100"
-                className="inline-flex items-center gap-3 border border-white/15 px-6 py-4 font-body text-sm text-white transition-all duration-200 hover:border-[#C9A84C] hover:text-[#C9A84C]"
+                href="tel:+491707795316"
+                className="inline-flex items-center gap-3 border border-white/15 px-6 py-4 font-body text-sm text-white transition-all duration-200 hover:border-white hover:bg-white/5"
               >
-                <span className="text-[#C9A84C] text-base">☎</span>
-                08121 / 47 11 0
+                <span className="text-white text-base">☎</span>
+                0170 / 779 5316
               </a>
             </div>
           </div>

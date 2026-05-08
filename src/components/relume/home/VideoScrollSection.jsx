@@ -870,14 +870,14 @@ export function VideoScrollSection() {
         <div
           ref={overlayRef}
           className="absolute inset-0 z-[45] flex flex-col justify-center px-[5%] pt-32 md:pt-40 pb-32 md:pb-40"
-          style={{ background: "#0a1020" }}
+          style={{ background: "#0E2A6B" }}
         >
           {/* Layered gradient (matches Hero aesthetic) */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "linear-gradient(180deg, rgba(10,16,32,1) 0%, rgba(13,20,40,1) 45%, rgba(8,13,26,1) 100%)",
+                "linear-gradient(180deg, rgba(14,42,107,1) 0%, rgba(10,32,89,1) 45%, rgba(7,25,74,1) 100%)",
             }}
           />
           {/* Soft gold radial glow (matches Hero) */}
@@ -885,13 +885,13 @@ export function VideoScrollSection() {
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                "radial-gradient(ellipse at 70% 30%, rgba(201,168,76,0.12) 0%, transparent 55%)",
+                "radial-gradient(ellipse at 70% 30%, rgba(255,255,255,0.12) 0%, transparent 55%)",
             }}
           />
 
           {/* Top-right meta (matches Hero) */}
           <div className="absolute top-24 right-[5%] hidden lg:flex items-center gap-3 font-body text-[11px] uppercase tracking-[0.3em] text-white/60">
-            <span className="h-px w-10 bg-hoser-gold/70" />
+            <span className="h-px w-10 bg-white/70" />
             <span>Kapitel 02</span>
           </div>
 
@@ -899,9 +899,9 @@ export function VideoScrollSection() {
           <div className="relative z-10 max-w-[1400px]">
             <p
               ref={overlayEyebrowRef}
-              className="mb-6 font-body text-sm font-semibold uppercase tracking-[0.4em] text-hoser-gold flex items-center gap-4"
+              className="mb-6 font-body text-sm font-semibold uppercase tracking-[0.4em] text-white flex items-center gap-4"
             >
-              <span ref={overlayLineRef} className="block h-px w-12 bg-hoser-gold" />
+              <span ref={overlayLineRef} className="block h-px w-12 bg-white" />
               Eine Reise durch unsere Gewerke
             </p>
 
@@ -934,7 +934,7 @@ export function VideoScrollSection() {
             <div className="relative h-12 w-px bg-white/15 overflow-hidden">
               <span
                 data-cue-dot
-                className="absolute top-0 left-1/2 -translate-x-1/2 h-3 w-px bg-hoser-gold"
+                className="absolute top-0 left-1/2 -translate-x-1/2 h-3 w-px bg-white"
               />
             </div>
           </div>
@@ -949,7 +949,7 @@ export function VideoScrollSection() {
 
         {/* Atmospheric gradient */}
         <div className="pointer-events-none absolute inset-0 z-10"
-          style={{ background: "linear-gradient(to top, rgba(4,13,28,0.65) 0%, rgba(4,13,28,0.08) 50%, rgba(4,13,28,0.2) 100%)" }}
+          style={{ background: "linear-gradient(to top, rgba(7,25,74,0.65) 0%, rgba(7,25,74,0.08) 50%, rgba(7,25,74,0.2) 100%)" }}
         />
 
         {/* Vignette */}
@@ -972,8 +972,8 @@ export function VideoScrollSection() {
           style={{ opacity: 0 }}
         >
           <div className="mb-5 flex items-center gap-4">
-            <span className="block h-px bg-hoser-gold" style={{ width: "2.2rem" }} />
-            <span className="font-body text-xs font-semibold uppercase tracking-[0.35em] text-hoser-gold">
+            <span className="block h-px bg-white" style={{ width: "2.2rem" }} />
+            <span className="font-body text-xs font-semibold uppercase tracking-[0.35em] text-white">
               5 Gewerke · Unsere Leistungen
             </span>
           </div>
@@ -996,7 +996,7 @@ export function VideoScrollSection() {
             <div className="relative h-10 w-px overflow-hidden bg-white/15">
               <span
                 ref={stepZeroCueDotRef}
-                className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-hoser-gold"
+                className="absolute left-1/2 top-0 h-3 w-px -translate-x-1/2 bg-white"
               />
             </div>
             <span className="font-body text-[10px] uppercase tracking-[0.4em] text-white/45">
@@ -1008,8 +1008,8 @@ export function VideoScrollSection() {
         {/* ── Title block — repositions left/right ── */}
         <div ref={titleBlockRef} className="pointer-events-none absolute bottom-[11%] z-30" style={{ left: "5%" }}>
           <div ref={eyebrowRowRef} className="mb-5 flex items-center gap-4">
-            <span ref={eyebrowLineRef} className="block h-px bg-hoser-gold" style={{ width: "2.2rem" }} />
-            <span ref={eyebrowTextRef} className="font-body text-xs font-semibold uppercase tracking-[0.32em] text-hoser-gold" />
+            <span ref={eyebrowLineRef} className="block h-px bg-white" style={{ width: "2.2rem" }} />
+            <span ref={eyebrowTextRef} className="font-body text-xs font-semibold uppercase tracking-[0.32em] text-white" />
           </div>
           <div
             ref={line1Ref}
@@ -1036,7 +1036,7 @@ export function VideoScrollSection() {
               className="flex items-start gap-3"
             >
               <span
-                className="mt-[0.6em] block h-px w-5 flex-shrink-0 bg-hoser-gold/70"
+                className="mt-[0.6em] block h-px w-5 flex-shrink-0 bg-white/70"
               />
               <p
                 ref={el => bulletTextRefs.current[i] = el}
@@ -1051,7 +1051,7 @@ export function VideoScrollSection() {
         <div className="pointer-events-none absolute bottom-0 left-0 z-40 h-[2px] w-full bg-white/8">
           <div
             ref={progressBarRef}
-            className="h-full bg-hoser-gold"
+            className="h-full bg-white"
             style={{ transformOrigin: "left center", transform: "scaleX(0)" }}
           />
         </div>
@@ -1067,11 +1067,11 @@ export function VideoScrollSection() {
 
         {/* Loading screen */}
         {!isReady && (
-          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#040D1C]">
+          <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-[#0E2A6B]">
             <p className="mb-4 font-body text-xs uppercase tracking-[0.3em] text-white/40">Wird geladen</p>
             <div className="h-px w-48 bg-white/10">
               <div
-                className="h-full bg-hoser-gold transition-all duration-300"
+                className="h-full bg-white transition-all duration-300"
                 style={{ width: `${Math.round((loadedCount / FRAME_COUNT) * 100)}%` }}
               />
             </div>
