@@ -1,6 +1,4 @@
 import React from "react";
-import { useMediaQuery } from "@relume_io/relume-ui";
-import { VideoHero } from "./VideoHero";
 import { Header78 } from "./Header78";
 import { Layout237 } from "./Layout237";
 import { Stats17 } from "./Stats17";
@@ -10,13 +8,8 @@ import { Faq14 } from "./Faq14";
 import { SectionTransition } from "../../ui/SectionTransition";
 
 export default function Page() {
-  // Scroll-Down-Animation (VideoHero) nur auf Desktop — auf Mobile ist Header78 die Hero-Section
-  const isDesktop = useMediaQuery("(min-width: 992px)");
-
   return (
     <div>
-      {isDesktop && <VideoHero />}
-
       <Header78 />
 
       {/* dark → light */}
