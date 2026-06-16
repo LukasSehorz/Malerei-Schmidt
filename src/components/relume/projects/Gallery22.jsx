@@ -5,27 +5,27 @@ import { gsap } from "../../../utils/gsap";
 
 const photos = [
   {
-    src: "/images/projekt-innenraum.png",
+    src: "/images/projekt-innenraum.jpg",
     caption: "Innenraumgestaltung – von der Farbberatung bis zum fertigen Anstrich, alles aus einer Hand.",
     span: "col-span-2 row-span-2",
   },
   {
-    src: "/images/craftsmen-painting.png",
+    src: "/images/craftsmen-painting.jpg",
     caption: "Professionelle Streicharbeiten mit eigenem Fachpersonal – präzise, sauber und termingerecht.",
     span: "col-span-1 row-span-1",
   },
   {
-    src: "/images/projekt-fassade.png",
+    src: "/images/projekt-fassade.jpg",
     caption: "Fassadenanstrich und Außenbeschichtung – witterungsbeständig und langlebig.",
     span: "col-span-1 row-span-1",
   },
   {
-    src: "/images/service-bautenschutz.png",
+    src: "/images/service-bautenschutz.jpg",
     caption: "Bautenschutz und Schimmelsanierung – fachgerecht und nachhaltig gelöst.",
     span: "col-span-1 row-span-1",
   },
   {
-    src: "/images/projekt-sanierung.png",
+    src: "/images/projekt-sanierung.jpg",
     caption: "Renovierung und Sanierung – zuverlässig, im vereinbarten Kostenrahmen.",
     span: "col-span-1 row-span-1",
   },

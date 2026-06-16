@@ -152,7 +152,7 @@ export function Karriere() {
       <div
         className="relative px-[5%] py-16 md:py-24 lg:py-28"
         style={{
-          backgroundImage: "url('/images/karriere-offene-stellen.png')",
+          backgroundImage: "url('/images/karriere-offene-stellen.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center 40%",
         }}

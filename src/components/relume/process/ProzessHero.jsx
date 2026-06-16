@@ -43,7 +43,7 @@ export function ProzessHero() {
 
       {/* Background image */}
       <img
-        src="/images/prozess-hero.png"
+        src="/images/prozess-hero.jpg"
         alt="Malerei & Bautenschutz Sascha Schmidt – Prozess"
         className="prozess-hero-bg absolute inset-0 h-full w-full object-cover object-center"
         style={{ willChange: "transform" }}

@@ -107,7 +107,7 @@ export function Stats17() {
       {/* Background image — clip-path animated wrapper */}
       <div className="s17-bg-clip absolute inset-0 z-0">
         <img
-          src="/images/stats-interior.png"
+          src="/images/stats-interior.jpg"
           alt="Hochwertiger Innenraum"
           className="s17-bg-img absolute inset-0 size-full object-cover"
           style={{ willChange: "transform" }}

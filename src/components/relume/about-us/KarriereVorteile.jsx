@@ -145,7 +145,7 @@ export function KarriereVorteile() {
       <div
         className="relative px-[5%] py-16 md:py-24 lg:py-28"
         style={{
-          backgroundImage: "url('/images/karriere-warum-wir.png')",
+          backgroundImage: "url('/images/karriere-warum-wir.jpg')",
           backgroundSize: "cover",
           backgroundPosition: "center 30%",
         }}

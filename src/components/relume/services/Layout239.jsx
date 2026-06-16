@@ -5,42 +5,42 @@ import { gsap, ScrollTrigger } from "../../../utils/gsap";
 
 const services = [
   {
-    image: "/images/craftsmen-painting.png",
+    image: "/images/craftsmen-painting.jpg",
     num: "01",
     title: "Malerei & Farbgestaltung",
     body: "Streicharbeiten aller Art, Airless-Spritzverfahren und individuelle Farbkonzepte – im Innen- und Außenbereich. Wir gestalten mit Ihren Ideen und unserer Leidenschaft.",
     tags: ["Streicharbeiten", "Airless", "Farbberatung"],
   },
   {
-    image: "/images/service-bautenschutz.png",
+    image: "/images/service-bautenschutz.jpg",
     num: "02",
     title: "Bautenschutz & Schimmelsanierung",
     body: "Nasse Wände, Schimmel oder Risse im Mauerwerk? Wir treffen fachgerechte Maßnahmen zum Schutz Ihres Gebäudes – innen wie außen.",
     tags: ["Schimmelsanierung", "Bautenschutz", "Feuchtigkeitsschutz"],
   },
   {
-    image: "/images/service-spachtel.png",
+    image: "/images/service-spachtel.jpg",
     num: "03",
     title: "Spachtel- & Putzarbeiten",
     body: "Holzschutz, Spachtelarbeiten in allen Qualitätsstufen (Q1–Q4), Verputzen innen und außen – für perfekte Oberflächen als Grundlage jeder Beschichtung.",
     tags: ["Spachtel Q1–Q4", "Holzschutz", "Verputzen"],
   },
   {
-    image: "/images/service-boden.png",
+    image: "/images/service-boden.jpg",
     num: "04",
     title: "Bodenverlegung & Parkett",
     body: "Professionelle Bodenverlegung und Parkettschleifen für hochwertige Ergebnisse. Wir bringen Ihren Boden zum Strahlen – langlebig und optisch ansprechend.",
     tags: ["Bodenverlegung", "Parkettschleifen", "Versiegelung"],
   },
   {
-    image: "/images/service-beton.png",
+    image: "/images/service-beton.jpg",
     num: "05",
     title: "Betonsanierung & Beschichtungen",
     body: "Hochwertige Betonsanierung und Beschichtungen für dauerhaften Schutz. Wir setzen ausschließlich Produkte renommierter Hersteller in Profiqualität ein.",
     tags: ["Betonsanierung", "Beschichtungen", "Profiqualität"],
   },
   {
-    image: "/images/service-renovierung.png",
+    image: "/images/service-renovierung.jpg",
     num: "06",
     title: "Renovierung & Sanierung",
     body: "Renovierungsarbeiten bei Einzug und Auszug oder eine komplette Sanierung – für uns kein Problem. Tapezieren, Lackieren und sämtliche Instandsetzungsarbeiten.",

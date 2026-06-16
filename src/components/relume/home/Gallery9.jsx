@@ -6,21 +6,21 @@ import { gsap } from "../../../utils/gsap";
 const projects = [
   {
     id: "01",
-    image: "/images/projekt-innenraum.png",
+    image: "/images/projekt-innenraum.jpg",
     title: "Innenraumgestaltung, Mühldorf am Inn",
     category: "Malerei · Farbgestaltung & Streicharbeiten",
     year: "2023",
   },
   {
     id: "02",
-    image: "/images/projekt-sanierung.png",
+    image: "/images/projekt-sanierung.jpg",
     title: "Schimmelsanierung Wohnanlage",
     category: "Bautenschutz · Schimmelsanierung & Abdichtung",
     year: "2022",
   },
   {
     id: "03",
-    image: "/images/projekt-fassade.png",
+    image: "/images/projekt-fassade.jpg",
     title: "Fassadenanstrich Gewerbegebäude",
     category: "Malerei · Außenanstrich & Bautenschutz",
     year: "2024",

@@ -7,19 +7,19 @@ const features = [
   {
     title: "Handwerk als Berufung",
     body: "Langjährige Erfahrung und umfassendes Fachwissen treffen auf echte Leidenschaft fürs Handwerk. Wir gehen auf Ihre individuellen Anforderungen ein – von der ersten Beratung bis zur finalen Ausführung.",
-    image: "/images/craftsmen-painting.png",
+    image: "/images/craftsmen-painting.jpg",
     position: "center 10%",
   },
   {
     title: "Präzision & Qualität",
     body: "Wir legen Wert auf Präzision und Genauigkeit, damit jedes Projekt erfolgreich abgeschlossen wird. Profi-Produkte renommierter Hersteller sorgen für Ergebnisse, die ästhetisch ansprechend sind und langfristig schützen.",
-    image: "/images/handshake-quality.png",
+    image: "/images/handshake-quality.jpg",
     position: "center center",
   },
   {
     title: "Verwurzelt in der Region",
     body: "Mühldorf am Inn ist unsere Heimat. Wir sind Ihr kompetenter Partner für professionelle Maler- und Bautenschutzarbeiten in Mühldorf am Inn und Umgebung – mit höchster Kundenzufriedenheit.",
-    image: "/images/region-bavaria.png",
+    image: "/images/region-bavaria.jpg",
     position: "center center",
   },
 ];

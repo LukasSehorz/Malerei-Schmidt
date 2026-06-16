@@ -8,7 +8,7 @@ const michael = {
   name: "Sascha Schmidt",
   title: "Inhaber",
   role: "Meister",
-  image: "/images/michael-schmid.png",
+  image: "/images/michael-schmid.jpg",
   email: "schmidtsascha-bau@web.de",
   bio: "Seit 20 Jahren ist Sascha Schmidt als Maler und Lackierer im Bauhandwerk tätig. Er führt jeden Auftrag mit Leidenschaft, Präzision und persönlichem Einsatz durch – von der Farbberatung bis zur fachgerechten Schimmelsanierung in Mühldorf am Inn und Umgebung.",
   facts: [

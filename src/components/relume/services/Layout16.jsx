@@ -162,7 +162,7 @@ export function Layout16() {
     <section ref={sectionRef} className="relative px-[5%] py-16 md:py-24 lg:py-28 overflow-hidden">
       {/* Background image */}
       <img
-        src="/images/handshake-quality.png"
+        src="/images/handshake-quality.jpg"
         alt="Kompetenz und Terminsicherheit"
         className="absolute inset-0 h-full w-full object-cover"
         style={{ willChange: "transform" }}

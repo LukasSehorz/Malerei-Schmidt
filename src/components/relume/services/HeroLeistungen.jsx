@@ -157,7 +157,7 @@ export function HeroLeistungen() {
       {/* Background image */}
       <img
         ref={imageRef}
-        src="/images/leistungen-hero-new.png"
+        src="/images/leistungen-hero-new.jpg"
         alt="Malerei & Bautenschutz Sascha Schmidt – Leistungen"
         className="absolute inset-0 h-full w-full object-cover"
         style={{ willChange: "transform, filter" }}

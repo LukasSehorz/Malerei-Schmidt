@@ -137,7 +137,7 @@ export function Header78() {
     >
       {/* Bild Nachher — vollflächiger Hintergrund */}
       <img
-        src="/images/hero-nachher.png"
+        src="/images/hero-nachher.jpg"
         alt="Fertig gestaltete Wand"
         className="hero-bg-img absolute inset-0 h-full w-full object-cover object-center"
         style={{ willChange: "transform", filter: "saturate(0.92) brightness(1.04)" }}
@@ -155,7 +155,7 @@ export function Header78() {
       {/* Bild Vorher — Pinsel-Reveal via clip-path */}
       <img
         ref={imageRef}
-        src="/images/hero-vorher.png"
+        src="/images/hero-vorher.jpg"
         alt="Wand vor der Behandlung"
         className="absolute inset-0 h-full w-full object-cover object-center"
         style={{ clipPath: "circle(0px at 50% 50%)", willChange: "clip-path" }}
