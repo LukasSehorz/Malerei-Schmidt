@@ -9,14 +9,7 @@ import React, { useState } from "react";
 const navLinks = [
   { label: "Leistungen", href: "/leistungen" },
   { label: "Projekte", href: "/projekte" },
-  {
-    label: "Über uns",
-    href: "/ueber-uns",
-    children: [
-      { label: "Über uns", href: "/ueber-uns" },
-      { label: "Jobs", href: "/ueber-uns#jobs" },
-    ],
-  },
+  { label: "Über uns", href: "/ueber-uns" },
   { label: "Prozess", href: "/prozess" },
 ];
 

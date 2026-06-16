@@ -59,7 +59,6 @@ export function Team() {
 
       // Per-card entrance
       cardsRef.current.filter(Boolean).forEach((card, idx) => {
-        const photo = card.querySelector("[data-team-photo]");
         const name  = card.querySelector("[data-team-name]");
         const role  = card.querySelector("[data-team-role]");
 
@@ -72,8 +71,7 @@ export function Team() {
           delay: idx * 0.08,
           defaults: { force3D: true },
         })
-          .from(photo, { y: 24, opacity: 0, duration: 0.7, ease: "power3.out" })
-          .from(name,  { y: 14, opacity: 0, duration: 0.5, ease: "power3.out" }, "-=0.4")
+          .from(name,  { y: 14, opacity: 0, duration: 0.5, ease: "power3.out" })
           .from(role,  { y: 14, opacity: 0, duration: 0.45, ease: "power3.out" }, "-=0.35");
       });
     }, sectionRef);
@@ -108,31 +106,9 @@ export function Team() {
             <div
               key={`${member.name}-${idx}`}
               ref={(el) => (cardsRef.current[idx] = el)}
-              className="group flex flex-col items-center text-center"
+              className="group flex flex-col items-center text-center py-6 px-4 rounded-2xl transition-colors duration-300"
+              style={{ border: "1px solid rgba(184,147,90,0.12)" }}
             >
-              {/* Placeholder */}
-              <div
-                data-team-photo
-                className="relative mb-4 w-full aspect-square rounded-2xl flex flex-col items-center justify-center gap-3 transition-colors duration-300 group-hover:border-[#B8935A]/40"
-                style={{ backgroundColor: "#1C1C1C", border: "1px solid rgba(255,255,255,0.06)" }}
-              >
-                <div style={{
-                  width: 56, height: 56, borderRadius: "50%",
-                  border: "2px dashed rgba(184,147,90,0.35)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                }}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(184,147,90,0.45)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                  </svg>
-                </div>
-                <span style={{ fontFamily: "Syne, sans-serif", fontSize: "0.55rem", letterSpacing: "0.28em", textTransform: "uppercase", color: "rgba(184,147,90,0.35)" }}>
-                  Foto folgt
-                </span>
-                {/* Gold bottom line on hover */}
-                <div className="absolute bottom-0 left-0 h-[2px] w-0 transition-all duration-500 group-hover:w-full" style={{ backgroundColor: "#B8935A" }} />
-              </div>
-
               {/* Info */}
               <h3 data-team-name className="font-heading text-sm font-bold text-[#141414] md:text-base">
                 {member.name}

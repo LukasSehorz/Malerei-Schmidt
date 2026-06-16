@@ -236,8 +236,8 @@ export function Layout239() {
           </p>
           <h2
             ref={headingRef}
-            className="font-heading font-bold leading-tight tracking-tight text-[#141414] whitespace-nowrap"
-            style={{ fontSize: "clamp(2rem, 4vw, 4rem)", willChange: "transform, opacity" }}
+            className="font-heading font-bold leading-tight tracking-tight text-[#141414] whitespace-normal lg:whitespace-nowrap"
+            style={{ fontSize: "clamp(1.75rem, 4vw, 4rem)", willChange: "transform, opacity" }}
           >
             Malerei & Bautenschutz. Ein Ansprechpartner.
           </h2>

@@ -27,7 +27,7 @@ const faqs = [
   },
   {
     q: "Wie nehme ich Kontakt auf?",
-    a: "Rufen Sie uns an unter 01520 7827485 (Mo–Fr 07:00–18:00, Sa 07:00–12:00) oder besuchen Sie uns: Am Industriepark 10, 84453 Mühldorf am Inn. Wir beraten Sie gerne unverbindlich.",
+    a: "Rufen Sie uns an unter 01520 7827485 oder schreiben Sie uns an schmidtsascha-bau@web.de. Wir beraten Sie gerne unverbindlich.",
   },
 ];
 

@@ -39,14 +39,6 @@ export function ProzessCTA() {
       className="relative min-h-screen w-full overflow-hidden flex items-center"
       style={{ background: "#B8935A" }}
     >
-      {/* Background photo */}
-      <img
-        src="/images/prozess/step5.png"
-        alt=""
-        aria-hidden="true"
-        className="cta-bg absolute inset-0 h-full w-full object-cover object-center"
-        style={{ willChange: "transform", opacity: 0.42 }}
-      />
 
       {/* Gradient overlay (heavy on the left where text sits) */}
       <div
@@ -205,19 +197,13 @@ export function ProzessCTA() {
             <p className="font-body text-[0.58rem] font-semibold uppercase tracking-[0.32em] text-white/30 mb-2">
               Kontakt
             </p>
-            <p className="font-body text-sm text-white/85">info@malerei-schmidt.de</p>
+            <p className="font-body text-sm text-white/85">schmidtsascha-bau@web.de</p>
           </div>
           <div className="cta-meta">
             <p className="font-body text-[0.58rem] font-semibold uppercase tracking-[0.32em] text-white/30 mb-2">
               Standort
             </p>
             <p className="font-body text-sm text-white/85">Mühldorf am Inn · Bayern</p>
-          </div>
-          <div className="cta-meta">
-            <p className="font-body text-[0.58rem] font-semibold uppercase tracking-[0.32em] text-white/30 mb-2">
-              Erreichbarkeit
-            </p>
-            <p className="font-body text-sm text-white/85">Mo – Fr · 7 – 17 Uhr</p>
           </div>
           <div className="cta-meta">
             <p className="font-body text-[0.58rem] font-semibold uppercase tracking-[0.32em] text-white/30 mb-2">

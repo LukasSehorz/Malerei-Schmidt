@@ -26,8 +26,9 @@ const navCols = [
     links: [
       { label: "Beratung anfragen", to: "/kontakt" },
       { label: "FAQ", to: "/kontakt" },
-      { label: "Impressum", to: "#" },
-      { label: "Datenschutz", to: "#" },
+      { label: "Impressum", to: "/impressum" },
+      { label: "Datenschutz", to: "/datenschutz" },
+      { label: "AGB", to: "/agb" },
     ],
   },
 ];
@@ -98,22 +99,15 @@ export function Footer() {
                 01520 7827485
               </a>
               <a
-                href="mailto:info@malerei-schmidt.de"
+                href="mailto:schmidtsascha-bau@web.de"
                 className="flex items-center gap-3 font-body text-sm text-white/55 transition-colors duration-200 hover:text-white"
               >
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 opacity-60">
                   <rect x="2" y="4" width="20" height="16" rx="2"/>
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
                 </svg>
-                info@malerei-schmidt.de
+                schmidtsascha-bau@web.de
               </a>
-              <p className="flex items-start gap-3 font-body text-sm text-white/40">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 opacity-60 mt-0.5">
-                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 0 1 16 0Z"/>
-                  <circle cx="12" cy="10" r="3"/>
-                </svg>
-                Am Industriepark 10, 84453 Mühldorf am Inn
-              </p>
             </div>
           </div>
 
@@ -145,15 +139,15 @@ export function Footer() {
             © {new Date().getFullYear()} Malerei & Bautenschutz Sascha Schmidt. Alle Rechte vorbehalten.
           </p>
           <div className="flex items-center gap-6">
-            <a href="#" className="font-body text-xs text-white/30 transition-colors duration-200 hover:text-white/60">
+            <Link to="/impressum" className="font-body text-xs text-white/30 transition-colors duration-200 hover:text-white/60">
               Impressum
-            </a>
-            <a href="#" className="font-body text-xs text-white/30 transition-colors duration-200 hover:text-white/60">
+            </Link>
+            <Link to="/datenschutz" className="font-body text-xs text-white/30 transition-colors duration-200 hover:text-white/60">
               Datenschutz
-            </a>
-            <a href="#" className="font-body text-xs text-white/30 transition-colors duration-200 hover:text-white/60">
+            </Link>
+            <Link to="/agb" className="font-body text-xs text-white/30 transition-colors duration-200 hover:text-white/60">
               AGB
-            </a>
+            </Link>
           </div>
         </div>
       </div>

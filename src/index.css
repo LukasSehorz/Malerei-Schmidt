@@ -37,3 +37,70 @@
     font-family: "DM Sans", sans-serif;
   }
 }
+
+/* ── Legal pages (Impressum / Datenschutz / AGB) ─────────────────────────── */
+.legal-prose {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: rgba(20, 20, 20, 0.72);
+}
+.legal-prose h2 {
+  font-family: "Syne", sans-serif;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #141414;
+  margin-top: 2.75rem;
+  margin-bottom: 0.9rem;
+  letter-spacing: -0.01em;
+}
+.legal-prose h2:first-child {
+  margin-top: 0;
+}
+.legal-prose h3 {
+  font-family: "Syne", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #141414;
+  margin-top: 1.75rem;
+  margin-bottom: 0.6rem;
+}
+.legal-prose p {
+  margin-bottom: 0.9rem;
+}
+.legal-prose ul,
+.legal-prose ol {
+  margin: 0 0 1rem 0;
+  padding-left: 1.25rem;
+}
+.legal-prose ul { list-style: disc; }
+.legal-prose ol { list-style: decimal; }
+.legal-prose li {
+  margin-bottom: 0.4rem;
+  padding-left: 0.25rem;
+}
+.legal-prose a {
+  color: #B8935A;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(184, 147, 90, 0.35);
+  transition: border-color 0.2s ease;
+}
+.legal-prose a:hover {
+  border-bottom-color: #B8935A;
+}
+.legal-prose strong {
+  color: #141414;
+  font-weight: 600;
+}
+.legal-prose address {
+  font-style: normal;
+}
+/* Markierung für vom Betreiber zu ergänzende Angaben */
+.legal-prose .legal-todo {
+  background-color: rgba(184, 147, 90, 0.16);
+  border-bottom: 1px dashed rgba(184, 147, 90, 0.7);
+  padding: 0 0.2em;
+  border-radius: 2px;
+  color: #8a6d3b;
+  font-weight: 500;
+}

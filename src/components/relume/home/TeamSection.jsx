@@ -9,7 +9,7 @@ const michael = {
   title: "Inhaber",
   role: "Meister",
   image: "/images/michael-schmid.png",
-  email: "info@malerei-schmidt.de",
+  email: "schmidtsascha-bau@web.de",
   bio: "Seit 20 Jahren ist Sascha Schmidt als Maler und Lackierer im Bauhandwerk tätig. Er führt jeden Auftrag mit Leidenschaft, Präzision und persönlichem Einsatz durch – von der Farbberatung bis zur fachgerechten Schimmelsanierung in Mühldorf am Inn und Umgebung.",
   facts: [
     { label: "Unternehmen", value: "Malerei & Bautenschutz Sascha Schmidt" },
@@ -34,13 +34,6 @@ export function TeamSection() {
         },
         defaults: { ease: "power3.out" },
       });
-
-      // Image: clip-path wipe in from right
-      tl.fromTo(".team-img-wrap",
-        { clipPath: "inset(0 100% 0 0)" },
-        { clipPath: "inset(0 0% 0 0)", duration: 1.1, ease: "power2.inOut" },
-        0
-      );
 
       // Eyebrow label
       tl.fromTo(".team-eyebrow",
@@ -98,10 +91,10 @@ export function TeamSection() {
   return (
     <div className="relative" style={{ backgroundColor: "#141414" }} ref={sectionRef}>
 
-      <div className="relative h-screen w-full overflow-hidden flex">
+      <div className="relative w-full overflow-hidden flex">
 
-        {/* Links: Text */}
-        <div className="flex h-full w-1/2 flex-col justify-center px-12 md:px-16 lg:px-20">
+        {/* Text */}
+        <div className="flex w-full flex-col justify-center px-[5%] py-16 md:py-24 lg:py-28 max-w-3xl mx-auto">
           <p className="team-eyebrow mb-5 font-body text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: "#B8935A" }}>
             {michael.num} · Inhaber & Meister
           </p>
@@ -142,27 +135,6 @@ export function TeamSection() {
           >
             {michael.email} <span style={{ color: "#B8935A" }}>→</span>
           </a>
-        </div>
-
-        {/* Rechts: Platzhalter */}
-        <div className="team-img-wrap h-full w-1/2 flex flex-col items-center justify-center gap-4" style={{ backgroundColor: "#1C1C1C" }}>
-          <div style={{
-            width: 96,
-            height: 96,
-            borderRadius: "50%",
-            border: "2px dashed rgba(184,147,90,0.4)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}>
-            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(184,147,90,0.5)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-              <circle cx="12" cy="7" r="4"/>
-            </svg>
-          </div>
-          <p style={{ fontFamily: "Syne, sans-serif", fontSize: "0.65rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "rgba(184,147,90,0.4)" }}>
-            Foto folgt
-          </p>
         </div>
 
       </div>

@@ -33,7 +33,7 @@ export function Contact6() {
           <div className="grid gap-4">
             <div className="flex items-center gap-4">
               <BiEnvelope className="size-5 flex-none text-[#B8935A]" />
-              <p className="font-body text-sm text-[#141414]">info@malerei-schmidt.de</p>
+              <p className="font-body text-sm text-[#141414]">schmidtsascha-bau@web.de</p>
             </div>
             <div className="flex items-center gap-4">
               <BiPhone className="size-5 flex-none text-[#B8935A]" />
