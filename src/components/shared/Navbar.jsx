@@ -266,6 +266,18 @@ export function Navbar() {
                     ))}
                   </React.Fragment>
                 ))}
+                <Link
+                  to="/kontakt"
+                  onClick={toggle}
+                  className={clsx(
+                    "py-4 text-base font-medium border-b border-white/10 transition-all duration-200",
+                    pathname === "/kontakt"
+                      ? "text-[#B8935A] pl-2"
+                      : "text-white/70 hover:text-white hover:pl-2"
+                  )}
+                >
+                  Kontakt
+                </Link>
               </nav>
               <div className="mt-auto pt-8">
                 <Link
