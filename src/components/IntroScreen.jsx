@@ -4,6 +4,7 @@ import { motion, LayoutGroup } from "framer-motion";
 
 const TEXT = "Malerei & Bautenschutz Sascha Schmidt";
 const CHARS = TEXT.split("");
+const WORDS = TEXT.split(" ");
 
 const FONT = {
   fontFamily: "Syne, sans-serif",
@@ -37,6 +38,9 @@ function SMark() {
 
 export default function IntroScreen({ onComplete }) {
   const [revealed, setRevealed] = useState(false);
+  const [isMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
+  );
 
   useEffect(() => {
     const t1 = setTimeout(() => setRevealed(true), 1000);
@@ -71,8 +75,8 @@ export default function IntroScreen({ onComplete }) {
           </motion.div>
         )}
 
-        {/* ── Phase 2: S slides left (layoutId), text staggered in ── */}
-        {revealed && (
+        {/* ── Phase 2 (Desktop): S slides left, text staggered in einer Zeile ── */}
+        {revealed && !isMobile && (
           <div style={{ display: "flex", alignItems: "center", gap: "clamp(14px, 2vw, 28px)" }}>
             <motion.div
               layoutId="s-mark"
@@ -102,6 +106,54 @@ export default function IntroScreen({ onComplete }) {
                 ))}
               </motion.div>
             </div>
+          </div>
+        )}
+
+        {/* ── Phase 2 (Mobil): S oben, Text darunter zentriert & wortweise umbrechend ── */}
+        {revealed && isMobile && (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 22,
+              padding: "0 7vw",
+            }}
+          >
+            <motion.div layoutId="s-mark" transition={{ duration: 1.05, ease: EASE }}>
+              <SMark />
+            </motion.div>
+
+            <motion.div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                justifyContent: "center",
+                maxWidth: "86vw",
+              }}
+              initial="hidden"
+              animate="visible"
+              variants={{ visible: { transition: { staggerChildren: 0.07, delayChildren: 0.7 } } }}
+            >
+              {WORDS.map((word, i) => (
+                <motion.span
+                  key={i}
+                  variants={{
+                    hidden: { y: 20, opacity: 0 },
+                    visible: { y: 0, opacity: 1, transition: { duration: 0.5, ease: EASE } },
+                  }}
+                  style={{
+                    ...FONT,
+                    fontSize: "clamp(1.4rem, 7vw, 2.2rem)",
+                    whiteSpace: "normal",
+                    marginRight: "0.32em",
+                    lineHeight: 1.25,
+                  }}
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.div>
           </div>
         )}
 
